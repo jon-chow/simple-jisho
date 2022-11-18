@@ -1,3 +1,6 @@
+// https://jisho.org/api/v1/search/words?keyword=lesson
+
+
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 
