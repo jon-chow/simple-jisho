@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import Head from 'next/head'
 import Image from 'next/image'
 
+import { FastAverageColor } from 'fast-average-color';
 import { FaGithub, FaGithubSquare, FaLinkedin } from 'react-icons/fa'
 
 import styles from '../styles/Home.module.scss'
@@ -9,7 +11,7 @@ import styles from '../styles/Home.module.scss'
 const appName = "Simple Jisho";
 
 const background : {image: string, artist: string, artistLink: string} = {
-  image: "https://images5.alphacoders.com/496/496311.jpg",
+  image: "/background.jpg",
   artist: "Alpha Coders",
   artistLink: "https://wall.alphacoders.com/big.php?i=496311"
 }
@@ -184,6 +186,32 @@ const Footer = () => {
  * The Home component is basically the entire page.
  */
 export default function Home() {
+  // Changes the colour of buttons and text based on the background image.
+  const hoverHandler = (button: HTMLElement, color: string) => {
+    const prev = button.style.color;
+    button.onmouseover = () => {
+      button.style.color = color;
+    }
+    button.onmouseleave = () => {
+      button.style.color = prev;
+    }
+  }
+
+  useEffect(() => {
+    const fac = new FastAverageColor();
+    fac.getColorAsync(background.image).then(color => {
+      const smButtons = Array.from(document.getElementsByClassName(styles.socialMediaButton) as HTMLCollectionOf<HTMLElement>);
+      const repoButton = document.getElementsByClassName(styles.repositoryButton)[0] as HTMLElement;
+      
+      smButtons.forEach(button => {
+        hoverHandler(button, color.hex);
+      });
+      hoverHandler(repoButton, color.hex);
+    }).catch(e => {
+      console.log(e);
+    });
+  }, []);
+
   return (
     <div className={styles.container}>
       <MetaData />
