@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState, createContext, useContext } from 'react';
 import Head from 'next/head'
 import Image from 'next/image'
 
 import { FastAverageColor } from 'fast-average-color';
-import { FaGithub, FaGithubSquare, FaLinkedin } from 'react-icons/fa'
+import { FaGithub, FaGithubSquare, FaLinkedin, FaHistory } from 'react-icons/fa'
 
 import styles from '../styles/Home.module.scss'
 
@@ -37,9 +37,16 @@ const socialMediaButtons : {title: string, icon: JSX.Element, link: string}[] = 
  * description (for SEO), and favicon.
  */
 const MetaData = () => {
+  const search = useContext(SearchContext);
+  const [title, setTitle] = useState(appName);
+
+  useEffect(() => {
+    (search.query) ? setTitle(`${search.query} - ${appName}`) : setTitle(`${appName}: Japanese Dictionary`);
+  }, [search.query]);
+
   return (
     <Head>
-      <title>{appName}</title>
+      <title>{title}</title>
       <meta charSet="UTF-8" />
       <meta name="description"
         content="A reformatted, simpler version of jisho.org."
@@ -82,6 +89,20 @@ const Background = () => {
  * as well as a search bar.
  */
 const Header = () => {
+  const search = useContext(SearchContext);
+
+  // handle the search bar submission
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
+    const query = event.target.search.value;
+
+    if (query) {
+      console.log(query);
+    }
+
+    search.setQuery(query);
+  }
+
   return (
     <header className={styles.header}>
       <div className={styles.title}>{appName}</div>
@@ -93,12 +114,27 @@ const Header = () => {
         &nbsp;Japanese-English dictionary!
       </div>
       
-      <div className={styles.search}>
-        <input className={styles.searchInput} type="text"
+      <form className={styles.search} onSubmit={(e) => handleSubmit(e)}>
+        <input
+          className={styles.searchInput}
+          type="text"
+          name="search"
+          id="search"
           placeholder="English, 日本語, Romaji..."
         />
-        <button className={styles.searchButton}>Search</button>
-      </div>
+
+        <button className={styles.searchButton} type="submit">
+          Search
+        </button>
+
+        <button className={styles.clearButton} type="reset">
+          Clear
+        </button>
+        
+        <button className={styles.searchHistoryButton} type="button">
+          <FaHistory />
+        </button>
+      </form>
     </header>
   )
 }
@@ -180,12 +216,15 @@ const Footer = () => {
   )
 }
 
+const SearchContext = createContext({query: "", setQuery: (query: string) => {}});
 /**
  * Exports the Home component.
  * 
  * The Home component is basically the entire page.
  */
 export default function Home() {
+  const [currentSearch, setCurrentSearch] = useState("");
+
   // Changes the colour of buttons and text based on the background image.
   const hoverHandler = (button: HTMLElement, color: string) => {
     const prev = button.style.color;
@@ -214,14 +253,16 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <MetaData />
+      <SearchContext.Provider value={{ query: currentSearch, setQuery: setCurrentSearch }}>
+        <MetaData />
 
-      <Background />
-      <Header />
-      <main className={styles.main}>
-        
-      </main>
-      <Footer />
+        <Background />
+        <Header />
+        <main className={styles.main}>
+          
+        </main>
+        <Footer />
+      </SearchContext.Provider>
     </div>
   )
 }
