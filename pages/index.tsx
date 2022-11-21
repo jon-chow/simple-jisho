@@ -1,22 +1,31 @@
 import Head from 'next/head'
 import Image from 'next/image'
 
-import { FaGithub } from 'react-icons/fa'
+import { FaGithub, FaGithubSquare, FaLinkedin } from 'react-icons/fa'
 
 import styles from '../styles/Home.module.scss'
 
 
 const appName = "Simple Jisho";
 
-const background = {
+const background : {image: string, artist: string, artistLink: string} = {
   image: "https://images5.alphacoders.com/496/496311.jpg",
   artist: "Alpha Coders",
   artistLink: "https://wall.alphacoders.com/big.php?i=496311"
 }
 
-// const socialMediaButtons = [
-
-// ]
+const socialMediaButtons : {title: string, icon: JSX.Element, link: string}[] = [
+  {
+    title: "GitHub",
+    icon: <FaGithubSquare />,
+    link: "https://github.com/jon-chow",
+  },
+  {
+    title: "LinkedIn",
+    icon: <FaLinkedin />,
+    link: "https://www.linkedin.com/in/ja-chow/",
+  },
+]
 
 
 /**
@@ -51,14 +60,13 @@ const MetaData = () => {
 const Background = () => {
   return (
     <div className={styles.background}>
-      <div className={styles.overlay} />
+      <div className={styles.overlay}/>
       <Image
         className={styles.backgroundImage}
         loader={({ src }) => src}
         src={background.image}
         alt="Background"
-        layout="fill"
-        objectFit="cover"
+        fill={true}
         quality={100}
       />
     </div>
@@ -110,6 +118,26 @@ const Footer = () => {
         </a>.
       </div>
 
+      {/* Social media links */}
+      {(socialMediaButtons ) &&
+        <div className={styles.socials}>
+          {socialMediaButtons.map((button, index) => {
+            return (
+              <a
+                className={styles.socialMediaButton}
+                key={index}
+                href={button.link}
+                title={button.title}
+                no-referrer='noreferrer'
+                target='blank'
+              >
+                {button.icon}
+              </a>
+            )
+          })}
+        </div>
+      }
+
       {/* Credits to jisho.org API */}
       <div>
         This app makes calls to the&nbsp;
@@ -139,31 +167,13 @@ const Footer = () => {
         <a
           className={styles.repositoryButton}
           href="https://github.com/jon-chow/simple-jisho"
+          title={appName + " on GitHub"}
           no-referrer='noreferrer'
           target='blank'
         >
           <FaGithub />
         </a>
       </div>
-
-      {/* Social media links */}
-      {/* {(socialMediaButtons ) &&
-        <div className={styles.socials}>
-          {socialMediaButtons.map((button, index) => {
-            return (
-              <a
-                className={styles.socialMediaButton}
-                key={index}
-                href={button.link}
-                no-referrer='noreferrer'
-                target='blank'
-              >
-                {button.icon}
-              </a>
-            )
-          })}
-        </div>
-      } */}
     </footer>
   )
 }
