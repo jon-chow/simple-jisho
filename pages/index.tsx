@@ -106,6 +106,7 @@ const Background = () => {
       <Image
         className={styles.backgroundImage}
         loader={({ src }) => src}
+        unoptimized={true}
         src={background.image}
         alt="Background"
         fill={true}
@@ -122,7 +123,12 @@ const Background = () => {
  * @param query The query to search for.
  */
 async function callSearchAPI(query: string) {
-  const response = await fetch(`/api/search?query=${query}`);
+  const response = await fetch(`/api/search?keyword=${query}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
   const data = await response.json();
   return data;
 };
@@ -143,7 +149,7 @@ const SearchBar = () => {
 
     if (query) {
       callSearchAPI(query).then((data) => {
-        console.log(data)
+        console.log(data);
         setResults(data);
       });
     }
