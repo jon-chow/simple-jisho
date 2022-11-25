@@ -153,6 +153,17 @@
   backdrop-filter: blur(5px);
 }
 
+.underlinedLink {
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+  transition: text-decoration-color 0.2s ease;
+
+  &:hover {
+    text-decoration-color: #fbb;
+    transition: text-decoration-color 0.2s ease;
+  }
+}
+
 .code {
   background: #fafafa;
   border-radius: 5px;

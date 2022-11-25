@@ -218,14 +218,7 @@ const Footer = () => {
     <footer className={styles.footer}>
       {/* Copyright information */}
       <div>
-        &copy; {new Date().getFullYear()}&nbsp;
-        <a
-          href="https://github.com/jon-chow"
-          no-referrer='noreferrer'
-          target='blank'
-        >
-          jon-chow
-        </a>.
+        &copy; {new Date().getFullYear()} jon-chow.
       </div>
 
       {/* Social media links */}
@@ -251,7 +244,12 @@ const Footer = () => {
       {/* Credits to jisho.org API */}
       <div>
         This app makes calls to the&nbsp;
-        <a href="https://jisho.org/" no-referrer='noreferrer' target='blank'>
+        <a
+          href="https://jisho.org/"
+          no-referrer='noreferrer'
+          target='blank'
+          className={styles.underlinedLink}
+        >
           jisho.org
         </a>
         &nbsp;API.
@@ -259,14 +257,31 @@ const Footer = () => {
       
       {/* Tech stack information */}
       <div>
-        Simple Jisho was created using SASS/SCSS, Next.js, and TypeScript.
+        Simple Jisho was created using&nbsp;
+        <a href="https://sass-lang.com/" no-referrer='noreferrer' target='blank'
+          className={styles.underlinedLink}>
+          SASS/SCSS
+        </a>,&nbsp;
+        <a href="https://nextjs.org/" no-referrer='noreferrer' target='blank'
+          className={styles.underlinedLink}>
+          Next.js
+        </a>, and&nbsp;
+        <a href="https://www.typescriptlang.org/" no-referrer='noreferrer' target='blank'
+          className={styles.underlinedLink}>
+          TypeScript
+        </a>,
       </div>
 
       {/* Credits to background artist (if exists) */}
       {(background.artist != "") &&
         <div>
           Background wallpaper obtained from&nbsp;
-          <a href={background.artistLink} no-referrer='noreferrer' target='blank'>
+          <a
+            href={background.artistLink}
+            no-referrer='noreferrer'
+            target='blank'
+            className={styles.underlinedLink}
+          >
             {background.artist}
           </a>.
         </div>
