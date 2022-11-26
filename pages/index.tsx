@@ -118,19 +118,43 @@ const Background = () => {
 
 
 /* ------------------------------- SEARCH BAR ------------------------------- */
+interface PromiseWithCancel<T> extends Promise<T> {
+  cancel: () => void;
+}
+
+/**
+ * Checks if an error is an AbortError.
+ */
+function isAbortError(error: any): error is DOMException {
+  return (error && error.name === "AbortError");
+}
+
 /**
  * Calls to the search API and returns the results.
  * @param query The query to search for.
+ * @exception AbortError Thrown when the search is cancelled.
  */
-async function callSearchAPI(query: string) {
-  const response = await fetch(`/api/search?keyword=${query}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+function getSearchResults(query: string) {
+  const controller = new AbortController();
+  const signal = controller.signal;
+
+  const promise = new Promise(async (resolve) => {
+    try {
+      const response = await fetch(`/api/search?keyword=${query}`, {
+        method: 'GET',
+        signal
+      });
+      const data = await response.json();
+      resolve(data);
+    } catch (exception: unknown) {
+      if (isAbortError(exception))
+        throw exception;
+    }
   });
-  const data = await response.json();
-  return data;
+
+  (promise as PromiseWithCancel<any>).cancel = () => controller.abort();
+
+  return promise as PromiseWithCancel<any>;
 };
 
 /**
@@ -141,16 +165,27 @@ async function callSearchAPI(query: string) {
 const SearchBar = () => {
   const search = useContext(SearchContext);
   const [results, setResults] = useState<any[]>([]);
+  const [querying, setQuerying] = useState<PromiseWithCancel<any> | undefined>(undefined);
+
+  const cancelQuery = () => {
+    querying?.cancel();
+  };
 
   // Handles the search bar submission button.
   const handleSubmit = (event: any) => {
     event.preventDefault();
     const query = event.target.search.value;
 
+    // Check if query is not empty.
     if (query) {
-      callSearchAPI(query).then((data) => {
+      cancelQuery();
+      const q = getSearchResults(query);
+      setQuerying(q);
+      q.then((data) => { // TODO: fix this, it still returns even after cancelling
         console.log(data);
         setResults(data);
+      }).catch((error) => {
+        console.error(error);
       });
     }
 
