@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { FastAverageColor } from 'fast-average-color';
 import { FaGithub, FaGithubSquare, FaLinkedin, FaHistory } from 'react-icons/fa';
 
+import SearchResult from './components/SearchResult';
+
 import styles from '../styles/Home.module.scss';
 
 
@@ -300,6 +302,12 @@ const Footer = () => {
         </a>
         &nbsp;API.
       </div>
+
+      {/* Attributes */}
+      <div>
+        All dictionary data is obtained from jisho.org, 
+        which is attributed to their respective sources.
+      </div>
       
       {/* Tech stack information */}
       <div>
@@ -384,7 +392,7 @@ export default function Home() {
   const [searchStatus, setSearchStatus] = useState<Status>(Status.IDLE);
 
   const [resultKeyword, setResultKeyword] = useState("");
-  const [results, setResults] = useState<any[]>([]);
+  const [results, setResults] = useState<any[]>([ {} ]);
 
   // Changes the colour of buttons and text based on the background image.
   const hoverHandler = (button: HTMLElement, color: string) => {
@@ -427,9 +435,11 @@ export default function Home() {
           <Header />
           <main className={styles.main}>
             <div className={styles.results}>
-              {
-                
-              }
+              {(results.length && searchStatus == Status.SUCCESS) && results.map((result, index) => {
+                return (
+                  <SearchResult key={index} results={result} />
+                );}
+              )}
             </div>
           </main>
           <Footer />

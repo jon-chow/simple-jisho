@@ -28,9 +28,7 @@ const Result = (props: any) => {
 export default function SearchResult(props: any) {
   return (
     <Panel title="Search Result">
-      <Result title="Result 1" />
-      <Result title="Result 2" />
-      <Result title="Result 3" />
+      { props.results.length }
     </Panel>
   );
 };
