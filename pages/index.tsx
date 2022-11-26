@@ -13,6 +13,8 @@ import styles from '../styles/Home.module.scss';
 /* -------------------------------------------------------------------------- */
 const appName = "Simple Jisho";
 
+const logo = "/logo.png";
+
 const background : {image: string, artist: string, artistLink: string} = {
   image: "/background.jpg",
   artist: "Alpha Coders",
@@ -145,6 +147,7 @@ const SearchBar = () => {
 
   const cancelQuery = () => {
     querying?.cancel();
+    searchContext.setStatus(Status.CANCELLED);
   };
 
   // Handles the search bar submission button.
@@ -157,20 +160,19 @@ const SearchBar = () => {
       cancelQuery();
       const q = getSearchResults(query);
       setQuerying(q);
+      searchContext.setStatus(Status.LOADING);
       q.then((data) => {
+        resultsContext.setKeyword(query);
         resultsContext.setResults(data);
+        searchContext.setStatus(Status.SUCCESS);
       }).catch((error) => {
         console.error(error);
+        searchContext.setStatus(Status.ERROR);
       });
     }
 
     searchContext.setQuery(query);
   };
-
-  // TODO: Make sure to change this later
-  useEffect(() => {
-    console.log(resultsContext.results);
-  }, [resultsContext.results]);
 
   return (
     <form className={styles.search} onSubmit={(e) => handleSubmit(e)}>
@@ -201,15 +203,42 @@ const SearchBar = () => {
  * as well as a search bar.
  */
 const Header = () => {
+  const searchContext = useContext(SearchContext);
+  const resultsContext = useContext(ResultsContext);
+
+  /**
+   * Checks the query status and updates the status label.
+   */
+  const checkStatus = () => {
+    switch (searchContext.status) {
+      case Status.IDLE:
+        return <div className={styles.statusLabel}>Look up a word by entering it into the search bar.</div>;
+      case Status.LOADING:
+        return <div className={styles.statusLabel}>Searching...</div>;
+      case Status.SUCCESS:
+        return <div className={styles.statusLabel}>
+          Found {resultsContext.results.length} results for
+          &quot;<span className={styles.keyword}>{resultsContext.keyword}</span>&quot;.
+        </div>;
+      case Status.CANCELLED:
+        return <div className={styles.statusLabel}>Search cancelled.</div>;
+      default:
+        return <div className={styles.statusLabel}>An error occurred while searching.</div>;
+    }
+  };
+
   return (
     <header className={styles.header}>
       {/* App Name */}
-      <div className={styles.title}>{appName}</div>
+      <div className={styles.title}>
+        <span><Image src={logo} alt="Logo" width={40} height={40} /></span>
+        <span>&nbsp;{appName}</span>
+      </div>
 
       {/* App Description */}
       <div className={styles.subtitle}>
         A lighter, more compact version of the&nbsp;
-        <a href="https://jisho.org/" no-referrer='noreferrer' target='blank'>
+        <a className={styles.underlinedLink} href="https://jisho.org/" no-referrer='noreferrer' target='blank'>
           jisho.org
         </a>
         &nbsp;Japanese-English dictionary!
@@ -217,6 +246,8 @@ const Header = () => {
       
       {/* Search Bar */}
       <SearchBar />
+
+      { checkStatus() }
     </header>
   )
 }
@@ -322,8 +353,27 @@ const Footer = () => {
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
-const SearchContext = createContext({query: "", setQuery: (query: string) => {}});
-const ResultsContext = createContext({results: {}, setResults: (results: any[]) => {}});
+/**
+ * Enumerates the different states of a search.
+ */
+enum Status { IDLE, LOADING, SUCCESS, CANCELLED, ERROR };
+
+/**
+ * Context for a search.
+ */
+const SearchContext = createContext({
+  query: "", setQuery: (query: string) => {},
+  status: Status.IDLE, setStatus: (status: Status) => {},
+});
+
+/**
+ * Context for the result of a search.
+ */
+const ResultsContext = createContext({
+  keyword: "", setKeyword: (keyword: string) => {},
+  results: [ {} ], setResults: (results: any[]) => {}
+});
+
 /**
  * Exports the Home component.
  * 
@@ -331,6 +381,9 @@ const ResultsContext = createContext({results: {}, setResults: (results: any[]) 
  */
 export default function Home() {
   const [currentSearch, setCurrentSearch] = useState("");
+  const [searchStatus, setSearchStatus] = useState<Status>(Status.IDLE);
+
+  const [resultKeyword, setResultKeyword] = useState("");
   const [results, setResults] = useState<any[]>([]);
 
   // Changes the colour of buttons and text based on the background image.
@@ -354,17 +407,29 @@ export default function Home() {
     });
   }, []);
 
+  // useEffect(() => {
+  //   console.log(results);
+  // }, [results]);
+
   return (
     <div className={styles.container}>
-      <SearchContext.Provider value={{ query: currentSearch, setQuery: setCurrentSearch }}>
-        <ResultsContext.Provider value={{ results: results, setResults: setResults }}>
+      <SearchContext.Provider value={{
+        query: currentSearch, setQuery: setCurrentSearch,
+        status: searchStatus, setStatus: setSearchStatus
+      }}>
+        <ResultsContext.Provider value={{
+          results: results, setResults: setResults,
+          keyword: resultKeyword, setKeyword: setResultKeyword
+        }}>
           <MetaData />
 
           <Background />
           <Header />
           <main className={styles.main}>
             <div className={styles.results}>
-
+              {
+                
+              }
             </div>
           </main>
           <Footer />
