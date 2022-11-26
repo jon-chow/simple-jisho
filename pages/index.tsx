@@ -34,30 +34,6 @@ const socialMediaButtons : {title: string, icon: JSX.Element, link: string}[] = 
 
 
 /* -------------------------------------------------------------------------- */
-/*                            REPLICABLE COMPONENTS                           */
-/* -------------------------------------------------------------------------- */
-
-/* ---------------------------------- PANEL --------------------------------- */
-const Panel = (props: any) => {
-  return (
-    <div className="panel">
-      <h1>{props.title}</h1>
-      <div>{props.children}</div>
-    </div>
-  );
-};
-
-const Result = (props: any) => {
-  return (
-    <div className="result">
-      <h2>{props.title}</h2>
-      <div>{props.children}</div>
-    </div>
-  );
-};
-
-
-/* -------------------------------------------------------------------------- */
 /*                               PAGE COMPONENTS                              */
 /* -------------------------------------------------------------------------- */
 
@@ -163,8 +139,8 @@ function getSearchResults(query: string) {
  * The search bar is included in the header.
  */
 const SearchBar = () => {
-  const search = useContext(SearchContext);
-  const [results, setResults] = useState<any[]>([]);
+  const searchContext = useContext(SearchContext);
+  const resultsContext = useContext(ResultsContext);
   const [querying, setQuerying] = useState<PromiseWithCancel<any> | undefined>(undefined);
 
   const cancelQuery = () => {
@@ -181,16 +157,20 @@ const SearchBar = () => {
       cancelQuery();
       const q = getSearchResults(query);
       setQuerying(q);
-      q.then((data) => { // TODO: fix this, it still returns even after cancelling
-        console.log(data);
-        setResults(data);
+      q.then((data) => {
+        resultsContext.setResults(data);
       }).catch((error) => {
         console.error(error);
       });
     }
 
-    search.setQuery(query);
+    searchContext.setQuery(query);
   };
+
+  // TODO: Make sure to change this later
+  useEffect(() => {
+    console.log(resultsContext.results);
+  }, [resultsContext.results]);
 
   return (
     <form className={styles.search} onSubmit={(e) => handleSubmit(e)}>
@@ -343,6 +323,7 @@ const Footer = () => {
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
 const SearchContext = createContext({query: "", setQuery: (query: string) => {}});
+const ResultsContext = createContext({results: {}, setResults: (results: any[]) => {}});
 /**
  * Exports the Home component.
  * 
@@ -350,6 +331,7 @@ const SearchContext = createContext({query: "", setQuery: (query: string) => {}}
  */
 export default function Home() {
   const [currentSearch, setCurrentSearch] = useState("");
+  const [results, setResults] = useState<any[]>([]);
 
   // Changes the colour of buttons and text based on the background image.
   const hoverHandler = (button: HTMLElement, color: string) => {
@@ -375,16 +357,18 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <SearchContext.Provider value={{ query: currentSearch, setQuery: setCurrentSearch }}>
-        <MetaData />
+        <ResultsContext.Provider value={{ results: results, setResults: setResults }}>
+          <MetaData />
 
-        <Background />
-        <Header />
-        <main className={styles.main}>
-          <div className={styles.results}>
-            
-          </div>
-        </main>
-        <Footer />
+          <Background />
+          <Header />
+          <main className={styles.main}>
+            <div className={styles.results}>
+
+            </div>
+          </main>
+          <Footer />
+        </ ResultsContext.Provider>
       </SearchContext.Provider>
     </div>
   );
