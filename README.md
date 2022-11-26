@@ -9,5 +9,9 @@ Simple Jisho is a simple, lightweight, and easy to use Japanese-English dictiona
 - View word examples
 - View word kanji
 
+#### To Be Implemented:
+- Search history controls
+
 #### Credits:
 - [Jisho API](https://jisho.org/api)
+- [Background Image](https://wall.alphacoders.com/big.php?i=496311)
