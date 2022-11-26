@@ -13,9 +13,12 @@ import styles from '../styles/Home.module.scss';
 /* -------------------------------------------------------------------------- */
 /*                                DECLARATIONS                                */
 /* -------------------------------------------------------------------------- */
-const appName = "Simple Jisho";
-
-const logo = "/logo.png";
+const appInfo = {
+  name: "Simple Jisho",
+  description: 'A reformatted, simpler version of jisho.org.',
+  repository: "https://github.com/jon-chow/simple-jisho",
+  logo: "/logo.png",
+}
 
 const background : {image: string, artist: string, artistLink: string} = {
   image: "/background.jpg",
@@ -50,19 +53,17 @@ const socialMediaButtons : {title: string, icon: JSX.Element, link: string}[] = 
  */
 const MetaData = () => {
   const search = useContext(SearchContext);
-  const [title, setTitle] = useState(appName);
+  const [title, setTitle] = useState(appInfo.name);
 
   useEffect(() => {
-    (search.query) ? setTitle(`${search.query} - ${appName}`) : setTitle(`${appName}: Japanese Dictionary`);
+    (search.query) ? setTitle(`${search.query} - ${appInfo.name}`) : setTitle(`${appInfo.name}: Japanese Dictionary`);
   }, [search.query]);
 
   return (
     <Head>
       <title>{title}</title>
       <meta charSet="UTF-8" />
-      <meta name="description"
-        content="A reformatted, simpler version of jisho.org."
-      />
+      <meta name="description" content={appInfo.description} />
       <meta name="keywords"
         content="English, Japanese, Dictionary, Jisho"
       />
@@ -233,8 +234,16 @@ const Header = () => {
     <header className={styles.header}>
       {/* App Name */}
       <div className={styles.title}>
-        <span><Image src={logo} alt="Logo" width={40} height={40} /></span>
-        <span>&nbsp;{appName}</span>
+        <a className={styles.logo} href={appInfo.repository} no-referrer='noreferrer' target='blank'>
+          <Image
+            src={appInfo.logo}
+            alt="Logo"
+            title={appInfo.name}
+            width={40}
+            height={40}
+          />
+        </a>
+        {appInfo.name}
       </div>
 
       {/* App Description */}
@@ -345,8 +354,8 @@ const Footer = () => {
       <div className={styles.repository}>
         <a
           className={styles.repositoryButton}
-          href="https://github.com/jon-chow/simple-jisho"
-          title={appName + " on GitHub"}
+          href={appInfo.repository}
+          title={appInfo.name + " on GitHub"}
           no-referrer='noreferrer'
           target='blank'
         >
@@ -401,15 +410,28 @@ export default function Home() {
     button.onmouseleave = () => { button.style.color = prev; };
   };
 
+  // Changes the colour of underlined text based on the background image.
+  const hoverLinkHandler = (button: HTMLElement, color: string) => {
+    const prev = button.style.textDecorationColor;
+    button.onmouseover = () => { button.style.textDecorationColor = color; };
+    button.onmouseleave = () => { button.style.textDecorationColor = prev; };
+  };
+
   useEffect(() => {
     const fac = new FastAverageColor();
     fac.getColorAsync(background.image).then(color => {
-      const smButtons = Array.from(document.getElementsByClassName(styles.socialMediaButton) as HTMLCollectionOf<HTMLElement>);
-      const repoButton = document.getElementsByClassName(styles.repositoryButton)[0] as HTMLElement;
+      let colorString = color.hex || "#fff";
       
-      smButtons.forEach(button => { hoverHandler(button, color.hex); });
+      const smButtons =
+        Array.from(document.getElementsByClassName(styles.socialMediaButton) as HTMLCollectionOf<HTMLElement>);
+      const repoButton =
+        document.getElementsByClassName(styles.repositoryButton)[0] as HTMLElement;
+      const underlinedLinks =
+        Array.from(document.getElementsByClassName(styles.underlinedLink) as HTMLCollectionOf<HTMLElement>);
       
-      hoverHandler(repoButton, color.hex);
+      smButtons.forEach(button => { hoverHandler(button, colorString); });
+      hoverHandler(repoButton, colorString);
+      underlinedLinks.forEach(link => { hoverLinkHandler(link, colorString); });
     }).catch(e => {
       console.log(e);
     });
