@@ -18,7 +18,7 @@ const appInfo = {
   description: 'A reformatted, simpler version of jisho.org.',
   repository: "https://github.com/jon-chow/simple-jisho",
   logo: "/logo.png",
-}
+};
 
 const background : {image: string, artist: string, artistLink: string} = {
   image: "/background.jpg",
@@ -60,6 +60,7 @@ const MetaData = () => {
                               : setTitle(`${appInfo.name}: Japanese Dictionary`);
   }, [resultsContext.keyword]);
 
+
   return (
     <Head>
       <title>{title}</title>
@@ -82,6 +83,7 @@ const MetaData = () => {
  * An image background with an blurring overlay.
  */
 const Background = () => {
+  
   return (
     <div className={styles.background}>
       <div className={styles.overlay}/>
@@ -105,7 +107,7 @@ const Background = () => {
  */
 interface PromiseWithCancel<T> extends Promise<T> {
   cancel: () => void;
-}
+};
 
 /**
  * Checks if an error is an AbortError.
@@ -113,7 +115,7 @@ interface PromiseWithCancel<T> extends Promise<T> {
  */
 const isAbortError = (error: any): error is DOMException => {
   return (error && error.name === "AbortError");
-}
+};
 
 /**
  * Calls to the search API and returns the results.
@@ -135,7 +137,7 @@ const getSearchResults = (query: string) => {
     } catch (exception: unknown) {
       if (isAbortError(exception))
         throw exception;
-    }
+    };
   });
 
   (promise as PromiseWithCancel<any>).cancel = () => controller.abort();
@@ -155,8 +157,8 @@ const getQueryVariable = (variable: string) => {
     const pair = vars[i].split('=');
     if (decodeURIComponent(pair[0]) == variable)
       return decodeURIComponent(pair[1]);
-  }
-}
+  };
+};
 
 /**
  * Creates the search bar component.
@@ -173,6 +175,11 @@ const SearchBar = () => {
     searchContext.setStatus(Status.CANCELLED);
   };
 
+  /**
+   * Runs a dictionary search for the given query term.
+   * @param query The query to search for.
+   * @param addHistory Whether to add the search to the browser history.
+   */
   const search = async (query: string, addHistory: boolean = true) => {
     // Check if query is not empty.
     if (query) {
@@ -180,6 +187,7 @@ const SearchBar = () => {
       const q = getSearchResults(query);
       setQuerying(q);
       searchContext.setStatus(Status.LOADING);
+
       q.then((data) => {
         resultsContext.setKeyword(query);
         resultsContext.setResults(data);
@@ -189,10 +197,10 @@ const SearchBar = () => {
         console.error(error);
         searchContext.setStatus(Status.ERROR);
       });
-    }
+    };
 
     searchContext.setQuery(query);
-  }
+  };
 
   // Handles the search bar submission button.
   const handleSubmit = (event: any) => {
@@ -201,11 +209,19 @@ const SearchBar = () => {
     search(query);
   };
 
-  // TODO: Run a search when using history back/forward buttons.
+  // Automatically searches for the query parameter in the URL.
   useEffect(() => {
-    const keyword = getQueryVariable("q");
-    (keyword) && search(keyword, false);
+    const handlePopState = () => {
+      const keyword = getQueryVariable("q");
+      (keyword) && search(keyword, false);
+    };
+
+    handlePopState();
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
   }, []);
+
 
   return (
     <form className={styles.search} onSubmit={(e) => handleSubmit(e)}>
@@ -260,6 +276,7 @@ const Header = () => {
     }
   };
 
+
   return (
     <header className={styles.header}>
       {/* App Name */}
@@ -291,7 +308,7 @@ const Header = () => {
       { checkStatus() }
     </header>
   )
-}
+};
 
 /* --------------------------------- FOOTER --------------------------------- */
 /**
@@ -301,6 +318,7 @@ const Header = () => {
  * as well as a link to the source code (GitHub) and the Jisho website.
  */
 const Footer = () => {
+
   return (
     <footer className={styles.footer}>
       {/* Copyright information */}
@@ -458,6 +476,7 @@ export default function Home() {
     button.onmouseleave = () => { button.style.textDecorationColor = prev; };
   };
 
+  // Changes the colour of elements based on the background image.
   useEffect(() => {
     const fac = new FastAverageColor();
     fac.getColorAsync(background.image).then(color => {
@@ -478,10 +497,7 @@ export default function Home() {
     });
   }, []);
 
-  // useEffect(() => {
-  //   console.log(results);
-  // }, [results]);
-
+  
   return (
     <div className={styles.container}>
       <SearchContext.Provider value={{
