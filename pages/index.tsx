@@ -52,12 +52,13 @@ const socialMediaButtons : {title: string, icon: JSX.Element, link: string}[] = 
  * description (for SEO), and favicon.
  */
 const MetaData = () => {
-  const search = useContext(SearchContext);
+  const resultsContext = useContext(ResultsContext);
   const [title, setTitle] = useState(appInfo.name);
 
   useEffect(() => {
-    (search.query) ? setTitle(`${search.query} - ${appInfo.name}`) : setTitle(`${appInfo.name}: Japanese Dictionary`);
-  }, [search.query]);
+    (resultsContext.keyword) ? setTitle(`${resultsContext.keyword} - ${appInfo.name}`)
+                              : setTitle(`${appInfo.name}: Japanese Dictionary`);
+  }, [resultsContext.keyword]);
 
   return (
     <Head>
@@ -99,23 +100,27 @@ const Background = () => {
 
 
 /* ------------------------------- SEARCH BAR ------------------------------- */
+/**
+ * Extended Promise to allow for cancellation.
+ */
 interface PromiseWithCancel<T> extends Promise<T> {
   cancel: () => void;
 }
 
 /**
  * Checks if an error is an AbortError.
+ * @param error The error to check.
  */
-function isAbortError(error: any): error is DOMException {
+const isAbortError = (error: any): error is DOMException => {
   return (error && error.name === "AbortError");
 }
 
 /**
  * Calls to the search API and returns the results.
  * @param query The query to search for.
- * @exception AbortError Thrown when the search is cancelled.
+ * @exception AbortError thrown when the search is cancelled.
  */
-function getSearchResults(query: string) {
+const getSearchResults = (query: string) => {
   const controller = new AbortController();
   const signal = controller.signal;
 
@@ -139,6 +144,21 @@ function getSearchResults(query: string) {
 };
 
 /**
+ * Retrieves the value of the query parameter with the given key.
+ * @param variable Key variable to look for in the URL.
+ * @returns The value of the key variable in the URL.
+ */
+const getQueryVariable = (variable: string) => {
+  const vars = window.location.search.substring(1).split('&');
+
+  for (let i = 0; i < vars.length; i++) {
+    const pair = vars[i].split('=');
+    if (decodeURIComponent(pair[0]) == variable)
+      return decodeURIComponent(pair[1]);
+  }
+}
+
+/**
  * Creates the search bar component.
  * 
  * The search bar is included in the header.
@@ -153,11 +173,7 @@ const SearchBar = () => {
     searchContext.setStatus(Status.CANCELLED);
   };
 
-  // Handles the search bar submission button.
-  const handleSubmit = (event: any) => {
-    event.preventDefault();
-    const query = event.target.search.value;
-
+  const search = async (query: string, addHistory: boolean = true) => {
     // Check if query is not empty.
     if (query) {
       cancelQuery();
@@ -168,6 +184,7 @@ const SearchBar = () => {
         resultsContext.setKeyword(query);
         resultsContext.setResults(data);
         searchContext.setStatus(Status.SUCCESS);
+        (addHistory) && window.history.pushState(null, "", (query) ? "?q=" + query : "");
       }).catch((error) => {
         console.error(error);
         searchContext.setStatus(Status.ERROR);
@@ -175,7 +192,20 @@ const SearchBar = () => {
     }
 
     searchContext.setQuery(query);
+  }
+
+  // Handles the search bar submission button.
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    const query = event.target.search.value;
+    search(query);
   };
+
+  // TODO: Run a search when using history back/forward buttons.
+  useEffect(() => {
+    const keyword = getQueryVariable("q");
+    (keyword) && search(keyword, false);
+  }, []);
 
   return (
     <form className={styles.search} onSubmit={(e) => handleSubmit(e)}>
@@ -392,6 +422,15 @@ const ResultsContext = createContext({
 });
 
 /**
+ * Type definition for an instance of a past search.
+ */
+type History = {
+  keyword: string,
+  results: any[],
+  date: Date
+};
+
+/**
  * Exports the Home component.
  * 
  * The Home component is basically the entire page.
@@ -402,6 +441,8 @@ export default function Home() {
 
   const [resultKeyword, setResultKeyword] = useState("");
   const [results, setResults] = useState<any[]>([ {} ]);
+
+  const [history, setHistory] = useState<History[]>([  ]);
 
   // Changes the colour of buttons and text based on the background image.
   const hoverHandler = (button: HTMLElement, color: string) => {
