@@ -26,9 +26,10 @@ const Result = (props: any) => {
  * The SearchResult component contains data on a search.
  */
 export default function SearchResult(props: any) {
+  
   return (
     <Panel title="Search Result">
-      { props.results.length }
+      { props.results.slug }
     </Panel>
   );
 };

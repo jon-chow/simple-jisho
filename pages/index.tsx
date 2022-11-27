@@ -128,7 +128,7 @@ const getSearchResults = (query: string) => {
 
   const promise = new Promise(async (resolve) => {
     try {
-      const response = await fetch(`/api/search?keyword=${query}`, {
+      const response = await fetch(`/api/search?keyword=${query.toLowerCase()}`, {
         method: 'GET',
         signal
       });
@@ -514,11 +514,12 @@ export default function Home() {
           <Header />
           <main className={styles.main}>
             <div className={styles.results}>
-              {(results.length && searchStatus == Status.SUCCESS) && results.map((result, index) => {
-                return (
-                  <SearchResult key={index} results={result} />
-                );}
-              )}
+              { (results.length > 0 && searchStatus == Status.SUCCESS) ? 
+                results.map((result, index) => {
+                  return (
+                    <SearchResult key={index} results={result} />
+                  )
+                }) : <></> }
             </div>
           </main>
           <Footer />
