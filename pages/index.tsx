@@ -6,6 +6,7 @@ import { FastAverageColor } from 'fast-average-color';
 import { FaGithub, FaGithubSquare, FaLinkedin, FaHistory } from 'react-icons/fa';
 
 import SearchResult from './components/SearchResult';
+import DefaultMain from './components/DefaultMain';
 
 import styles from '../styles/Home.module.scss';
 
@@ -519,7 +520,7 @@ export default function Home() {
                   return (
                     <SearchResult key={index} resultData={result} />
                   )
-                }) : <></> }
+                }) : <DefaultMain /> }
             </div>
           </main>
           <Footer />
