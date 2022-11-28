@@ -517,7 +517,7 @@ export default function Home() {
               { (results.length > 0 && searchStatus == Status.SUCCESS) ? 
                 results.map((result, index) => {
                   return (
-                    <SearchResult key={index} results={result} />
+                    <SearchResult key={index} resultData={result} />
                   )
                 }) : <></> }
             </div>

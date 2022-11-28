@@ -1,21 +1,4 @@
-const Panel = (props: any) => {
-  return (
-    <div className="panel">
-      <h1>{props.title}</h1>
-      <div>{props.children}</div>
-    </div>
-  );
-};
-
-const Result = (props: any) => {
-  return (
-    <div className="result">
-      <h2>{props.title}</h2>
-      <div>{props.children}</div>
-    </div>
-  );
-};
-
+import styles from '../../styles/SearchResult.module.scss';
 
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
@@ -26,10 +9,56 @@ const Result = (props: any) => {
  * The SearchResult component contains data on a search.
  */
 export default function SearchResult(props: any) {
+  const data = props.resultData;
+  console.log(props.resultData);
   
   return (
-    <Panel title="Search Result">
-      { props.results.slug }
-    </Panel>
+    <div className={styles.resultPanel}>
+      <div className={styles.tags}>
+        { (data.is_common) ? 
+          <span className={styles.common} style={{background: 'rgba(50, 255, 50, 0.4)'}}>Common</span> :
+          <span className={styles.common} style={{background: 'rgba(50, 50, 255, 0.4)'}}>Uncommon</span>
+        }
+        { data.jlpt.map((level: string, index: number) => {
+          const levelNum = level.replace('jlpt-n', '');
+          let colour = 'rgba(255, 50, 50, 0.4)';
+
+          switch(levelNum) {
+            case '1':
+              colour = 'rgba(255, 50, 50, 0.4)';
+              break;
+            case '2':
+              colour = 'rgba(255, 100, 50, 0.4)';
+              break;
+            case '3':
+              colour = 'rgba(255, 255, 50, 0.4)';
+              break;
+            case '4':
+              colour = 'rgba(50, 255, 50, 0.4)';
+              break;
+            default:
+              colour = 'rgba(50, 50, 255, 0.4)';
+          }
+
+          return (
+            <span key={index} className={styles.jlpt} style={{background: colour}}>
+              JLPT N{levelNum}
+            </span>
+          )
+        })}
+      </div>
+
+      { data.japanese.map((japanese: any, index: number) => (
+        <div key={index} className={styles.entry}>
+          { (japanese.word) ?
+            <>
+              {japanese.reading && <div className={styles.reading}>{japanese.reading}</div>}
+              <div className={styles.word}>{japanese.word}</div>
+            </> :
+            <div className={styles.word}>{japanese.reading}</div>
+          }
+        </div>
+      ))}
+    </div>
   );
 };
