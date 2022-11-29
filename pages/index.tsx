@@ -6,7 +6,6 @@ import { FastAverageColor } from 'fast-average-color';
 import { FaGithub, FaGithubSquare, FaLinkedin, FaHistory } from 'react-icons/fa';
 
 import SearchResult from './components/SearchResult';
-import DefaultMain from './components/DefaultMain';
 
 import styles from '../styles/Home.module.scss';
 
@@ -425,6 +424,42 @@ const Footer = () => {
 };
 
 
+/* ----------------------------- DEFAULT RESULTS ---------------------------- */
+/**
+ * Creates the default results panel.
+ * 
+ * The default results page is shown when the user first visits the page,
+ * or when they search using an empty query.
+ */
+const DefaultResults = () => {
+  return (
+    <article className={styles.defaultResults}>
+      <div className={styles.defaultResultsHeader}>
+        <Image src="/favicon.ico" alt="Logo" width={60} height={60} />
+        <span className={styles.defaultResultsTitle}>About Simple Jisho</span>
+      </div>
+
+      <p className={styles.defaultResultsParagraph}>
+        Simple Jisho is a simplified version of the Jisho Japanese-English dictionary.
+        <br /><br />
+        Using the Jisho API, it lets you find words, kanji, and example sentences with ease.
+        <br /><br />
+        Just enter any Japanese, English, or Romaji text into the search box and allow Simple Jisho
+        to handle the rest!
+      </p>
+
+      <p className={styles.defaultResultsParagraph}>
+        シンプルジショはJisho.orgの簡単なバージョンです。
+        <br /><br />
+        Jisho APIを使用して、単語、漢字、例文を簡単に見つけることができます。
+        <br /><br />
+        検索ボックスに日本語、英語、ローマ字のテキストを入力して、シンプルジショに残りの処理を任せてください！
+      </p>
+    </article>
+  );
+};
+
+
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
@@ -523,14 +558,12 @@ export default function Home() {
           <Background />
           <Header />
           <main className={styles.main}>
-            <div className={styles.results}>
               { (results.length > 0 && searchStatus == Status.SUCCESS) ? 
                 results.map((result, index) => {
                   return (
                     <SearchResult key={index} resultData={result} />
                   )
-                }) : <DefaultMain /> }
-            </div>
+                }) : <DefaultResults /> }
           </main>
           <Footer />
         </ ResultsContext.Provider>
