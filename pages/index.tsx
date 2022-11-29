@@ -182,6 +182,10 @@ const SearchBar = () => {
    * @param addHistory Whether to add the search to the browser history.
    */
   const search = async (query: string, addHistory: boolean = true) => {
+    // Check if query was the same as the previous one.
+    if (query === searchContext.query)
+      return;
+
     // Check if query is not empty.
     if (query) {
       cancelQuery();
@@ -198,7 +202,12 @@ const SearchBar = () => {
         console.error(error);
         searchContext.setStatus(Status.ERROR);
       });
-    };
+    } else {
+      resultsContext.setKeyword("");
+      resultsContext.setResults([]);
+      searchContext.setStatus(Status.IDLE);
+      (addHistory) && window.history.pushState(null, document.title, "/");
+    }
 
     searchContext.setQuery(query);
   };
