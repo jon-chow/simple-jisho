@@ -10,10 +10,12 @@ import styles from '../../styles/SearchResult.module.scss';
  */
 export default function SearchResult(props: any) {
   const data = props.resultData;
+  const mainForm = data.japanese[0];
   console.log(props.resultData);
   
   return (
     <div className={styles.resultPanel}>
+      {/* JLPT / Rarity Tags */}
       <div className={styles.tags}>
         { (data.is_common) ? 
           <span className={styles.common} style={{background: 'rgba(50, 255, 50, 0.4)'}}>Common</span> :
@@ -48,17 +50,77 @@ export default function SearchResult(props: any) {
         })}
       </div>
 
-      { data.japanese.map((japanese: any, index: number) => (
-        <div key={index} className={styles.entry}>
-          { (japanese.word) ?
-            <>
-              {japanese.reading && <div className={styles.reading}>{japanese.reading}</div>}
-              <div className={styles.word}>{japanese.word}</div>
-            </> :
-            <div className={styles.word}>{japanese.reading}</div>
-          }
+      {/* Main Form */}
+      <div className={styles.entry}>
+        { (mainForm.word) ?
+          <>
+            {mainForm.reading && <div className={styles.reading}>{mainForm.reading}</div>}
+            <div className={styles.word}>{mainForm.word}</div>
+          </> :
+          <div className={styles.word}>{mainForm.reading}</div>
+        }
+      </div>
+
+      {/* Senses */}
+      <div className={styles.senses}>
+        {data.senses.map((sense: any, index: number) => {
+          return (
+            <div key={index} className={styles.sense}>
+              {sense.parts_of_speech.map((pos: string, index: number) => {
+                return (
+                  <span key={index} className={styles.pos}>
+                    {pos}
+                  </span>
+                )
+              })}
+              
+              {sense.english_definitions.map((definition: string, index: number) => {
+                return (
+                  <span key={index} className={styles.definition}>
+                    {definition}
+                  </span>
+                )
+              })}
+            </div>
+          )
+        })}
+      </div>
+      
+      {/* Other Forms */}
+      { (data.japanese.length > 1) && (
+        <div className={styles.otherForms}>
+          <br />
+          Other Forms:
+
+          <div className={styles.forms}>
+            { data.japanese.map((japanese: any, index: number) => {
+                if (index == 0) return;
+
+                return (
+                  <span key={index} className={styles.form}>
+                      { (japanese.word) ?
+                        <>
+                          <span className={styles.formWord}>
+                            {japanese.word}
+                            { (japanese.reading) && 
+                              <span>
+                                {`【${japanese.reading}】`}
+                              </span>
+                            }
+                          </span>
+                        </> :
+                        <span className={styles.formWord}>
+                          {`${japanese.reading}`}
+                        </span>
+                      }
+                      <span>{(index != data.japanese.length - 1) ? ' 、' : ''}</span>
+                  </span>
+                )
+              })
+            }
+          </div>
         </div>
-      ))}
+      )}
     </div>
   );
 };
