@@ -1,3 +1,5 @@
+@use "variables" as *;
+
 .background {
   position: fixed;
   left: 0;
@@ -134,9 +136,9 @@
     align-items: center;
     
     backdrop-filter: blur(10px);
-    padding: 2rem 0 2rem 0;
+    padding: 1rem 0 2rem 0;
     min-height: 20vh;
-    max-width: 80vw;
+    @extend .panelSize;
 
     border-radius: 20px;
     border-left: 0.15rem solid #fff;

@@ -1,0 +1,14 @@
+// Adjust panel width based on screen size
+.panelSize {
+  @media (max-width: 1199px) {
+    width: 90vw;
+  }
+
+  @media (max-width: 1599px) {
+    width: 75vw;
+  }
+
+  @media (min-width: 1600px) {
+    width: 60vw;
+  }
+}
