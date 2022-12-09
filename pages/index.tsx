@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { FastAverageColor } from 'fast-average-color';
 import { FaGithub, FaGithubSquare, FaLinkedin, FaHistory } from 'react-icons/fa';
 
-import SearchResult from './components/SearchResult';
+import SearchResult from '../components/SearchResult';
 
 import styles from '../styles/Home.module.scss';
 
