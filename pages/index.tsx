@@ -155,7 +155,7 @@ const getQueryVariable = (variable: string) => {
 
   for (let i = 0; i < vars.length; i++) {
     const pair = vars[i].split('=');
-    if (decodeURIComponent(pair[0]) == variable)
+    if (decodeURIComponent(pair[0]) === variable)
       return decodeURIComponent(pair[1]);
   };
 };
@@ -558,7 +558,7 @@ export default function Home() {
           <Background />
           <Header />
           <main className={styles.main}>
-              { (results.length > 0 && searchStatus == Status.SUCCESS) ? 
+              { ((results.length > 0 && searchStatus === Status.SUCCESS)) ? 
                 results.map((result, index) => {
                   return (
                     <SearchResult key={index} resultData={result} />

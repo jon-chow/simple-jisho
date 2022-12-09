@@ -94,7 +94,7 @@ export default function SearchResult(props: any) {
 
           <div className={styles.forms}>
             { data.japanese.map((japanese: any, index: number) => {
-                if (index == 0) return;
+                if (index === 0) return;
 
                 return (
                   <span key={index} className={styles.form}>
