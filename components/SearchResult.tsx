@@ -1,27 +1,27 @@
 import styles from '../styles/SearchResult.module.scss';
 
+
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
 /**
- * Exports the SearchResult component.
+ * Creates the SearchResult component.
  * 
  * The SearchResult component contains data on a search.
  */
-export default function SearchResult(props: any) {
+const SearchResult = (props: any) => {
   const data = props.resultData;
   const mainForm = data.japanese[0];
-  console.log(props.resultData);
   
   return (
-    <article className={styles.resultPanel}>
+    <article className={styles.ResultPanel}>
       {/* Jisho Search */}
-      <section className={styles.jishoSearch}>
+      <section className={styles.JishoSearch}>
         {/* JLPT / Rarity Tags */}
-        <div className={styles.tags}>
+        <div className={styles.Tags}>
           { (data.is_common) ? 
-            <span className={styles.common} style={{background: 'rgba(50, 255, 50, 0.4)'}}>Common</span> :
-            <span className={styles.common} style={{background: 'rgba(50, 50, 255, 0.4)'}}>Uncommon</span>
+            <span className={styles.Common} style={{background: 'rgba(50, 255, 50, 0.4)'}}>Common</span> :
+            <span className={styles.Common} style={{background: 'rgba(50, 50, 255, 0.4)'}}>Uncommon</span>
           }
           { data.jlpt.map((level: string, index: number) => {
             const levelNum = level.replace('jlpt-n', '');
@@ -45,7 +45,7 @@ export default function SearchResult(props: any) {
             }
 
             return (
-              <span key={index} className={styles.jlpt} style={{background: colour}}>
+              <span key={index} className={styles.Jlpt} style={{background: colour}}>
                 JLPT N{levelNum}
               </span>
             )
@@ -53,24 +53,24 @@ export default function SearchResult(props: any) {
         </div>
 
         {/* Main Form */}
-        <div className={styles.entry}>
+        <div className={styles.Entry}>
           { (mainForm.word) ?
             <>
-              {mainForm.reading && <div className={styles.reading}>{mainForm.reading}</div>}
-              <div className={styles.word}>{mainForm.word}</div>
+              {mainForm.reading && <div className={styles.Reading}>{mainForm.reading}</div>}
+              <div className={styles.Word}>{mainForm.word}</div>
             </> :
-            <div className={styles.word}>{mainForm.reading}</div>
+            <div className={styles.Word}>{mainForm.reading}</div>
           }
         </div>
 
         {/* Senses */}
-        <div className={styles.senses}>
+        <div className={styles.Senses}>
           {data.senses.map((sense: any, index: number) => {
             return (
-              <div key={index} className={styles.sense}>
+              <div key={index} className={styles.Sense}>
                 {sense.parts_of_speech.map((pos: string, index: number) => {
                   return (
-                    <span key={index} className={styles.pos}>
+                    <span key={index}>
                       {pos}
                     </span>
                   )
@@ -78,7 +78,7 @@ export default function SearchResult(props: any) {
                 
                 {sense.english_definitions.map((definition: string, index: number) => {
                   return (
-                    <span key={index} className={styles.definition}>
+                    <span key={index} className={styles.Definition}>
                       {definition}
                     </span>
                   )
@@ -90,19 +90,19 @@ export default function SearchResult(props: any) {
         
         {/* Other Forms */}
         { (data.japanese.length > 1) && (
-          <div className={styles.otherForms}>
+          <div className={styles.OtherForms}>
             <br />
             Other Forms:
 
-            <div className={styles.forms}>
+            <div className={styles.Forms}>
               { data.japanese.map((japanese: any, index: number) => {
                   if (index === 0) return;
 
                   return (
-                    <span key={index} className={styles.form}>
+                    <span key={index} className={styles.Form}>
                         { (japanese.word) ?
                           <>
-                            <span className={styles.formWord}>
+                            <span className={styles.FormWord}>
                               {japanese.word}
                               { (japanese.reading) && 
                                 <span>
@@ -111,7 +111,7 @@ export default function SearchResult(props: any) {
                               }
                             </span>
                           </> :
-                          <span className={styles.formWord}>
+                          <span className={styles.FormWord}>
                             {`${japanese.reading}`}
                           </span>
                         }
@@ -125,10 +125,8 @@ export default function SearchResult(props: any) {
         )}
       </section>
 
-      
-
       {/* Jisho Link */}
-      <section className={styles.jishoLink}>
+      <section className={styles.JishoLink}>
         <a href={`https://jisho.org/search/${data.slug}`} target="_blank" rel="noreferrer">
           View on Jisho.org ≫
         </a>
@@ -136,3 +134,5 @@ export default function SearchResult(props: any) {
     </article>
   );
 };
+
+export default SearchResult;

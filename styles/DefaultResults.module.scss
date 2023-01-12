@@ -1,0 +1,40 @@
+@use "variables" as *;
+
+.DefaultResults {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  
+  backdrop-filter: blur(10px);
+  padding: 2rem 10vw;
+  min-height: 20vh;
+  width: 100%;
+  @extend .panelSize;
+
+  // border-radius: 20px;
+  // border-left: 0.15rem solid #fff;
+  // border-right: 0.15rem solid #fff;
+
+  .DefaultResultsHeader {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    padding: 0 1rem;
+    margin-bottom: 0.5rem;
+    background: rgba(#fff, 0.1);
+    border-radius: 1rem;
+
+    .DefaultResultsTitle {
+      margin: 0 1rem;
+      font-size: xx-large;
+      font-weight: bold;
+    }
+  }
+
+  .DefaultResultsParagraph {
+    font-size: large;
+    font-weight: 500;
+    margin: 0.5rem 15vw;
+  }
+}

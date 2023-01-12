@@ -1,228 +1,20 @@
 @use "variables" as *;
 
-.background {
-  position: fixed;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  pointer-events: none;
-
-  .overlay {
-    z-index: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6));
-    backdrop-filter: blur(3px);
-  }
-
-  .backgroundImage {
-    z-index: -1;
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-  }
-}
-
-.header {
-  display: flex;
-  flex-direction: column;
-  padding: 1rem 0;
-  border-bottom: 1px solid #eaeaea;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-
-  font-family: 'Roboto', sans-serif;
-
-  .title {
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    font-size: 2rem;
-    padding: 0.25rem 1rem;
-    background: rgba(#fff, 0.1);
-    border-radius: 1rem;
-    font-weight: bold;
-
-    .logo {
-      width: 2.5rem;
-      height: 2.5rem;
-      margin-right: 0.5rem;
-
-      img {
-        width: 100%;
-        height: 100%;
-        transition: filter 0.2s ease;
-
-        &:hover {
-          transition: filter 0.2s ease;
-        }
-      }
-    }
-  }
-
-  .subtitle {
-    margin-top: 1rem;
-    font-size: 1rem;
-    font-weight: lighter;
-  }
-
-  .search {
-    padding-top: 1rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-
-    .searchInput {
-      padding: 0.5rem;
-      width: 20vw;
-      min-width: 10rem;
-      border: hidden;
-      border-radius: 5px;
-      font-size: 1rem;
-    }
-
-    .searchHistoryButton,
-    .searchButton,
-    .clearButton {
-      padding: 0.5rem;
-      margin-left: 0.5rem;
-      border: hidden;
-      border-radius: 5px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.1s ease;
-      background-color: rgba(#777, 0.8);
-
-      &:hover {
-        background-color: rgba(#777, 1);
-        transition: background-color 0.1s ease;
-      };
-    }
-
-    .searchHistoryButton {
-      text-align: center;
-      line-height: 0;
-      font-size: 1.5rem;
-    }
-  }
-
-  .statusLabel {
-    margin-top: 1rem;
-    font-size: 1rem;
-    font-weight: lighter;
-  }
-}
-
-.container {
+.Container {
   padding: 0 2rem;
 }
 
-.main {
+.Main {
   min-height: 30vh;
-  padding: 2rem 0;
+  padding: 1rem 0;
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  .defaultResults {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-items: center;
-    
-    backdrop-filter: blur(10px);
-    padding: 1rem 0 2rem 0;
-    min-height: 20vh;
-    @extend .panelSize;
-
-    border-radius: 20px;
-    border-left: 0.15rem solid #fff;
-    border-right: 0.15rem solid #fff;
-
-    .defaultResultsHeader {
-      justify-content: center;
-      align-items: center;
-      display: flex;
-      padding: 0 1rem;
-      margin-bottom: 0.5rem;
-      background: rgba(#fff, 0.1);
-      border-radius: 1rem;
-
-      .defaultResultsTitle {
-        margin: 0 1rem;
-        font-size: xx-large;
-        font-weight: bold;
-      }
-    }
-
-    .defaultResultsParagraph {
-      font-size: large;
-      font-weight: 500;
-      margin: 0.5rem 15vw;
-    }
-  }
 }
 
-.footer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 2rem 0;
-  border-top: 1px solid #eaeaea;
-
-  div {
-    margin: 0.25rem 0;
-  }
-
-  .repository {
-    display: flex;
-    margin: 0.5rem 0;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-
-    .repositoryButton {
-      font-size: 2rem;
-      cursor: pointer;
-    }
-  }
-
-  .socials {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-
-    .socialMediaButton {
-      margin: 0 0.5rem;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-  }
-
-  .repositoryButton,
-  .socialMediaButton {
-    transition: color 0.25s ease;
-
-    &:hover {
-      transition: color 0.25s ease;
-    }
-  }
-}
-
-.header,
-.footer {
-  backdrop-filter: blur(5px);
-}
-
-.underlinedLink {
+.UnderlinedLink {
   text-decoration: underline;
   text-underline-offset: 0.2rem;
   transition: text-decoration-color 0.2s ease;
@@ -232,22 +24,11 @@
   }
 }
 
-.code {
+.Code {
   background: #fafafa;
   border-radius: 5px;
   padding: 0.75rem;
   font-size: 1.1rem;
   font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
     Bitstream Vera Sans Mono, Courier New, monospace;
-}
-
-@media (prefers-color-scheme: dark) {
-  .header,
-  .footer {
-    border-color: #777;
-  }
-
-  .code {
-    background: #222;
-  }
 }

@@ -1,6 +1,6 @@
 @use "variables" as *;
 
-.resultPanel {
+.ResultPanel {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr;
@@ -11,14 +11,16 @@
   background: rgba(#000, 0.1);
   backdrop-filter: blur(10px);
   margin: 1rem 0;
-  padding: 1rem;
+  padding: 2rem 15vw;
+  min-height: 20vh;
+  width: 100%;
   @extend .panelSize;
 
   border-radius: 20px;
-  border-left: 0.15rem solid #fff;
-  border-right: 0.15rem solid #fff;
+  border-left: 1px solid #777;
+  border-right: 1px solid #777;
 
-  .entry {
+  .Entry {
     grid-area: entry;
     display: flex;
     flex-direction: column;
@@ -28,7 +30,7 @@
     width: fit-content;
     align-items: center;
 
-    .reading {
+    .Reading {
       margin-top: 0.5rem;
       background: rgba(#000, 0.1);
       border-radius: 10px;
@@ -37,15 +39,15 @@
       font-weight: lighter;
     }
 
-    .word {
+    .Word {
       padding: 0.1rem 0.25rem;
       font-size: 2rem;
       font-weight: bold;
     }
   }
 
-  .senses {
-    .sense {
+  .Senses {
+    .Sense {
       grid-area: sense;
       display: flex;
       flex-direction: column;
@@ -55,8 +57,8 @@
       margin-top: 1rem;
       width: fit-content;
 
-      .definition,
-      .example {
+      .Definition,
+      .Example {
         margin-top: 0.5rem;
         background: rgba(#000, 0.1);
         border-radius: 10px;
@@ -68,18 +70,18 @@
     }
   }
 
-  .forms {
+  .Forms {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     flex: 1;
 
-    .form {
+    .Form {
       overflow: auto;
       margin-top: 1rem;
       width: fit-content;
 
-      .formWord {
+      .FormWord {
         margin-top: 0.5rem;
         background: rgba(#000, 0.1);
         padding: 0.1rem 0.25rem;
@@ -90,23 +92,23 @@
     }
   }
 
-  .tags {
+  .Tags {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
 
-    .common,
-    .jlpt {
+    .Common,
+    .Jlpt {
       padding: 0.1rem 0.5rem;
       border-radius: 10px;
     }
 
-    .jlpt {
+    .Jlpt {
       margin-left: 0.5rem;
     }
   }
 
-  .jishoLink {
+  .JishoLink {
     grid-area: jishoLink;
     color: rgba(#fff, 0.6);
     padding: 0.1rem 0.5rem;
