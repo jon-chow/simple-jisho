@@ -45,6 +45,12 @@ export const SearchContext = createContext({
   setStatus: (status: Status) => {},
 });
 
+// Context for search history.
+export const SearchHistoryContext = createContext({
+  modalToggle: false,
+  setModalToggle: (modalToggle: boolean) => {},
+});
+
 // Context for the result of a search.
 export const ResultsContext = createContext({
   keyword: "",

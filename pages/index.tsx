@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { FastAverageColor } from 'fast-average-color';
 
-import { Status, ResultsContext, SearchContext, BackgroundData } from '../configs/config';
+import { Status, ResultsContext, SearchContext, SearchHistoryContext, BackgroundData } from '../configs/config';
 
 import MetaData from '../components/MetaData';
 import Background from '../components/Background';
@@ -11,6 +11,8 @@ import SearchResult from '../components/SearchResult';
 import Footer from '../components/Footer';
 
 import styles from '../styles/Home.module.scss';
+import styles2 from '../styles/Footer.module.scss';
+import SearchHistoryModal from '../components/SearchHistoryModal';
 
 
 /* -------------------------------------------------------------------------- */
@@ -26,9 +28,9 @@ const Home = () => {
   const [searchStatus, setSearchStatus] = useState<Status>(Status.IDLE);
 
   const [resultKeyword, setResultKeyword] = useState("");
-  const [results, setResults] = useState<any[]>([ {} ]);
+  const [results, setResults] = useState<any[]>([{}]);
 
-  // const [history, setHistory] = useState<SearchHistory[]>([  ]);
+  const [modalToggle, setModalToggle] = useState(false);
 
   // Changes the colour of buttons and text based on the background image.
   const hoverHandler = (button: HTMLElement, color: string) => {
@@ -52,11 +54,11 @@ const Home = () => {
       let colorString = color.hex || "#fff";
       
       const smButtons =
-        Array.from(document.getElementsByClassName(styles.socialMediaButton) as HTMLCollectionOf<HTMLElement>);
+        Array.from(document.getElementsByClassName(styles2.SocialMediaButton) as HTMLCollectionOf<HTMLElement>);
       const repoButton =
-        document.getElementsByClassName(styles.repositoryButton)[0] as HTMLElement;
+        document.getElementsByClassName(styles2.RepositoryButton)[0] as HTMLElement;
       const underlinedLinks =
-        Array.from(document.getElementsByClassName(styles.underlinedLink) as HTMLCollectionOf<HTMLElement>);
+        Array.from(document.getElementsByClassName(styles.UnderlinedLink) as HTMLCollectionOf<HTMLElement>);
       
       smButtons.forEach(button => { hoverHandler(button, colorString); });
       hoverHandler(repoButton, colorString);
@@ -67,32 +69,39 @@ const Home = () => {
   }, []);
 
   return (
-    <div className={styles.Container}>
-      <SearchContext.Provider value={{
-        query: currentSearch, setQuery: setCurrentSearch,
-        status: searchStatus, setStatus: setSearchStatus
+    <SearchContext.Provider value={{
+      query: currentSearch, setQuery: setCurrentSearch,
+      status: searchStatus, setStatus: setSearchStatus
+    }}>
+      <ResultsContext.Provider value={{
+        results: results, setResults: setResults,
+        keyword: resultKeyword, setKeyword: setResultKeyword
       }}>
-        <ResultsContext.Provider value={{
-          results: results, setResults: setResults,
-          keyword: resultKeyword, setKeyword: setResultKeyword
+        <SearchHistoryContext.Provider value={{
+          modalToggle: modalToggle, setModalToggle: setModalToggle
         }}>
-          <MetaData />
-          <Background />
-          <Header />
+          <div className={styles.Container}>
+            <MetaData />
+            <Background />
+            <Header />
 
-          <main className={styles.Main}>
-            { ((results.length > 0 && searchStatus === Status.SUCCESS)) ? 
-              results.map((result, index) => {
-                return (
-                  <SearchResult key={index} resultData={result} />
-                )
-              }) : <DefaultResults /> }
-          </main>
+            {/* Search History Modal */}
+            { modalToggle && <SearchHistoryModal /> }
 
-          <Footer />
-        </ResultsContext.Provider>
-      </SearchContext.Provider>
-    </div>
+            <main className={styles.Main}>
+              { ((results.length > 0 && searchStatus === Status.SUCCESS)) ? 
+                results.map((result, index) => {
+                  return (
+                    <SearchResult key={index} resultData={result} />
+                  )
+                }) : <DefaultResults /> }
+            </main>
+
+            <Footer />
+          </div>
+        </SearchHistoryContext.Provider>
+      </ResultsContext.Provider>
+    </SearchContext.Provider>
   );
 };
 
