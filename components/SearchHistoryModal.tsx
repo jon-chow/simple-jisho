@@ -1,9 +1,10 @@
 import { useContext } from 'react';
 import { BsX, BsFillTrashFill, BsSearch } from 'react-icons/bs';
 
-import { SearchHistoryContext } from '../configs/config';
+import { Status, SearchHistoryContext, ResultsContext, SearchContext } from '../configs/config';
 
 import styles from '../styles/SearchHistoryModal.module.scss';
+import styles2 from '../styles/SearchBar.module.scss';
 
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
@@ -14,7 +15,9 @@ import styles from '../styles/SearchHistoryModal.module.scss';
  * The search history modal displays a list of past search terms.
  */
 const SearchHistoryModal = () => {
+  const searchContext = useContext(SearchContext);
   const searchHistoryContext = useContext(SearchHistoryContext);
+  const resultsContext = useContext(ResultsContext);
 
   // Toggle the search history modal.
   const toggleSearchHistoryModal = () => {
@@ -40,18 +43,43 @@ const SearchHistoryModal = () => {
             JSON.parse(localStorage.getItem("searchHistory") as string).map((searchItem : SearchHistory, index : number) => (
             <div key={index} className={styles.HistoryItem}>
               <p>&quot;{searchItem.keyword}&quot;</p>
-              <p>{searchItem.date.toLocaleString()}</p>
+              <p>{(new Date(searchItem.date)).toLocaleString()}</p>
 
               <div className={styles.HistoryItemControls}>
                 <button
                   title="Search History Item"
-                  // onClick={handleSearchHistoryItem(searchItem)}
+                  onClick={() => {
+                    searchContext.setQuery(searchItem.keyword);
+                    searchContext.setStatus(Status.SUCCESS);
+                    resultsContext.setKeyword(searchItem.keyword);
+                    resultsContext.setResults(searchItem.results);
+                    window.history.pushState(null, "", "?q=" + searchItem.keyword);
+
+                    const input = document.querySelector(`.${styles2.SearchInput}`) as HTMLInputElement;
+                    input.value = searchItem.keyword;
+
+                    toggleSearchHistoryModal();
+                  }}
                 >
                   <BsSearch />
                 </button>
                 <button
                   title="Delete History Item"
-                  // onClick={handleDeleteHistoryItem(searchItem)}
+                  onClick={(e) => {
+                    const searchHistory = localStorage.getItem("searchHistory");
+                    
+                    if (searchHistory) {
+                      const history = JSON.parse(searchHistory) as SearchHistory[];
+                      const index = history.findIndex((item) => item.keyword === searchItem.keyword);
+
+                      if (index !== -1) {
+                        history.splice(index, 1);
+                      };
+
+                      localStorage.setItem("searchHistory", JSON.stringify(history));
+                      e.currentTarget.parentElement?.parentElement?.remove();
+                    };
+                  }}
                 >
                   <BsFillTrashFill />
                 </button>
@@ -62,7 +90,16 @@ const SearchHistoryModal = () => {
 
         <button
           className={styles.ModalClearHistoryButton}
-          // onClick={handleClearHistory}
+          onClick={() => {
+            const historyItems = document.querySelectorAll(`.${styles.HistoryItem}`);
+
+            if (confirm("Are you sure you want to clear your search history? " +
+              `(${historyItems.length} search item${historyItems.length !== 1 ? "s" : ""})`))
+            {
+              localStorage.setItem("searchHistory", JSON.stringify([]));
+              historyItems.forEach((item) => item.remove());
+            };
+          }}
         >
           Clear History
         </button>

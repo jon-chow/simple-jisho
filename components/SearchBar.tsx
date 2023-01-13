@@ -65,6 +65,8 @@ const getQueryVariable = (variable: string) => {
 };
 
 
+const SEARCH_HISTORY_MAX_LENGTH = 10;
+
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
@@ -86,12 +88,24 @@ const SearchBar = () => {
 
   // Updates the search history.
   const updateSearchHistory = (query: SearchHistory) => {
+    if (localStorage.getItem("searchHistory") === null)
+      localStorage.setItem("searchHistory", JSON.stringify([]));
+
     const searchHistory = localStorage.getItem("searchHistory");
 
     if (searchHistory) {
       const history = JSON.parse(searchHistory) as SearchHistory[];
       const index = history.findIndex((item) => item.keyword === query.keyword);
-      (index !== -1) ? history[index].date = query.date : history.push(query);
+
+      if (index !== -1) {
+        history.splice(index, 1);
+      };
+      
+      if (history.length >= SEARCH_HISTORY_MAX_LENGTH) {
+        history.shift();
+      };
+      
+      history.push(query);
       localStorage.setItem("searchHistory", JSON.stringify(history));
     };
   };
@@ -152,6 +166,12 @@ const SearchBar = () => {
     searchContext.setQuery(query);
   };
 
+  // Creates the search history in local storage if it doesn't exist.
+  useEffect(() => {
+    if (localStorage.getItem("searchHistory") === null)
+      localStorage.setItem("searchHistory", JSON.stringify([]));
+  }, []);
+
   // Automatically searches for the query parameter in the URL.
   useEffect(() => {
     const handlePopState = () => {
@@ -163,7 +183,6 @@ const SearchBar = () => {
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
-
 
   return (
     <>
