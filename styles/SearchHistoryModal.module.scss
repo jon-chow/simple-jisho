@@ -1,0 +1,159 @@
+.SearchHistoryModal {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+
+  .ModalContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    max-width: 50vw;
+    max-height: 70vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 1rem;
+    padding: 1rem;
+    gap: 1rem;
+
+    .ModalHeader {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+
+      .ModalTitle {
+        text-align: center;
+        margin: 0;
+        margin-top: -1rem;
+        font-weight: 600;
+        color: #fff;
+      }
+
+      .ModalCloseButton {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-self: flex-end;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+
+        svg {
+          width: 3rem;
+          height: 3rem;
+          fill: #fff;
+          transition: fill 0.25s ease-in-out;
+        }
+
+        &:hover {
+          svg {
+            fill: #f88;
+          }
+        }
+      }
+    }
+
+    .HistoryItems {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-y: auto;
+      background: rgba(#000, 0.1);
+      border-radius: 1rem;
+      padding: 1rem;
+      width: 80%;
+      height: 100%;
+      gap: 0.5rem;
+
+      .HistoryItem {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        height: 3rem;
+        padding: 0.5rem;
+        padding-left: 1rem;
+        background-color: rgba(#fff, 0.1);
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: background-color 0.25s ease-in-out;
+
+        &:hover {
+          background-color: rgba(#fff, 0.4);
+        }
+
+        .HistoryItemText {
+          font-size: 1.5rem;
+          color: #fff;
+        }
+
+        .HistoryItemControls {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 0.5rem;
+
+          button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+
+            svg {
+              width: 1.5rem;
+              height: 1.5rem;
+              fill: #fff;
+              transition: fill 0.25s ease-in-out;
+            }
+
+            &:nth-child(1) {
+              &:hover {
+                svg {
+                  fill: #8f8;
+                }
+              }
+            }
+
+            &:nth-child(2) {
+              &:hover {
+                svg {
+                  fill: #f88;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .ModalClearHistoryButton {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 3rem;
+      background-color: rgba(#fff, 0.1);
+      border-radius: 0.5rem;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.25s ease-in-out;
+
+      &:hover {
+        background-color: rgba(#f88, 0.4);
+      }
+    }
+  }
+}

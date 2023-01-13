@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
-import { FaSearch, FaTrashAlt } from 'react-icons/fa';
+import { FaSearch, FaTrashAlt, FaHistory } from 'react-icons/fa';
 
-import { Status, SearchContext, ResultsContext } from '../configs/config';
+import { Status, SearchContext, SearchHistoryContext, ResultsContext } from '../configs/config';
 
 import styles from '../styles/SearchBar.module.scss';
 
@@ -76,11 +76,37 @@ const getQueryVariable = (variable: string) => {
 const SearchBar = () => {
   const searchContext = useContext(SearchContext);
   const resultsContext = useContext(ResultsContext);
+  const searchHistoryContext = useContext(SearchHistoryContext);
   const [querying, setQuerying] = useState<PromiseWithCancel<any> | undefined>(undefined);
 
+  // Toggle the search history modal.
+  const toggleSearchHistoryModal = () => {
+    searchHistoryContext.setModalToggle(!searchHistoryContext.modalToggle);
+  };
+
+  // Updates the search history.
+  const updateSearchHistory = (query: SearchHistory) => {
+    const searchHistory = localStorage.getItem("searchHistory");
+
+    if (searchHistory) {
+      const history = JSON.parse(searchHistory) as SearchHistory[];
+      const index = history.findIndex((item) => item.keyword === query.keyword);
+      (index !== -1) ? history[index].date = query.date : history.push(query);
+      localStorage.setItem("searchHistory", JSON.stringify(history));
+    };
+  };
+
+  // Cancels the current search.
   const cancelQuery = () => {
     querying?.cancel();
     searchContext.setStatus(Status.CANCELLED);
+  };
+
+  // Handles the search bar submission button.
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    const query = event.target.search.value;
+    search(query);
   };
 
   /**
@@ -90,8 +116,7 @@ const SearchBar = () => {
    */
   const search = async (query: string, addHistory: boolean = true) => {
     // Check if query was the same as the previous one.
-    if (query === searchContext.query)
-      return;
+    if (query === searchContext.query) return;
 
     // Check if query is not empty.
     if (query) {
@@ -104,6 +129,14 @@ const SearchBar = () => {
         resultsContext.setKeyword(query);
         resultsContext.setResults(data);
         searchContext.setStatus(Status.SUCCESS);
+
+        // Add search to history.
+        const historyItem : SearchHistory = {
+          keyword: query,
+          results: data,
+          date: new Date(),
+        };
+        updateSearchHistory(historyItem);
         (addHistory) && window.history.pushState(null, "", (query) ? "?q=" + query : "");
       }).catch((error) => {
         console.error(error);
@@ -119,51 +152,45 @@ const SearchBar = () => {
     searchContext.setQuery(query);
   };
 
-  // Handles the search bar submission button.
-  const handleSubmit = (event: any) => {
-    event.preventDefault();
-    const query = event.target.search.value;
-    search(query);
-  };
-
   // Automatically searches for the query parameter in the URL.
   useEffect(() => {
     const handlePopState = () => {
       const keyword = getQueryVariable("q");
       (keyword) && search(keyword, false);
     };
-
+    
     handlePopState();
-
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
 
   return (
-    <form className={styles.Search} onSubmit={(e) => handleSubmit(e)}>
-      {/* Search Input */}
-      <input
-        className={styles.SearchInput}
-        type="text"
-        name="search"
-        id="search"
-        placeholder="English, 日本語, Romaji..."
-      />
+    <>
+      <form className={styles.Search} onSubmit={(e) => handleSubmit(e)}>
+        {/* Search Input */}
+        <input
+          className={styles.SearchInput}
+          type="text"
+          name="search"
+          id="search"
+          placeholder="English, 日本語, Romaji..."
+        />
 
-      {/* Control Buttons */}
-      <div className={styles.SearchControls}>
-        <button type="submit" title="Search">
-          <FaSearch />
-        </button>
-        <button type="reset" title="Clear">
-          <FaTrashAlt />
-        </button>
-        {/* <button type="button" title="History">
-          <FaHistory />
-        </button> */}
-      </div>
-    </form>
+        {/* Control Buttons */}
+        <div className={styles.SearchControls}>
+          <button type="submit" title="Search">
+            <FaSearch />
+          </button>
+          <button type="reset" title="Clear">
+            <FaTrashAlt />
+          </button>
+          <button type="button" title="History" onClick={toggleSearchHistoryModal}>
+            <FaHistory />
+          </button>
+        </div>
+      </form>
+    </>
   );
 };
 
