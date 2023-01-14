@@ -1,10 +1,11 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { BsX, BsFillTrashFill, BsSearch } from 'react-icons/bs';
 
 import { Status, SearchHistoryContext, ResultsContext, SearchContext } from '../configs/config';
 
 import styles from '../styles/SearchHistoryModal.module.scss';
 import styles2 from '../styles/SearchBar.module.scss';
+
 
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
@@ -23,6 +24,20 @@ const SearchHistoryModal = () => {
   const toggleSearchHistoryModal = () => {
     searchHistoryContext.setModalToggle(!searchHistoryContext.modalToggle);
   };
+
+  // Close the search history modal when the user clicks outside of it.
+  useEffect(() => {
+    const modal = document.querySelector(`.${styles.ModalContainer}`) as HTMLDivElement;
+
+    const handleClickOutside = (e : MouseEvent) => {
+      if (modal && !modal.contains(e.target as Node)) {
+        toggleSearchHistoryModal();
+      };
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <div className={styles.SearchHistoryModal}>
@@ -94,8 +109,7 @@ const SearchHistoryModal = () => {
             const historyItems = document.querySelectorAll(`.${styles.HistoryItem}`);
 
             if (confirm("Are you sure you want to clear your search history? " +
-              `(${historyItems.length} search item${historyItems.length !== 1 ? "s" : ""})`))
-            {
+              `(${historyItems.length} search item${historyItems.length !== 1 ? "s" : ""})`)) {
               localStorage.setItem("searchHistory", JSON.stringify([]));
               historyItems.forEach((item) => item.remove());
             };

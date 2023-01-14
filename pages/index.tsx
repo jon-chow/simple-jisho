@@ -24,10 +24,10 @@ import SearchHistoryModal from '../components/SearchHistoryModal';
  * The Home component is basically the entire page.
  */
 const Home = () => {
-  const [currentSearch, setCurrentSearch] = useState("");
-  const [searchStatus, setSearchStatus] = useState<Status>(Status.IDLE);
+  const [currentSearch, setQuery] = useState("");
+  const [searchStatus, setStatus] = useState<Status>(Status.IDLE);
 
-  const [resultKeyword, setResultKeyword] = useState("");
+  const [resultKeyword, setKeyword] = useState("");
   const [results, setResults] = useState<any[]>([{}]);
 
   const [modalToggle, setModalToggle] = useState(false);
@@ -63,22 +63,20 @@ const Home = () => {
       smButtons.forEach(button => { hoverHandler(button, colorString); });
       hoverHandler(repoButton, colorString);
       underlinedLinks.forEach(link => { hoverLinkHandler(link, colorString); });
-    }).catch(e => {
-      console.log(e);
     });
   }, []);
 
   return (
     <SearchContext.Provider value={{
-      query: currentSearch, setQuery: setCurrentSearch,
-      status: searchStatus, setStatus: setSearchStatus
+      query: currentSearch, setQuery,
+      status: searchStatus, setStatus
     }}>
       <ResultsContext.Provider value={{
-        results: results, setResults: setResults,
-        keyword: resultKeyword, setKeyword: setResultKeyword
+        results: results, setResults,
+        keyword: resultKeyword, setKeyword
       }}>
         <SearchHistoryContext.Provider value={{
-          modalToggle: modalToggle, setModalToggle: setModalToggle
+          modalToggle: modalToggle, setModalToggle
         }}>
           <div className={styles.Container}>
             <MetaData />
