@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
-import { FaSearch, FaTrashAlt, FaHistory } from 'react-icons/fa';
+import { FaHome, FaSearch, FaTrashAlt, FaHistory } from 'react-icons/fa';
+import Link from 'next/link';
 
 import { Status, SearchContext, SearchHistoryContext, ResultsContext } from '../configs/config';
 
@@ -123,6 +124,16 @@ const SearchBar = () => {
     search(query);
   };
 
+  const returnHome = (addHistory : boolean) => {
+    resultsContext.setKeyword("");
+    resultsContext.setResults([]);
+    searchContext.setStatus(Status.IDLE);
+    (addHistory) && window.history.pushState(null, document.title, "/");
+
+    const input = document.getElementById("search") as HTMLInputElement;
+    input.value = "";
+  };
+
   /**
    * Runs a dictionary search for the given query term.
    * @param query The query to search for.
@@ -157,10 +168,7 @@ const SearchBar = () => {
         searchContext.setStatus(Status.ERROR);
       });
     } else {
-      resultsContext.setKeyword("");
-      resultsContext.setResults([]);
-      searchContext.setStatus(Status.IDLE);
-      (addHistory) && window.history.pushState(null, document.title, "/");
+      returnHome(addHistory);
     }
 
     searchContext.setQuery(query);
@@ -185,31 +193,38 @@ const SearchBar = () => {
   }, []);
 
   return (
-    <>
-      <form className={styles.Search} onSubmit={(e) => handleSubmit(e)}>
-        {/* Search Input */}
-        <input
-          className={styles.SearchInput}
-          type="text"
-          name="search"
-          id="search"
-          placeholder="English, 日本語, Romaji..."
-        />
+    <form className={styles.Search} onSubmit={(e) => handleSubmit(e)}>
+      <button
+        className={styles.HomeButton}
+        type="button"
+        title="Home"
+        onClick={() => returnHome(true)}
+      >
+        <FaHome />
+      </button>
 
-        {/* Control Buttons */}
-        <div className={styles.SearchControls}>
-          <button type="submit" title="Search">
-            <FaSearch />
-          </button>
-          <button type="reset" title="Clear">
-            <FaTrashAlt />
-          </button>
-          <button type="button" title="History" onClick={toggleSearchHistoryModal}>
-            <FaHistory />
-          </button>
-        </div>
-      </form>
-    </>
+      {/* Search Input */}
+      <input
+        className={styles.SearchInput}
+        type="text"
+        name="search"
+        id="search"
+        placeholder="English, 日本語, Romaji..."
+      />
+
+      {/* Control Buttons */}
+      <div className={styles.SearchControls}>
+        <button type="submit" title="Search">
+          <FaSearch />
+        </button>
+        <button type="reset" title="Clear">
+          <FaTrashAlt />
+        </button>
+        <button type="button" title="History" onClick={toggleSearchHistoryModal}>
+          <FaHistory />
+        </button>
+      </div>
+    </form>
   );
 };
 

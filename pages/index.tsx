@@ -5,7 +5,7 @@ import { Status, ResultsContext, SearchContext, SearchHistoryContext, Background
 
 import MetaData from '../components/MetaData';
 import Background from '../components/Background';
-import Header from '../components/Header';
+import TopBar from '../components/TopBar';
 import Pagination from '../components/Pagination';
 import DefaultResults from '../components/DefaultResults';
 import Footer from '../components/Footer';
@@ -83,7 +83,7 @@ const Home = () => {
           <div className={styles.Container}>
             <MetaData />
             <Background />
-            <Header />
+            <TopBar />
 
             {/* Search History Modal */}
             { modalToggle && <SearchHistoryModal /> }
