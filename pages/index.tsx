@@ -6,8 +6,8 @@ import { Status, ResultsContext, SearchContext, SearchHistoryContext, Background
 import MetaData from '../components/MetaData';
 import Background from '../components/Background';
 import Header from '../components/Header';
+import Pagination from '../components/Pagination';
 import DefaultResults from '../components/DefaultResults';
-import SearchResult from '../components/SearchResult';
 import Footer from '../components/Footer';
 
 import styles from '../styles/Home.module.scss';
@@ -88,13 +88,10 @@ const Home = () => {
             {/* Search History Modal */}
             { modalToggle && <SearchHistoryModal /> }
 
+            {/* Main Content */}
             <main className={styles.Main}>
-              { ((results.length > 0 && searchStatus === Status.SUCCESS)) ? 
-                results.map((result, index) => {
-                  return (
-                    <SearchResult key={index} resultData={result} />
-                  )
-                }) : <DefaultResults /> }
+              { (results.length > 0 && searchStatus === Status.SUCCESS) ?
+                <Pagination results={results} /> : <DefaultResults /> }
             </main>
 
             <Footer />
