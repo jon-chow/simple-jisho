@@ -3,9 +3,9 @@ import Image from 'next/image';
 
 import { Status, SearchContext, ResultsContext, AppInfoData } from '../configs/config';
 
-import SearchBar from '../components/SearchBar';
+import SearchBar from './SearchBar';
 
-import styles from '../styles/Header.module.scss';
+import styles from '../styles/TopBar.module.scss';
 import styles2 from '../styles/Home.module.scss';
 
 
@@ -13,12 +13,12 @@ import styles2 from '../styles/Home.module.scss';
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
 /**
- * Creates the header of the page.
+ * Creates the top bar of the page.
  * 
- * The header contains the application name, its description,
+ * The top bar contains the application name, its description,
  * as well as a search bar.
  */
-const Header = () => {
+const TopBar = () => {
   const searchContext = useContext(SearchContext);
   const resultsContext = useContext(ResultsContext);
 
@@ -44,7 +44,7 @@ const Header = () => {
   };
 
   return (
-    <header className={styles.Header}>
+    <header className={styles.TopBar}>
       {/* App Name */}
       <div className={styles.Title}>
         <a className={styles.Logo} href={AppInfoData.repository} no-referrer='noreferrer' target='blank'>
@@ -76,4 +76,4 @@ const Header = () => {
   )
 };
 
-export default Header;
+export default TopBar;

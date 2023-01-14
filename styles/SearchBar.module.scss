@@ -6,6 +6,23 @@
   align-items: center;
   gap: 0.5rem;
 
+  .HomeButton {
+    padding: 0.5rem;
+    border: hidden;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 0;
+    font-size: 1.25rem;
+    cursor: pointer;
+    background-color: rgba(#777, 0.8);
+    transition: background-color 0.25s ease-in-out;
+
+    &:hover {
+      background-color: rgba(#999, 1);
+      transition: background-color 0.25s ease-in-out;
+    }
+  }
+
   .SearchInput {
     padding: 0.5rem;
     min-width: 20vw;
@@ -22,20 +39,9 @@
     gap: inherit;
 
     button {
-      padding: 0.5rem;
-      border: hidden;
-      border-radius: 5px;
-      text-align: center;
-      line-height: 0;
-      font-size: 1.25rem;
-      cursor: pointer;
-      background-color: rgba(#777, 0.8);
-      transition: background-color 0.25s ease-in-out;
+      @extend .HomeButton;
 
       &:hover {
-        background-color: rgba(#777, 1);
-        transition: background-color 0.25s ease-in-out;
-
         &[type="submit"] {
           background-color: rgba(#4f4, 0.8);
         }
@@ -47,7 +53,7 @@
         &[type="button"] {
           background-color: rgba(#44f, 0.8);
         }
-      };
+      }
     }
   }
 }

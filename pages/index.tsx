@@ -5,9 +5,9 @@ import { Status, ResultsContext, SearchContext, SearchHistoryContext, Background
 
 import MetaData from '../components/MetaData';
 import Background from '../components/Background';
-import Header from '../components/Header';
+import TopBar from '../components/TopBar';
+import Pagination from '../components/Pagination';
 import DefaultResults from '../components/DefaultResults';
-import SearchResult from '../components/SearchResult';
 import Footer from '../components/Footer';
 
 import styles from '../styles/Home.module.scss';
@@ -24,10 +24,10 @@ import SearchHistoryModal from '../components/SearchHistoryModal';
  * The Home component is basically the entire page.
  */
 const Home = () => {
-  const [currentSearch, setCurrentSearch] = useState("");
-  const [searchStatus, setSearchStatus] = useState<Status>(Status.IDLE);
+  const [currentSearch, setQuery] = useState("");
+  const [searchStatus, setStatus] = useState<Status>(Status.IDLE);
 
-  const [resultKeyword, setResultKeyword] = useState("");
+  const [resultKeyword, setKeyword] = useState("");
   const [results, setResults] = useState<any[]>([{}]);
 
   const [modalToggle, setModalToggle] = useState(false);
@@ -63,38 +63,33 @@ const Home = () => {
       smButtons.forEach(button => { hoverHandler(button, colorString); });
       hoverHandler(repoButton, colorString);
       underlinedLinks.forEach(link => { hoverLinkHandler(link, colorString); });
-    }).catch(e => {
-      console.log(e);
     });
   }, []);
 
   return (
     <SearchContext.Provider value={{
-      query: currentSearch, setQuery: setCurrentSearch,
-      status: searchStatus, setStatus: setSearchStatus
+      query: currentSearch, setQuery,
+      status: searchStatus, setStatus
     }}>
       <ResultsContext.Provider value={{
-        results: results, setResults: setResults,
-        keyword: resultKeyword, setKeyword: setResultKeyword
+        results: results, setResults,
+        keyword: resultKeyword, setKeyword
       }}>
         <SearchHistoryContext.Provider value={{
-          modalToggle: modalToggle, setModalToggle: setModalToggle
+          modalToggle: modalToggle, setModalToggle
         }}>
           <div className={styles.Container}>
             <MetaData />
             <Background />
-            <Header />
+            <TopBar />
 
             {/* Search History Modal */}
             { modalToggle && <SearchHistoryModal /> }
 
+            {/* Main Content */}
             <main className={styles.Main}>
-              { ((results.length > 0 && searchStatus === Status.SUCCESS)) ? 
-                results.map((result, index) => {
-                  return (
-                    <SearchResult key={index} resultData={result} />
-                  )
-                }) : <DefaultResults /> }
+              { (results.length > 0 && searchStatus === Status.SUCCESS) ?
+                <Pagination results={results} /> : <DefaultResults /> }
             </main>
 
             <Footer />
