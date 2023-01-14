@@ -1,100 +1,113 @@
 @use "variables" as *;
 
 .ResultPanel {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr;
-  grid-template-areas:
-    "entry entry"
-    "sense jishoLink";
+  @extend .panelSize;
 
-  background: rgba(#000, 0.1);
-  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
   padding: 2rem 15vw;
   min-height: 20vh;
   width: 100%;
   gap: 1rem;
-  @extend .panelSize;
-
-  border-radius: 20px;
-  border-left: 1px solid #777;
-  border-right: 1px solid #777;
+  backdrop-filter: blur(15px);
+  box-shadow: 5px 5px 0.5rem rgba(#222, 0.2);
 
   .JishoSearch {
-    grid-area: entry;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
     width: 100%;
     overflow-y: scroll;
     max-height: 50vh;
+    padding: 1rem 0;
   }
 
-  .Entry {
-    grid-area: entry;
+  .Word {
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
-    flex: 1;
-    overflow: auto;
-    width: fit-content;
     align-items: center;
+    width: fit-content;
+    padding: 0.1rem 0.25rem;
+    font-size: 2rem;
+    font-weight: bold;
 
-    .Reading {
-      margin-top: 0.5rem;
-      background: rgba(#000, 0.1);
-      border-radius: 10px;
-      padding: 0.1rem 0.25rem;
-      font-size: large;
+    rt {
+      transform: translateY(-0.2rem);
+      font-size: small;
       font-weight: lighter;
-    }
-
-    .Word {
-      padding: 0.1rem 0.25rem;
-      font-size: 2rem;
-      font-weight: bold;
     }
   }
 
   .Senses {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .PartOfSpeech {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      color:#bbb;
+      font-size: large;
+      font-weight: 600;
+    }
+    
     .Sense {
-      grid-area: sense;
       display: flex;
       flex-direction: column;
-      flex-wrap: wrap;
-      flex: 1;
       overflow: auto;
-      margin-top: 1rem;
-      width: fit-content;
+      max-width: 80%;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      background: rgba(#222, 0.2);
+      box-shadow: 5px 5px 0.5rem rgba(#000, 0.1);
 
       .Definition,
       .Example {
         margin-top: 0.5rem;
-        background: rgba(#000, 0.1);
         border-radius: 10px;
         padding: 0.1rem 0.25rem;
-        text-transform: capitalize;
         font-size: large;
-        font-weight: lighter;
+        font-weight: light;
+    
+        .DefinitionNumber {
+          color: #bbb;
+          font-weight: 600;
+        }
       }
     }
   }
 
-  .Forms {
+  .OtherForms {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    flex: 1;
+    flex-direction: column;
+    background: rgba(#000, 0.1);
+    box-shadow: 5px 5px 0.5rem rgba(#000, 0.1);
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    max-width: 80%;
 
-    .Form {
-      overflow: auto;
-      margin-top: 1rem;
+    .FormsHeader {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0.5rem 0;
+      color: #bbb;
+      font-size: large;
+      font-weight: 600;
+    }
+
+    .Forms {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
       width: fit-content;
 
       .FormWord {
-        margin-top: 0.5rem;
-        background: rgba(#000, 0.1);
-        padding: 0.1rem 0.25rem;
-        text-transform: capitalize;
         font-size: large;
-        font-weight: lighter;
+        font-weight: light;
       }
     }
   }
@@ -103,20 +116,16 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    gap: 0.5rem;
 
     .Common,
     .Jlpt {
-      padding: 0.1rem 0.5rem;
+      padding: 0.25rem 1rem;
       border-radius: 10px;
-    }
-
-    .Jlpt {
-      margin-left: 0.5rem;
     }
   }
 
   .JishoLink {
-    grid-area: jishoLink;
     color: rgba(#fff, 0.6);
     padding: 0.1rem 0.5rem;
     max-width: fit-content;
