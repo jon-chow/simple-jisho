@@ -20,21 +20,21 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: #777;
-  border-radius: 1rem;
+  border-radius: 8px;
   border: 0.2rem solid transparent;
   background-clip: content-box;
 
   &:hover {
     background: #999;
-    border-radius: 1rem;
+    border-radius: 8px;
     border: 0.2rem solid transparent;
     background-clip: content-box;
   }
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(20, 20, 20, 0.2);
-  border-radius: 1rem;
+  background: rgba(#222, 0.2);
+  border-radius: 8px;
 }
 
 a {

@@ -3,23 +3,54 @@
 // /api/search?query=keyword
 import type { NextApiRequest, NextApiResponse } from 'next';
 
+import JishoAPI from 'unofficial-jisho-api';
+
+
+const jisho = new JishoAPI();
+
+const MAX_SEARCH_RESULTS = 20;
+const MAX_SENTENCES_RESULTS = 5;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
   const { keyword } = req.query;
 
-  const response = await fetch(`https://jisho.org/api/v1/search/words?keyword=${keyword}`);
-  const data = await response.json();
+  const phrasesData = await jisho.searchForPhrase(keyword as string);
+
+  // Legacy: used the official Jisho API
+  // const response = await fetch(`https://jisho.org/api/v1/search/words?keyword=${keyword}`);
+  // const data = await response.json();
   
-  const filteredData = data.data.map((item: WordData) => {
+  // Filters out the data we don't need in phrasesData.
+  const filteredPhrasesData = phrasesData.data.slice(0, MAX_SEARCH_RESULTS).map((item: any) => {
     return {
       slug: item.slug,
       is_common: item.is_common,
       jlpt: item.jlpt,
       japanese: item.japanese,
       senses: item.senses,
+      sentences: [] as any,
     };
   });
 
+  // Fetches the examples for each phrase.
+  const examplesPromises = filteredPhrasesData.map(async (phrase: any) => {
+    const wordData = await jisho.searchForExamples(phrase.slug);
+    phrase.sentences = wordData.results.slice(0, MAX_SENTENCES_RESULTS);
+  });
+  await Promise.all(examplesPromises);
+
+  // Fetches the kanji for each phrase.
+  const kanjiPromises = filteredPhrasesData.map(async (phrase: any) => {
+    const separatedKanji = phrase.slug.split('');
+    const kanji = separatedKanji.filter((char: string) => {
+      return char.match(/[\u3400-\u9FBF]/);
+    });
+
+    const kanjiData = await jisho.searchForKanji(kanji[0]);
+    phrase.kanji = kanji;
+  });
+  await Promise.all(kanjiPromises);
+
   res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate');
-  res.status(200).json(filteredData);
+  res.status(200).json(filteredPhrasesData);
 };

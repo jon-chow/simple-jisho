@@ -28,6 +28,7 @@ type SMButton = {
   link: string,
 };
 
+// Type definition for a tech stack item.
 type TechStack = {
   name: string,
   link: string,
@@ -36,8 +37,8 @@ type TechStack = {
 // Type definition for an instance of a past search.
 type SearchHistory = {
   keyword: string,
-  results: any[],
   date: Date,
+  results: WordData[],
 };
 
 // Type definition for a word's sense.
@@ -60,7 +61,14 @@ type Sense = {
 type WordData = {
   slug: string,
   is_common: boolean,
+  kanji: string[],
   jlpt: string[],
   japanese: string[],
   senses: Sense[],
+  sentences: {
+    english: string,
+    kana: string,
+    kanji: string,
+    pieces: string,
+  }[],
 };

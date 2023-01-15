@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Status, ResultsContext, SearchContext, SearchHistoryContext, BackgroundData } from '../configs/config';
+import { Status, ResultsContext, SearchContext, SearchHistoryContext } from '../configs/config';
 
 import MetaData from '../components/MetaData';
 import Background from '../components/Background';
@@ -10,7 +10,6 @@ import DefaultResults from '../components/DefaultResults';
 import Footer from '../components/Footer';
 
 import styles from '../styles/Home.module.scss';
-import styles2 from '../styles/Footer.module.scss';
 import SearchHistoryModal from '../components/SearchHistoryModal';
 
 
@@ -27,7 +26,7 @@ const Home = () => {
   const [searchStatus, setStatus] = useState<Status>(Status.IDLE);
 
   const [resultKeyword, setKeyword] = useState("");
-  const [results, setResults] = useState<any[]>([{}]);
+  const [results, setResults] = useState<WordData[]>([]);
 
   const [modalToggle, setModalToggle] = useState(false);
 

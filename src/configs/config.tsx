@@ -71,6 +71,6 @@ export const SearchHistoryContext = createContext({
 export const ResultsContext = createContext({
   keyword: "",
   setKeyword: (keyword: string) => {},
-  results: [{}],
-  setResults: (results: any[]) => {},
+  results: [] as WordData[],
+  setResults: (results: WordData[]) => {},
 });
