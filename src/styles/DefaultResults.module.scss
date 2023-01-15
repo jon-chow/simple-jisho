@@ -8,6 +8,7 @@
   flex-wrap: wrap;
   align-items: center;
   backdrop-filter: blur(10px);
+  box-shadow: 0 0 0.5rem rgba(#222, 0.2);
   padding: 2rem 10vw;
   min-height: 20vh;
   width: 100%;
@@ -20,10 +21,10 @@
     background: rgba(#fff, 0.1);
     border-radius: 1rem;
 
-    img {
+    .DefaultResultsLogo {
       width: 4rem;
       height: 4rem;
-      color: rgba(#fff, 1);
+      fill: var(--primary-colour);
     }
 
     .DefaultResultsTitle {

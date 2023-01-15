@@ -28,6 +28,9 @@ const Pagination = (props : {results : any }) => {
   const endIndex = startIndex + MAX_RESULTS_PER_PAGE;
   const resultsToDisplay = results.slice(startIndex, endIndex);
 
+  // Scroll to the top of the page when the current page changes.
+  window.scrollTo(0, 0);
+
   // Changes the current page to the next page.
   const nextPage = () => {
     if (currentPage < numPages) {

@@ -144,15 +144,18 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 3rem;
+      height: 3.5rem;
+      width: 30%;
       background-color: rgba(#fff, 0.1);
       border-radius: 0.5rem;
       border: none;
+      font-size: medium;
+      font-weight: 600;
       cursor: pointer;
       transition: background-color 0.25s ease-in-out;
 
       &:hover {
-        background-color: rgba(#f88, 0.4);
+        background-color: rgba(#f88, 0.6);
       }
     }
   }
