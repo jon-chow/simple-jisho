@@ -1,6 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
 import { FaHome, FaSearch, FaTrashAlt, FaHistory } from 'react-icons/fa';
-import Link from 'next/link';
 
 import { Status, SearchContext, SearchHistoryContext, ResultsContext } from '../configs/config';
 
@@ -114,7 +113,14 @@ const SearchBar = () => {
   // Cancels the current search.
   const cancelQuery = () => {
     querying?.cancel();
+    setQuerying(undefined);
+    searchContext.setQuery("");
     searchContext.setStatus(Status.CANCELLED);
+    
+    setTimeout(() => {
+      if (searchContext.status === Status.CANCELLED)
+        searchContext.setStatus(Status.IDLE);
+    }, 1000);
   };
 
   // Handles the search bar submission button.
@@ -124,7 +130,9 @@ const SearchBar = () => {
     search(query);
   };
 
+  // Returns to the home page.
   const returnHome = (addHistory : boolean) => {
+    cancelQuery();
     resultsContext.setKeyword("");
     resultsContext.setResults([]);
     searchContext.setStatus(Status.IDLE);
@@ -134,44 +142,65 @@ const SearchBar = () => {
     input.value = "";
   };
 
+  // Adds the search to the browser history.
+  const pushHistoryState = (addHistory : boolean, query: string, data : any) => {
+    const historyItem : SearchHistory = {
+      keyword: query,
+      results: data,
+      date: new Date(),
+    };
+
+    updateSearchHistory(historyItem);
+    (addHistory) && window.history.pushState(null, "", (query) ? "?q=" + query : "");
+  };
+
   /**
    * Runs a dictionary search for the given query term.
    * @param query The query to search for.
    * @param addHistory Whether to add the search to the browser history.
    */
   const search = async (query: string, addHistory: boolean = true) => {
-    // Check if query was the same as the previous one.
-    if (query === searchContext.query) return;
-
-    // Check if query is not empty.
     if (query) {
+      // Check if query was the same as the previous one.
+      if (query === searchContext.query) return;
+
+      // Check if query exists in local storage and if so, use that.
+      const searchHistory = localStorage.getItem("searchHistory");
+
+      if (searchHistory) {
+        const history = JSON.parse(searchHistory) as SearchHistory[];
+        const index = history.findIndex((item) => item.keyword === query);
+
+        if (index !== -1) {
+          resultsContext.setKeyword(query);
+          resultsContext.setResults(history[index].results);
+          searchContext.setStatus(Status.SUCCESS);
+          searchContext.setQuery(query);
+          return;
+        };
+      };
+
+      // Otherwise, run a new search.
       cancelQuery();
       const q = getSearchResults(query);
       setQuerying(q);
       searchContext.setStatus(Status.LOADING);
 
       q.then((data) => {
+        // console.log(data);
         resultsContext.setKeyword(query);
         resultsContext.setResults(data);
         searchContext.setStatus(Status.SUCCESS);
-
-        // Add search to history.
-        const historyItem : SearchHistory = {
-          keyword: query,
-          results: data,
-          date: new Date(),
-        };
-        updateSearchHistory(historyItem);
-        (addHistory) && window.history.pushState(null, "", (query) ? "?q=" + query : "");
+        pushHistoryState(addHistory, query, data);
       }).catch((error) => {
         console.error(error);
         searchContext.setStatus(Status.ERROR);
       });
+
+      searchContext.setQuery(query);
     } else {
       returnHome(addHistory);
-    }
-
-    searchContext.setQuery(query);
+    };
   };
 
   // Creates the search history in local storage if it doesn't exist.
@@ -184,7 +213,7 @@ const SearchBar = () => {
   useEffect(() => {
     const handlePopState = () => {
       const keyword = getQueryVariable("q");
-      (keyword) && search(keyword, false);
+      (keyword) ? search(keyword, false) : returnHome(false);
     };
     
     handlePopState();

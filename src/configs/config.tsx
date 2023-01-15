@@ -5,11 +5,11 @@ export const AppInfoData = {
   name: "Simple Jisho",
   description: 'A reformatted, simpler version of jisho.org.',
   repository: "https://github.com/jon-chow/simple-jisho",
-  logo: "/logo.png",
+  logo: "/static/logo.png",
 };
 
 export const BackgroundData : Background = {
-  image: "/background.jpg",
+  image: "/static/background.jpg",
   artist: "Alpha Coders",
   artistLink: "https://wall.alphacoders.com/big.php?i=496311",
 };
@@ -24,6 +24,21 @@ export const SMButtonsData : SMButton[] = [
     title: "LinkedIn",
     icon: <FaLinkedin />,
     link: "https://www.linkedin.com/in/ja-chow/",
+  },
+];
+
+export const TechStackData : TechStack[] = [
+  {
+    name: "SASS/SCSS",
+    link: "https://sass-lang.com/"
+  },
+  {
+    name: "Next.js",
+    link: "https://nextjs.org/"
+  },
+  {
+    name: "TypeScript",
+    link: "https://www.typescriptlang.org/"
   },
 ];
 
@@ -58,15 +73,3 @@ export const ResultsContext = createContext({
   results: [{}],
   setResults: (results: any[]) => {},
 });
-
-
-const config = {
-  BackgroundData,
-  AppInfoData,
-  SMButtonsData,
-  
-  SearchContext,
-  ResultsContext,
-}
-
-export default config;

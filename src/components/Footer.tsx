@@ -1,6 +1,6 @@
 import { FaGithub } from 'react-icons/fa';
 
-import { AppInfoData, BackgroundData, SMButtonsData } from '../configs/config';
+import { AppInfoData, BackgroundData, SMButtonsData, TechStackData } from '../configs/config';
 
 import styles from '../styles/Footer.module.scss';
 import styles2 from '../styles/Home.module.scss';
@@ -24,7 +24,7 @@ const Footer = () => {
       </div>
 
       {/* Social media links */}
-      {(SMButtonsData) &&
+      { (SMButtonsData) &&
         <div className={styles.Socials}>
           {SMButtonsData.map((button, index) => {
             return (
@@ -47,12 +47,21 @@ const Footer = () => {
       <div>
         This app makes calls to the&nbsp;
         <a
-          href="https://jisho.org/"
+          href="https://github.com/mistval/unofficial-jisho-api"
           no-referrer='noreferrer'
           target='blank'
           className={styles2.UnderlinedLink}
         >
-          jisho.org
+          unofficial
+        </a>
+        &nbsp;jisho.org API, an encapsulation of the&nbsp;
+        <a
+          href="https://jisho.org/forum/54fefc1f6e73340b1f160000-is-there-any-kind-of-search-api"
+          no-referrer='noreferrer'
+          target='blank'
+          className={styles2.UnderlinedLink}
+        >
+          official
         </a>
         &nbsp;API.
       </div>
@@ -66,22 +75,19 @@ const Footer = () => {
       {/* Tech stack information */}
       <div>
         Simple Jisho was created using&nbsp;
-        <a href="https://sass-lang.com/" no-referrer='noreferrer' target='blank'
-          className={styles2.UnderlinedLink}>
-          SASS/SCSS
-        </a>,&nbsp;
-        <a href="https://nextjs.org/" no-referrer='noreferrer' target='blank'
-          className={styles2.UnderlinedLink}>
-          Next.js
-        </a>, and&nbsp;
-        <a href="https://www.typescriptlang.org/" no-referrer='noreferrer' target='blank'
-          className={styles2.UnderlinedLink}>
-          TypeScript
-        </a>,
+        { TechStackData.map((tech, index) => 
+          <span key={index}>
+            {index !== TechStackData.length - 1 ? "" : "and "}
+            <a href={tech.link} no-referrer='noreferrer' target='blank' className={styles2.UnderlinedLink}>
+              {tech.name}
+            </a>
+            {index !== TechStackData.length - 1 ? ", " : "."}
+          </span>
+        )}
       </div>
 
       {/* Credits to background artist (if exists) */}
-      {(BackgroundData.artist != "") &&
+      { (BackgroundData.artist !== "") &&
         <div>
           Background wallpaper obtained from&nbsp;
           <a

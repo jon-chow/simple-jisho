@@ -16,6 +16,11 @@ type SMButton = {
   link: string,
 };
 
+type TechStack = {
+  name: string,
+  link: string,
+}
+
 // Type definition for an instance of a past search.
 type SearchHistory = {
   keyword: string,
