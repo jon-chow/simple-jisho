@@ -32,6 +32,9 @@ const MetaData = () => {
       />
       <meta name="author" content="jon-chow" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+      <link rel="manifest" href="/manifest.json" />
+      <link rel="apple-touch-icon" href="/logo-192x192.png" />
       <link rel="icon" href="/favicon.ico" />
     </Head>
   );

@@ -16,7 +16,12 @@ import styles from '../styles/Background.module.scss';
 const Background = () => {
   return (
     <div className={styles.Background}>
-      <div className={styles.Overlay}/>
+      <div className={styles.Overlay}
+        style={{
+          background: BackgroundData.overlayColor,
+          backdropFilter: `blur(${BackgroundData.blurAmount}px)`
+        }}
+      />
       
       <Image
         className={styles.BackgroundImage}

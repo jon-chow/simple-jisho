@@ -1,6 +1,6 @@
 import { useContext } from 'react';
-import Image from 'next/image';
 
+import Logo from '../../public/static/logo.svg';
 import { Status, SearchContext, ResultsContext, AppInfoData } from '../configs/config';
 
 import SearchBar from './SearchBar';
@@ -48,20 +48,14 @@ const TopBar = () => {
       {/* App Name */}
       <div className={styles.Title}>
         <a className={styles.Logo} href={AppInfoData.repository} no-referrer='noreferrer' target='blank'>
-          <Image
-            src={AppInfoData.logo}
-            alt="Logo"
-            title={AppInfoData.name}
-            width={40}
-            height={40}
-          />
+          <Logo />
         </a>
         {AppInfoData.name}
       </div>
 
       {/* App Description */}
       <div className={styles.Subtitle}>
-        A lighter, more compact version of the&nbsp;
+        A powerful, more compact version of the&nbsp;
         <a className={styles2.UnderlinedLink} href="https://jisho.org/" no-referrer='noreferrer' target='blank'>
           jisho.org
         </a>

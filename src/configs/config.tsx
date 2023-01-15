@@ -5,13 +5,14 @@ export const AppInfoData = {
   name: "Simple Jisho",
   description: 'A reformatted, simpler version of jisho.org.',
   repository: "https://github.com/jon-chow/simple-jisho",
-  logo: "/static/logo.png",
 };
 
 export const BackgroundData : Background = {
-  image: "/static/background.jpg",
+  image: "/static/background.png",
   artist: "Alpha Coders",
-  artistLink: "https://wall.alphacoders.com/big.php?i=496311",
+  artistLink: "https://wall.alphacoders.com/big.php?i=937175",
+  overlayColor: "linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6))",
+  blurAmount: 3,
 };
 
 export const SMButtonsData : SMButton[] = [

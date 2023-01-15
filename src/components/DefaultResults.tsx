@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Logo from '../../public/static/logo.svg';
 
 import styles from '../styles/DefaultResults.module.scss';
 
@@ -16,7 +16,7 @@ const DefaultResults = () => {
   return (
     <article className={styles.DefaultResults}>
       <div className={styles.DefaultResultsHeader}>
-        {/* <Image src="/logo.svg" alt="" width={60} height={60} /> */}
+        <Logo className={styles.DefaultResultsLogo} />
         <span className={styles.DefaultResultsTitle}>About Simple Jisho</span>
       </div>
 

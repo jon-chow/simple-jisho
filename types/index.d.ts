@@ -1,4 +1,14 @@
 /* -------------------------------------------------------------------------- */
+/*                                   MODULES                                  */
+/* -------------------------------------------------------------------------- */
+
+// Module declaration for SVG files.
+declare module "*.svg" {
+  const content: any;
+  export default content;
+}
+
+/* -------------------------------------------------------------------------- */
 /*                                    TYPES                                   */
 /* -------------------------------------------------------------------------- */
 
@@ -7,6 +17,8 @@ type Background = {
   image: string,
   artist: string,
   artistLink: string,
+  overlayColor: string,
+  blurAmount: number,
 };
 
 // Type definition for a social media button.

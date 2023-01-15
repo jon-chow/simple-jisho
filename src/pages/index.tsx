@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { FastAverageColor } from 'fast-average-color';
+import { useState } from 'react';
 
 import { Status, ResultsContext, SearchContext, SearchHistoryContext, BackgroundData } from '../configs/config';
 
@@ -31,40 +30,6 @@ const Home = () => {
   const [results, setResults] = useState<any[]>([{}]);
 
   const [modalToggle, setModalToggle] = useState(false);
-
-  // Changes the colour of buttons and text based on the background image.
-  const hoverHandler = (button: HTMLElement, color: string) => {
-    const prev = button.style.color;
-    button.onmouseover = () => { button.style.color = color; };
-    button.onmouseleave = () => { button.style.color = prev; };
-  };
-
-  // Changes the colour of underlined text based on the background image.
-  const hoverLinkHandler = (button: HTMLElement, color: string) => {
-    const prev = button.style.textDecorationColor;
-    button.onmouseover = () => { button.style.textDecorationColor = color; };
-    button.onmouseleave = () => { button.style.textDecorationColor = prev; };
-  };
-
-  // Changes the colour of elements based on the background image.
-  useEffect(() => {
-    const fac = new FastAverageColor();
-
-    fac.getColorAsync(BackgroundData.image).then(color => {
-      let colorString = color.hex || "#fff";
-      
-      const smButtons =
-        Array.from(document.getElementsByClassName(styles2.SocialMediaButton) as HTMLCollectionOf<HTMLElement>);
-      const repoButton =
-        document.getElementsByClassName(styles2.RepositoryButton)[0] as HTMLElement;
-      const underlinedLinks =
-        Array.from(document.getElementsByClassName(styles.UnderlinedLink) as HTMLCollectionOf<HTMLElement>);
-      
-      smButtons.forEach(button => { hoverHandler(button, colorString); });
-      hoverHandler(repoButton, colorString);
-      underlinedLinks.forEach(link => { hoverLinkHandler(link, colorString); });
-    });
-  }, []);
 
   return (
     <SearchContext.Provider value={{
