@@ -74,3 +74,11 @@ export const ResultsContext = createContext({
   results: [] as WordData[],
   setResults: (results: WordData[]) => {},
 });
+
+// Context for the kanji modal.
+export const KanjiContext = createContext({
+  modalToggle: false,
+  setModalToggle: (modalToggle: boolean) => {},
+  kanji: [] as string[],
+  setKanji: (kanji: string[]) => {},
+});

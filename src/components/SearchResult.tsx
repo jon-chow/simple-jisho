@@ -1,3 +1,8 @@
+import { useContext } from 'react';
+import { BsClipboard, BsInfoCircle } from 'react-icons/bs';
+
+import { KanjiContext } from '../configs/config';
+
 import styles from '../styles/SearchResult.module.scss';
 
 
@@ -10,8 +15,20 @@ import styles from '../styles/SearchResult.module.scss';
  * The SearchResult component contains data on a search.
  */
 const SearchResult = (props: any) => {
+  const kanjiContext = useContext(KanjiContext);
+
   const data = props.resultData;
   const mainForm = data.japanese[0];
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    alert(`Copied "${text}" to clipboard!`);
+  }
+
+  // Toggle the kanji info modal.
+  const toggleKanjiInfoModal = (kanji: string[]) => {
+    kanjiContext.setModalToggle(!kanjiContext.modalToggle);
+  };
   
   return (
     <article className={styles.ResultPanel}>
@@ -23,6 +40,23 @@ const SearchResult = (props: any) => {
             {mainForm.word ? mainForm.word : mainForm.reading}
             <rt>{mainForm.word ? mainForm.reading : ''}</rt>
           </ruby>
+
+          <button
+            className={styles.CopyButton}
+            title="Copy to Clipboard"
+            onClick={() => copyToClipboard(mainForm.word ? mainForm.word : mainForm.reading)}
+          >
+            <BsClipboard />
+          </button>
+
+          {/* Kanji Info */}
+          <button
+            className={styles.KanjiInfoButton}
+            title="Kanji Info"
+            onClick={() => toggleKanjiInfoModal(data.kanji)}
+          >
+            <BsInfoCircle />
+          </button>
         </div>
 
         {/* JLPT / Rarity Tags */}
@@ -36,16 +70,11 @@ const SearchResult = (props: any) => {
             let colour;
 
             switch(levelNum) {
-              case '1':
-                colour = 'rgba(255, 50, 50, 0.4)'; break;
-              case '2':
-                colour = 'rgba(255, 100, 50, 0.4)'; break;
-              case '3':
-                colour = 'rgba(255, 255, 50, 0.4)'; break;
-              case '4':
-                colour = 'rgba(50, 255, 50, 0.4)'; break;
-              default:
-                colour = 'rgba(50, 50, 255, 0.4)';
+              case '1': colour = 'rgba(255, 50, 50, 0.4)';  break;
+              case '2': colour = 'rgba(255, 100, 50, 0.4)'; break;
+              case '3': colour = 'rgba(255, 255, 50, 0.4)'; break;
+              case '4': colour = 'rgba(50, 255, 50, 0.4)';  break;
+              default:  colour = 'rgba(50, 50, 255, 0.4)';
             }
 
             return (

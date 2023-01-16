@@ -28,25 +28,22 @@ const Pagination = (props : {results : any }) => {
   const endIndex = startIndex + MAX_RESULTS_PER_PAGE;
   const resultsToDisplay = results.slice(startIndex, endIndex);
 
-  // Scroll to the top of the page when the current page changes.
-  window.scrollTo(0, 0);
-
   // Changes the current page to the next page.
   const nextPage = () => {
-    if (currentPage < numPages) {
-      setCurrentPage(currentPage + 1);
-    } else {
-      setCurrentPage(1);
-    }
+    (currentPage < numPages) ? setCurrentPage(currentPage + 1) : setCurrentPage(1);
+    window.scrollTo(0, 0);
   };
 
   // Changes the current page to the previous page.
   const prevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    } else {
-      setCurrentPage(numPages);
-    }
+    (currentPage > 1) ? setCurrentPage(currentPage - 1) : setCurrentPage(numPages);
+    window.scrollTo(0, 0);
+  };
+
+  // Changes the current page to the specified page.
+  const setPage = (page : number) => {
+    setCurrentPage(page);
+    window.scrollTo(0, 0);
   };
 
   // Renders the results to display on the current page.
@@ -60,7 +57,7 @@ const Pagination = (props : {results : any }) => {
       key={page}
       className={styles.PaginationPageNumber}
       disabled={currentPage === page + 1}
-      onClick={() => setCurrentPage(page + 1)}
+      onClick={() => setPage(page + 1)}
     >
       {page + 1}
     </button>
@@ -93,7 +90,7 @@ const Pagination = (props : {results : any }) => {
         Page 
         <select
           value={currentPage}
-          onChange={(e) => setCurrentPage(parseInt(e.target.value))}
+          onChange={(e) => setPage(parseInt(e.target.value))}
         >
           {Array.from(Array(numPages).keys()).map((page) => (
             <option key={page} value={page + 1}>
