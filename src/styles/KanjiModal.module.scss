@@ -1,0 +1,162 @@
+.KanjiModal {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+
+  .ModalContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    max-width: 80vw;
+    max-height: 90vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 1rem;
+    padding: 1rem;
+    gap: 1rem;
+
+    .ModalHeader {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+
+      .ModalTitle {
+        text-align: center;
+        margin: 0;
+        margin-top: -1rem;
+        font-weight: 600;
+        color: #fff;
+      }
+
+      .ModalCloseButton {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-self: flex-end;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+
+        svg {
+          width: 3rem;
+          height: 3rem;
+          fill: #fff;
+          transition: fill 0.25s ease-in-out;
+        }
+
+        &:hover {
+          svg {
+            fill: #f88;
+          }
+        }
+      }
+    }
+
+    .KanjiItems {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      background: rgba(#000, 0.1);
+      border-radius: 1rem;
+      padding: 1rem;
+      width: 95%;
+      height: 100%;
+      gap: 1rem;
+
+      .KanjiItem {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 2rem;
+        background: rgba(#fff, 0.05);
+        border-radius: 1rem;
+        gap: 2rem;
+
+        p {
+          margin: 0;
+        }
+
+        .KanjiContent {
+          display: flex;
+          flex-direction: column;
+          min-width: 20%;
+          max-width: 25%;
+          gap: 0.5rem;
+
+          .KanjiHeader {
+            font-size: 1.5rem;
+            color: #fff;
+
+            .KanjiTitle {
+              font-weight: 600;
+              font-size: 2.5rem;
+            }
+
+            .KanjiMeaning {
+              font-weight: 400;
+              font-size: 1.5rem;
+            }
+          }
+
+          hr {
+            width: 100%;
+            border: 1px solid #ccc;
+          }
+
+          .KanjiInfo {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            font-size: medium;
+          }
+        }
+
+        .KanjiStrokes {
+          display: flex;
+          flex-direction: column;
+          
+          h1 {
+            margin: 0;
+            font-weight: bold;
+          }
+
+          hr {
+            width: 100%;
+            background: #ccc;
+            margin-bottom: 1rem;
+          }
+
+          .KanjiImages {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 1rem;
+
+            img:nth-child(1) {
+              width: 15vw;
+              height: auto;
+            }
+
+            img:nth-child(2) {
+              width: 100%;
+              height: auto;
+            }
+          }
+        }
+      }
+    }
+  }
+}

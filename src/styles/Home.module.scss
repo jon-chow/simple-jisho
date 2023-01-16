@@ -1,0 +1,35 @@
+@use "variables" as *;
+
+.Container {
+  padding: 0 2rem;
+}
+
+.Main {
+  min-height: 30vh;
+  padding: 1rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.UnderlinedLink {
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+  transition: text-decoration-color 0.2s ease;
+
+  &:hover {
+    text-decoration-color: var(--primary-colour);
+    transition: text-decoration-color 0.2s ease;
+  }
+}
+
+.Code {
+  background: #fafafa;
+  border-radius: 5px;
+  padding: 0.75rem;
+  font-size: 1.1rem;
+  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+    Bitstream Vera Sans Mono, Courier New, monospace;
+}

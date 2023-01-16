@@ -1,0 +1,260 @@
+import { useEffect, useState, useContext } from 'react';
+import { FaHome, FaSearch, FaTrashAlt, FaHistory } from 'react-icons/fa';
+
+import { Status, SearchContext, SearchHistoryContext, ResultsContext } from '../configs/config';
+
+import styles from '../styles/SearchBar.module.scss';
+
+
+/**
+ * Extended Promise to allow for cancellation.
+ */ 
+interface PromiseWithCancel<T> extends Promise<T> {
+  cancel: () => void;
+};
+
+/**
+ * Checks if an error is an AbortError.
+ * @param error The error to check.
+ */
+const isAbortError = (error: any): error is DOMException => {
+  return (error && error.name === "AbortError");
+};
+
+/**
+ * Calls to the search API and returns the results.
+ * @param query The query to search for.
+ * @exception AbortError thrown when the search is cancelled.
+ */
+const getSearchResults = (query: string) => {
+  const controller = new AbortController();
+  const signal = controller.signal;
+
+  const promise = new Promise(async (resolve) => {
+    try {
+      const response = await fetch(`/api/search?keyword=${query.toLowerCase()}`, {
+        method: 'GET',
+        signal
+      });
+      const data = await response.json();
+      resolve(data);
+    } catch (exception: unknown) {
+      if (isAbortError(exception))
+        throw exception;
+    };
+  });
+
+  (promise as PromiseWithCancel<any>).cancel = () => controller.abort();
+
+  return promise as PromiseWithCancel<any>;
+};
+
+/**
+ * Retrieves the value of the query parameter with the given key.
+ * @param variable Key variable to look for in the URL.
+ * @returns The value of the key variable in the URL.
+ */
+const getQueryVariable = (variable: string) => {
+  const vars = window.location.search.substring(1).split('&');
+
+  for (let i = 0; i < vars.length; i++) {
+    const pair = vars[i].split('=');
+    if (decodeURIComponent(pair[0]) === variable)
+      return decodeURIComponent(pair[1]);
+  };
+};
+
+
+const SEARCH_HISTORY_MAX_LENGTH = 10;
+
+/* -------------------------------------------------------------------------- */
+/*                             EXPORTED COMPONENT                             */
+/* -------------------------------------------------------------------------- */
+/**
+ * Creates the search bar component.
+ * 
+ * The search bar is included in the header.
+ */
+const SearchBar = () => {
+  const searchContext = useContext(SearchContext);
+  const resultsContext = useContext(ResultsContext);
+  const searchHistoryContext = useContext(SearchHistoryContext);
+  const [querying, setQuerying] = useState<PromiseWithCancel<any> | undefined>(undefined);
+
+  // Toggle the search history modal.
+  const toggleSearchHistoryModal = () => {
+    searchHistoryContext.setModalToggle(!searchHistoryContext.modalToggle);
+  };
+
+  // Updates the search history.
+  const updateSearchHistory = (query: SearchHistory) => {
+    if (localStorage.getItem("searchHistory") === null)
+      localStorage.setItem("searchHistory", JSON.stringify([]));
+
+    const searchHistory = localStorage.getItem("searchHistory");
+
+    if (searchHistory) {
+      const history = JSON.parse(searchHistory) as SearchHistory[];
+      const index = history.findIndex((item) => item.keyword === query.keyword);
+
+      if (index !== -1) {
+        history.splice(index, 1);
+      };
+      
+      if (history.length >= SEARCH_HISTORY_MAX_LENGTH) {
+        history.shift();
+      };
+      
+      history.push(query);
+      localStorage.setItem("searchHistory", JSON.stringify(history));
+    };
+  };
+
+  // Cancels the current search.
+  const cancelQuery = () => {
+    querying?.cancel();
+    setQuerying(undefined);
+    searchContext.setQuery("");
+    searchContext.setStatus(Status.CANCELLED);
+    
+    setTimeout(() => {
+      if (searchContext.status === Status.CANCELLED)
+        searchContext.setStatus(Status.IDLE);
+    }, 1000);
+  };
+
+  // Handles the search bar submission button.
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    const query = event.target.search.value;
+    search(query);
+  };
+
+  // Returns to the home page.
+  const returnHome = (addHistory : boolean) => {
+    cancelQuery();
+    resultsContext.setKeyword("");
+    resultsContext.setResults([]);
+    searchContext.setStatus(Status.IDLE);
+    (addHistory) && window.history.pushState(null, document.title, "/");
+
+    const input = document.getElementById("search") as HTMLInputElement;
+    input.value = "";
+  };
+
+  // Adds the search to the browser history.
+  const pushHistoryState = (addHistory : boolean, query: string, data : any) => {
+    const historyItem : SearchHistory = {
+      keyword: query,
+      results: data,
+      date: new Date(),
+    };
+
+    updateSearchHistory(historyItem);
+    (addHistory) && window.history.pushState(null, "", (query) ? "?q=" + query : "");
+  };
+
+  /**
+   * Runs a dictionary search for the given query term.
+   * @param query The query to search for.
+   * @param addHistory Whether to add the search to the browser history.
+   */
+  const search = async (query: string, addHistory: boolean = true) => {
+    if (query) {
+      // Check if query was the same as the previous one.
+      if (query === searchContext.query) return;
+
+      // Check if query exists in local storage and if so, use that.
+      const searchHistory = localStorage.getItem("searchHistory");
+
+      if (searchHistory) {
+        const history = JSON.parse(searchHistory) as SearchHistory[];
+        const index = history.findIndex((item) => item.keyword === query);
+
+        if (index !== -1) {
+          resultsContext.setKeyword(query);
+          resultsContext.setResults(history[index].results);
+          searchContext.setStatus(Status.SUCCESS);
+          searchContext.setQuery(query);
+          return;
+        };
+      };
+
+      // Otherwise, run a new search.
+      cancelQuery();
+      const q = getSearchResults(query);
+      setQuerying(q);
+      searchContext.setStatus(Status.LOADING);
+
+      q.then((data) => {
+        // console.log(data);
+        resultsContext.setKeyword(query);
+        resultsContext.setResults(data);
+        searchContext.setStatus(Status.SUCCESS);
+        pushHistoryState(addHistory, query, data);
+      }).catch((error) => {
+        console.error(error);
+        searchContext.setStatus(Status.ERROR);
+      });
+
+      searchContext.setQuery(query);
+    } else {
+      returnHome(addHistory);
+    };
+  };
+
+  // Creates the search history in local storage if it doesn't exist.
+  useEffect(() => {
+    if (localStorage.getItem("searchHistory") === null)
+      localStorage.setItem("searchHistory", JSON.stringify([]));
+  }, []);
+
+  // Automatically searches for the query parameter in the URL.
+  useEffect(() => {
+    const handlePopState = () => {
+      const keyword = getQueryVariable("q");
+      (keyword) ? search(keyword, false) : returnHome(false);
+    };
+    
+    handlePopState();
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  return (
+    <form className={styles.Search} onSubmit={(e) => handleSubmit(e)}>
+      <button
+        className={styles.HomeButton}
+        type="button"
+        title="Home"
+        onClick={() => returnHome(true)}
+      >
+        <FaHome />
+      </button>
+
+      {/* Search Input */}
+      <input
+        className={styles.SearchInput}
+        type="text"
+        name="search"
+        id="search"
+        placeholder="English, 日本語, Romaji..."
+      />
+
+      {/* Control Buttons */}
+      <div className={styles.SearchControls}>
+        <button type="submit" title="Search">
+          <FaSearch />
+        </button>
+        <button type="reset" title="Clear">
+          <FaTrashAlt />
+        </button>
+        <button type="button" title="History" onClick={toggleSearchHistoryModal}>
+          <FaHistory />
+        </button>
+      </div>
+    </form>
+  );
+};
+
+export default SearchBar;

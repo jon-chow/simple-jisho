@@ -1,0 +1,42 @@
+@use "variables" as *;
+
+.DefaultResults {
+  @extend .panelSize;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 0.5rem rgba(#222, 0.2);
+  padding: 2rem 10vw;
+  min-height: 20vh;
+  width: 100%;
+
+  .DefaultResultsHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 1rem;
+    background: rgba(#fff, 0.1);
+    border-radius: 1rem;
+
+    .DefaultResultsLogo {
+      width: 4rem;
+      height: 4rem;
+      fill: var(--primary-colour);
+    }
+
+    .DefaultResultsTitle {
+      margin: 0 1rem;
+      font-size: xx-large;
+      font-weight: bold;
+    }
+  }
+
+  blockquote {
+    font-size: large;
+    font-weight: 500;
+    margin: 0.5rem 15vw;
+  }
+}
