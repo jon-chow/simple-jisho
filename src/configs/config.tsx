@@ -79,6 +79,6 @@ export const ResultsContext = createContext({
 export const KanjiContext = createContext({
   modalToggle: false,
   setModalToggle: (modalToggle: boolean) => {},
-  kanji: [] as string[],
-  setKanji: (kanji: string[]) => {},
+  kanji: [] as any[],
+  setKanji: (kanji: any[]) => {},
 });

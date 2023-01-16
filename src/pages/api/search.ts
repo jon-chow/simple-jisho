@@ -56,8 +56,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       return char.match(/[\u3400-\u9FBF]/);
     });
 
-    // const kanjiData = await jisho.searchForKanji(kanji[0]);
-    phrase.kanji = kanji;
+    const kanjiData = kanji.map(async (kanji: string) => {
+      const kanjiData = await jisho.searchForKanji(kanji);
+      return kanjiData;
+    });
+    
+    phrase.kanji = await Promise.all(kanjiData);
   });
   await Promise.all(kanjiPromises);
 

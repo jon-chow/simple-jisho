@@ -31,7 +31,7 @@ const Home = () => {
 
   const [historyModalToggle, setHistoryModalToggle] = useState(false);
 
-  const [kanji, setKanji] = useState<string[]>([]);
+  const [kanji, setKanji] = useState<any[]>([]);
   const [kanjiModalToggle, setKanjiModalToggle] = useState(false);
 
   return (

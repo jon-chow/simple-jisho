@@ -9,6 +9,12 @@ const nextConfig = {
     });
     return config;
   },
+  images: {
+    domains: [
+      "classic.jisho.org",
+      "raw.githubusercontent.com",
+    ]
+  }
 }
 
 module.exports = nextConfig
