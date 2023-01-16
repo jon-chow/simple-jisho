@@ -18,7 +18,7 @@
     gap: 0.5rem;
     width: 100%;
     overflow-y: scroll;
-    max-height: 50vh;
+    max-height: 80vh;
     padding: 1rem 0;
   }
 
@@ -78,6 +78,7 @@
     }
   }
 
+  .Sentences,
   .OtherForms {
     display: flex;
     flex-direction: column;
@@ -87,6 +88,7 @@
     padding: 0.5rem 1rem;
     max-width: 80%;
 
+    .ExamplesHeader,
     .FormsHeader {
       display: flex;
       flex-direction: row;
@@ -96,6 +98,38 @@
       color: #bbb;
       font-size: large;
       font-weight: 600;
+    }
+
+    .Examples {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      width: 100%;
+
+      .Example {
+        display: flex;
+        flex-direction: column;
+        padding: 0.5rem 1rem;
+        border-radius: 10px;
+        width: 100%;
+        gap: 0.5rem;
+        background: rgba(#fff, 0.05);
+        font-size: large;
+
+        .ExampleSentence {
+          display: flex;
+          flex-direction: column;
+
+          span:nth-child(2) {
+            font-weight: lighter;
+            color: #ccc;
+          }
+        }
+      }
+    }
+
+    .Sentences {
+      max-width: 100%;
     }
 
     .Forms {

@@ -108,6 +108,29 @@ const SearchResult = (props: any) => {
             </div>
           </div>
         )}
+
+        {/* Example Sentences */}
+        { (data.sentences.length > 0) && (
+          <div className={styles.Sentences}>
+            <h1 className={styles.ExamplesHeader}>Example Sentences</h1>
+            <div className={styles.Examples}>
+              { data.sentences.map((sentence: any, index: number) => {
+                return (
+                  <div key={index} className={styles.Example}>
+                    <span className={styles.ExampleSentence}>
+                        <span>{sentence.kanji}</span>
+                        <span>{sentence.kana}</span>
+                    </span>
+
+                    <span className={styles.ExampleTranslation}>
+                      {sentence.english}
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
       </section>
 
       {/* Jisho Link */}

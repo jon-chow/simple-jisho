@@ -107,11 +107,13 @@ const SearchHistoryModal = () => {
           className={styles.ModalClearHistoryButton}
           onClick={() => {
             const historyItems = document.querySelectorAll(`.${styles.HistoryItem}`);
-
-            if (confirm("Are you sure you want to clear your search history? " +
-              `(${historyItems.length} search item${historyItems.length !== 1 ? "s" : ""})`)) {
-              localStorage.setItem("searchHistory", JSON.stringify([]));
-              historyItems.forEach((item) => item.remove());
+            
+            if (historyItems.length !== 0) {
+              if (confirm("Are you sure you want to clear your search history? " +
+                `(${historyItems.length} search item${historyItems.length !== 1 ? "s" : ""})`)) {
+                localStorage.setItem("searchHistory", JSON.stringify([]));
+                historyItems.forEach((item) => item.remove());
+              };
             };
           }}
         >

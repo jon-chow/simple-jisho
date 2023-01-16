@@ -34,8 +34,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   // Fetches the examples for each phrase.
   const examplesPromises = filteredPhrasesData.map(async (phrase: any) => {
-    const wordData = await jisho.searchForExamples(phrase.slug);
-    phrase.sentences = wordData.results.slice(0, MAX_SENTENCES_RESULTS);
+    const wordData = await jisho.searchForExamples(phrase.slug)
+    const trimmedData = wordData.results.slice(0, MAX_SENTENCES_RESULTS);
+
+    const filteredData = trimmedData.map((item: any) => {
+      return {
+        english: item.english,
+        kana: item.kana,
+        kanji: item.kanji,
+      };
+    });
+    
+    phrase.sentences = filteredData;
   });
   await Promise.all(examplesPromises);
 
@@ -46,7 +56,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       return char.match(/[\u3400-\u9FBF]/);
     });
 
-    const kanjiData = await jisho.searchForKanji(kanji[0]);
+    // const kanjiData = await jisho.searchForKanji(kanji[0]);
     phrase.kanji = kanji;
   });
   await Promise.all(kanjiPromises);
