@@ -1,4 +1,5 @@
 import { useContext, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { BsX, BsFillTrashFill, BsSearch } from 'react-icons/bs';
 
 import { Status, SearchHistoryContext, ResultsContext, SearchContext } from '../configs/config';
@@ -19,6 +20,8 @@ const SearchHistoryModal = () => {
   const searchContext = useContext(SearchContext);
   const searchHistoryContext = useContext(SearchHistoryContext);
   const resultsContext = useContext(ResultsContext);
+
+  const router = useRouter();
 
   // Toggle the search history modal.
   const toggleSearchHistoryModal = () => {
@@ -64,11 +67,12 @@ const SearchHistoryModal = () => {
                 <button
                   title="Search History Item"
                   onClick={() => {
-                    searchContext.setQuery(searchItem.keyword);
+                    let query = searchItem.keyword;
+                    searchContext.setQuery(query);
                     searchContext.setStatus(Status.SUCCESS);
-                    resultsContext.setKeyword(searchItem.keyword);
+                    resultsContext.setKeyword(query);
                     resultsContext.setResults(searchItem.results);
-                    window.history.pushState(null, "", "?q=" + searchItem.keyword);
+                    router.push({ pathname: "/search", query: { q: query } }, undefined, { shallow: true });
 
                     const input = document.querySelector(`.${styles2.SearchInput}`) as HTMLInputElement;
                     input.value = searchItem.keyword;

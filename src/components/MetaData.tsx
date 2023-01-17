@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 
 import { ResultsContext, AppInfoData } from '../configs/config';
@@ -17,10 +18,17 @@ const MetaData = () => {
   const resultsContext = useContext(ResultsContext);
   const [title, setTitle] = useState(AppInfoData.name);
 
+  const router = useRouter();
+
   useEffect(() => {
-    (resultsContext.keyword) ? setTitle(`${resultsContext.keyword} - ${AppInfoData.name}`)
-                              : setTitle(`${AppInfoData.name}: Japanese Dictionary`);
-  }, [resultsContext.keyword]);
+    (resultsContext.keyword && router.pathname === '/search') ?
+    setTitle(`${resultsContext.keyword} - ${AppInfoData.name}`) :
+
+    (router.pathname === '/kana') ?
+    setTitle(`KANA - ${AppInfoData.name}`) :
+
+    setTitle(`${AppInfoData.name}: Japanese-English Dictionary`);
+  }, [resultsContext.keyword, router.pathname]);
 
   return (
     <Head>

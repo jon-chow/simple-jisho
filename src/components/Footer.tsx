@@ -3,7 +3,7 @@ import { FaGithub } from 'react-icons/fa';
 import { AppInfoData, BackgroundData, SMButtonsData, TechStackData } from '../configs/config';
 
 import styles from '../styles/Footer.module.scss';
-import styles2 from '../styles/Home.module.scss';
+import styles2 from '../styles/Layout.module.scss';
 
 
 /* -------------------------------------------------------------------------- */

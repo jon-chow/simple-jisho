@@ -72,3 +72,9 @@ type WordData = {
     pieces: string,
   }[],
 };
+
+type Kana = {
+  romaji: string,
+  hiragana: string,
+  katakana: string,
+};

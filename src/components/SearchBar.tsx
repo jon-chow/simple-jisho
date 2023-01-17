@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
-import { FaHome, FaSearch, FaTrashAlt, FaHistory } from 'react-icons/fa';
+import { useRouter } from 'next/router';
+import { FaHome, FaTable, FaSearch, FaTrashAlt, FaHistory } from 'react-icons/fa';
 
 import { Status, SearchContext, SearchHistoryContext, ResultsContext } from '../configs/config';
 
@@ -79,7 +80,10 @@ const SearchBar = () => {
   const searchContext = useContext(SearchContext);
   const resultsContext = useContext(ResultsContext);
   const searchHistoryContext = useContext(SearchHistoryContext);
+
   const [querying, setQuerying] = useState<PromiseWithCancel<any> | undefined>(undefined);
+
+  const router = useRouter();
 
   // Toggle the search history modal.
   const toggleSearchHistoryModal = () => {
@@ -88,22 +92,22 @@ const SearchBar = () => {
 
   // Updates the search history.
   const updateSearchHistory = (query: SearchHistory) => {
+    // Ignore empty queries.
+    if (query.results.length === 0) return;
+
+    // Initialize the search history if it doesn't exist.
     if (localStorage.getItem("searchHistory") === null)
       localStorage.setItem("searchHistory", JSON.stringify([]));
 
+    // Update the search history.
     const searchHistory = localStorage.getItem("searchHistory");
-
     if (searchHistory) {
       const history = JSON.parse(searchHistory) as SearchHistory[];
       const index = history.findIndex((item) => item.keyword === query.keyword);
 
-      if (index !== -1) {
-        history.splice(index, 1);
-      };
+      (index !== -1) && history.splice(index, 1);
       
-      if (history.length >= SEARCH_HISTORY_MAX_LENGTH) {
-        history.shift();
-      };
+      (history.length >= SEARCH_HISTORY_MAX_LENGTH) && history.shift();
       
       history.push(query);
       localStorage.setItem("searchHistory", JSON.stringify(history));
@@ -130,28 +134,41 @@ const SearchBar = () => {
     search(query);
   };
 
-  // Returns to the home page.
-  const returnHome = (addHistory : boolean) => {
+  /**
+   * Navigates to a specified page via pathname.
+   * @param pathname The pathname to navigate to. If undefined, navigates to the home page.
+   */
+  const navigatePages = (pathname? : string) => {
     cancelQuery();
     resultsContext.setKeyword("");
     resultsContext.setResults([]);
     searchContext.setStatus(Status.IDLE);
-    (addHistory) && window.history.pushState(null, document.title, "/");
+
+    { pathname ?
+      router.push(pathname, undefined, { shallow: true })
+      : router.push("/", undefined, { shallow: true });
+    };
 
     const input = document.getElementById("search") as HTMLInputElement;
     input.value = "";
   };
 
   // Adds the search to the browser history.
-  const pushHistoryState = (addHistory : boolean, query: string, data : any) => {
+  const pushHistoryState = (query: string, data : any) => {
+    cancelQuery();
+    
     const historyItem : SearchHistory = {
       keyword: query,
       results: data,
       date: new Date(),
     };
 
+    resultsContext.setKeyword(query);
+    resultsContext.setResults(data);
+    searchContext.setStatus(Status.SUCCESS);
+
     updateSearchHistory(historyItem);
-    (addHistory) && window.history.pushState(null, "", (query) ? "?q=" + query : "");
+    router.push({ pathname: "/search", query: { q: query } }, undefined, { shallow: true });
   };
 
   /**
@@ -159,22 +176,19 @@ const SearchBar = () => {
    * @param query The query to search for.
    * @param addHistory Whether to add the search to the browser history.
    */
-  const search = async (query: string, addHistory: boolean = true) => {
+  const search = async (query: string) => {
     if (query) {
       // Check if query was the same as the previous one.
       if (query === searchContext.query) return;
 
       // Check if query exists in local storage and if so, use that.
       const searchHistory = localStorage.getItem("searchHistory");
-
       if (searchHistory) {
         const history = JSON.parse(searchHistory) as SearchHistory[];
         const index = history.findIndex((item) => item.keyword === query);
 
         if (index !== -1) {
-          resultsContext.setKeyword(query);
-          resultsContext.setResults(history[index].results);
-          searchContext.setStatus(Status.SUCCESS);
+          pushHistoryState(query, history[index].results);
           searchContext.setQuery(query);
           return;
         };
@@ -185,21 +199,16 @@ const SearchBar = () => {
       const q = getSearchResults(query);
       setQuerying(q);
       searchContext.setStatus(Status.LOADING);
-
       q.then((data) => {
         // console.log(data);
-        resultsContext.setKeyword(query);
-        resultsContext.setResults(data);
-        searchContext.setStatus(Status.SUCCESS);
-        pushHistoryState(addHistory, query, data);
+        pushHistoryState(query, data);
       }).catch((error) => {
         console.error(error);
         searchContext.setStatus(Status.ERROR);
       });
-
       searchContext.setQuery(query);
     } else {
-      returnHome(addHistory);
+      navigatePages();
     };
   };
 
@@ -212,8 +221,10 @@ const SearchBar = () => {
   // Automatically searches for the query parameter in the URL.
   useEffect(() => {
     const handlePopState = () => {
-      const keyword = getQueryVariable("q");
-      (keyword) ? search(keyword, false) : returnHome(false);
+      const keyword = getQueryVariable("q")?.replace(/\+/g, " ");
+      (keyword) ? search(keyword) :
+      (router.pathname === "/search") ? navigatePages() :
+      null;
     };
     
     handlePopState();
@@ -227,9 +238,18 @@ const SearchBar = () => {
         className={styles.HomeButton}
         type="button"
         title="Home"
-        onClick={() => returnHome(true)}
+        onClick={() => navigatePages()}
       >
         <FaHome />
+      </button>
+
+      <button
+        className={styles.KanaButton}
+        type="button"
+        title="Kana Charts"
+        onClick={() => navigatePages("/kana")}
+      >
+        <FaTable />
       </button>
 
       {/* Search Input */}

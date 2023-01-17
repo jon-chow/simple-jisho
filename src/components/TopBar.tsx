@@ -1,12 +1,13 @@
 import { useContext } from 'react';
 
-import Logo from '../../public/static/logo.svg';
 import { Status, SearchContext, ResultsContext, AppInfoData } from '../configs/config';
 
 import SearchBar from './SearchBar';
 
+import Logo from '../../public/static/logo.svg';
+
 import styles from '../styles/TopBar.module.scss';
-import styles2 from '../styles/Home.module.scss';
+import styles2 from '../styles/Layout.module.scss';
 
 
 /* -------------------------------------------------------------------------- */
@@ -27,19 +28,11 @@ const TopBar = () => {
    */
   const checkStatus = () => {
     switch (searchContext.status) {
-      case Status.IDLE:
-        return <div className={styles.StatusLabel}>Look up a word by entering it into the search bar.</div>;
-      case Status.LOADING:
-        return <div className={styles.StatusLabel}>Searching...</div>;
-      case Status.SUCCESS:
-        return <div className={styles.StatusLabel}>
-          Found {resultsContext.results.length} results for
-          &quot;<span className={styles.keyword}>{resultsContext.keyword}</span>&quot;.
-        </div>;
-      case Status.CANCELLED:
-        return <div className={styles.StatusLabel}>Search cancelled.</div>;
-      default:
-        return <div className={styles.StatusLabel}>An error occurred while searching.</div>;
+      case Status.IDLE: return "Look up a word by entering it into the search bar.";
+      case Status.LOADING: return "Searching...";
+      case Status.SUCCESS: return `Found ${resultsContext.results.length} results for "${resultsContext.keyword}".`;
+      case Status.CANCELLED: return "Search cancelled.";
+      default: return "An error occurred while searching.";
     }
   };
 
@@ -65,7 +58,9 @@ const TopBar = () => {
       {/* Search Bar */}
       <SearchBar />
 
-      { checkStatus() }
+      <div className={styles.StatusLabel}>
+        { checkStatus() }
+      </div>
     </header>
   )
 };
