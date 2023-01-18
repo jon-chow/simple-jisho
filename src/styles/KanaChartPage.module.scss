@@ -1,3 +1,74 @@
 .KanaChartPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
 
+  h1 {
+    font-size: 3rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .KanaGrid {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 2rem;
+    width: 100%;
+    box-sizing: border-box;
+
+    .KanaRow {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: inherit;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.KanaCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+  border: 1px solid var(--primary-colour-light);
+  border-radius: 5px;
+  background-color: rgba(var(--primary-colour-dark-raw), 0.4);
+  backdrop-filter: blur(5px);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.05);
+    background-color: rgba(var(--primary-colour-dark-raw), 0.5);
+    backdrop-filter: blur(10px);
+  }
+
+  .Hiragana,
+  .Katakana {
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+
+  .Romaji {
+    font-size: 1.75rem;
+  }
+}
+
+.KanaCardFiller {
+  width: 100%;
+  height: 100%;
 }

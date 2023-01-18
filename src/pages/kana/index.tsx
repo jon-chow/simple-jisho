@@ -1,55 +1,101 @@
+import Image from 'next/image';
+
 import styles from '../../styles/KanaChartPage.module.scss';
 
 
-// List of kana.
-const KANA : Kana[] = [
-  {romaji: 'a', hiragana: 'あ', katakana: 'ア'},
-  {romaji: 'i', hiragana: 'い', katakana: 'イ'},
-  {romaji: 'u', hiragana: 'う', katakana: 'ウ'},
-  {romaji: 'e', hiragana: 'え', katakana: 'エ'},
-  {romaji: 'o', hiragana: 'お', katakana: 'オ'},
-  {romaji: 'ka', hiragana: 'か', katakana: 'カ'},
-  {romaji: 'ki', hiragana: 'き', katakana: 'キ'},
-  {romaji: 'ku', hiragana: 'く', katakana: 'ク'},
-  {romaji: 'ke', hiragana: 'け', katakana: 'ケ'},
-  {romaji: 'ko', hiragana: 'こ', katakana: 'コ'},
-  {romaji: 'sa', hiragana: 'さ', katakana: 'サ'},
-  {romaji: 'shi', hiragana: 'し', katakana: 'シ'},
-  {romaji: 'su', hiragana: 'す', katakana: 'ス'},
-  {romaji: 'se', hiragana: 'せ', katakana: 'セ'},
-  {romaji: 'so', hiragana: 'そ', katakana: 'ソ'},
-  {romaji: 'ta', hiragana: 'た', katakana: 'タ'},
-  {romaji: 'chi', hiragana: 'ち', katakana: 'チ'},
-  {romaji: 'tsu', hiragana: 'つ', katakana: 'ツ'},
-  {romaji: 'te', hiragana: 'て', katakana: 'テ'},
-  {romaji: 'to', hiragana: 'と', katakana: 'ト'},
-  {romaji: 'na', hiragana: 'な', katakana: 'ナ'},
-  {romaji: 'ni', hiragana: 'に', katakana: 'ニ'},
-  {romaji: 'nu', hiragana: 'ぬ', katakana: 'ヌ'},
-  {romaji: 'ne', hiragana: 'ね', katakana: 'ネ'},
-  {romaji: 'no', hiragana: 'の', katakana: 'ノ'},
-  {romaji: 'ha', hiragana: 'は', katakana: 'ハ'},
-  {romaji: 'hi', hiragana: 'ひ', katakana: 'ヒ'},
-  {romaji: 'fu', hiragana: 'ふ', katakana: 'フ'},
-  {romaji: 'he', hiragana: 'へ', katakana: 'ヘ'},
-  {romaji: 'ho', hiragana: 'ほ', katakana: 'ホ'},
-  {romaji: 'ma', hiragana: 'ま', katakana: 'マ'},
-  {romaji: 'mi', hiragana: 'み', katakana: 'ミ'},
-  {romaji: 'mu', hiragana: 'む', katakana: 'ム'},
-  {romaji: 'me', hiragana: 'め', katakana: 'メ'},
-  {romaji: 'mo', hiragana: 'も', katakana: 'モ'},
-  {romaji: 'ya', hiragana: 'や', katakana: 'ヤ'},
-  {romaji: 'yu', hiragana: 'ゆ', katakana: 'ユ'},
-  {romaji: 'yo', hiragana: 'よ', katakana: 'ヨ'},
-  {romaji: 'ra', hiragana: 'ら', katakana: 'ラ'},
-  {romaji: 'ri', hiragana: 'り', katakana: 'リ'},
-  {romaji: 'ru', hiragana: 'る', katakana: 'ル'},
-  {romaji: 're', hiragana: 'れ', katakana: 'レ'},
-  {romaji: 'ro', hiragana: 'ろ', katakana: 'ロ'},
-  {romaji: 'wa', hiragana: 'わ', katakana: 'ワ'},
-  {romaji: 'wo', hiragana: 'を', katakana: 'ヲ'},
-  {romaji: 'n', hiragana: 'ん', katakana: 'ン'},
+// Returns the base image URL for a given character.
+const baseImageUrl = (character : string) => {
+  return `https://raw.githubusercontent.com/mistval/kanji_images/master/gifs/${charToUnicode(character)}.gif`;
+};
 
+// Converts a character to its unicode representation.
+const charToUnicode = (char : string) => {
+  return char.charCodeAt(0).toString(16).toLowerCase();
+};
+
+// List of kana.
+const KANA : Kana[][] = [
+  [
+    {romaji: 'a', hiragana: 'あ', katakana: 'ア'},
+    {romaji: 'i', hiragana: 'い', katakana: 'イ'},
+    {romaji: 'u', hiragana: 'う', katakana: 'ウ'},
+    {romaji: 'e', hiragana: 'え', katakana: 'エ'},
+    {romaji: 'o', hiragana: 'お', katakana: 'オ'},
+  ],
+  [
+    {romaji: 'ka', hiragana: 'か', katakana: 'カ'},
+    {romaji: 'ki', hiragana: 'き', katakana: 'キ'},
+    {romaji: 'ku', hiragana: 'く', katakana: 'ク'},
+    {romaji: 'ke', hiragana: 'け', katakana: 'ケ'},
+    {romaji: 'ko', hiragana: 'こ', katakana: 'コ'},
+  ],
+  [
+    {romaji: 'sa', hiragana: 'さ', katakana: 'サ'},
+    {romaji: 'shi', hiragana: 'し', katakana: 'シ'},
+    {romaji: 'su', hiragana: 'す', katakana: 'ス'},
+    {romaji: 'se', hiragana: 'せ', katakana: 'セ'},
+    {romaji: 'so', hiragana: 'そ', katakana: 'ソ'},
+  ],
+  [
+    {romaji: 'ta', hiragana: 'た', katakana: 'タ'},
+    {romaji: 'chi', hiragana: 'ち', katakana: 'チ'},
+    {romaji: 'tsu', hiragana: 'つ', katakana: 'ツ'},
+    {romaji: 'te', hiragana: 'て', katakana: 'テ'},
+    {romaji: 'to', hiragana: 'と', katakana: 'ト'},
+  ],
+  [
+    {romaji: 'na', hiragana: 'な', katakana: 'ナ'},
+    {romaji: 'ni', hiragana: 'に', katakana: 'ニ'},
+    {romaji: 'nu', hiragana: 'ぬ', katakana: 'ヌ'},
+    {romaji: 'ne', hiragana: 'ね', katakana: 'ネ'},
+    {romaji: 'no', hiragana: 'の', katakana: 'ノ'},
+  ],
+  [
+    {romaji: 'ha', hiragana: 'は', katakana: 'ハ'},
+    {romaji: 'hi', hiragana: 'ひ', katakana: 'ヒ'},
+    {romaji: 'fu', hiragana: 'ふ', katakana: 'フ'},
+    {romaji: 'he', hiragana: 'へ', katakana: 'ヘ'},
+    {romaji: 'ho', hiragana: 'ほ', katakana: 'ホ'},
+  ],
+  [
+    {romaji: 'ma', hiragana: 'ま', katakana: 'マ'},
+    {romaji: 'mi', hiragana: 'み', katakana: 'ミ'},
+    {romaji: 'mu', hiragana: 'む', katakana: 'ム'},
+    {romaji: 'me', hiragana: 'め', katakana: 'メ'},
+    {romaji: 'mo', hiragana: 'も', katakana: 'モ'},
+  ],
+  [
+    {romaji: 'ya', hiragana: 'や', katakana: 'ヤ'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: 'yu', hiragana: 'ゆ', katakana: 'ユ'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: 'yo', hiragana: 'よ', katakana: 'ヨ'},
+  ],
+  [
+    {romaji: 'ra', hiragana: 'ら', katakana: 'ラ'},
+    {romaji: 'ri', hiragana: 'り', katakana: 'リ'},
+    {romaji: 'ru', hiragana: 'る', katakana: 'ル'},
+    {romaji: 're', hiragana: 'れ', katakana: 'レ'},
+    {romaji: 'ro', hiragana: 'ろ', katakana: 'ロ'},
+  ],
+  [
+    {romaji: 'wa', hiragana: 'わ', katakana: 'ワ'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: 'wo', hiragana: 'を', katakana: 'ヲ'},
+  ],
+  [
+    {romaji: 'n', hiragana: 'ん', katakana: 'ン'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: '', hiragana: '', katakana: ''},
+  ]
+];
+
+// List of diacritics.
+const DIACRITICS : Kana[] = [
   {romaji: 'ga', hiragana: 'が', katakana: 'ガ'},
   {romaji: 'gi', hiragana: 'ぎ', katakana: 'ギ'},
   {romaji: 'gu', hiragana: 'ぐ', katakana: 'グ'},
@@ -120,17 +166,39 @@ const KANA : Kana[] = [
  */
 const KanaCard = (props : {kana : Kana}) => {
   return (
-    <div className={styles.KanaCard}>
-      <div className={styles.Hiragana}>
-        {props.kana.hiragana}
+    (props.kana.romaji.length > 0) ?
+      <div
+        className={styles.KanaCard}
+        title={
+          `Romaji: ${props.kana.romaji}\nHiragana: ${props.kana.hiragana}\nKatakana: ${props.kana.katakana}`}
+      >
+        <div className={styles.Romaji}>
+          {props.kana.romaji}
+        </div>
+
+        <div className={styles.Hiragana}>
+          {props.kana.hiragana}
+        </div>
+        <div>
+          { 
+            (props.kana.hiragana.length === 1) &&
+            <Image src={baseImageUrl(props.kana.hiragana)} alt="" width={100} height={100} />
+          }
+        </div>
+
+        <div className={styles.Katakana}>
+          {props.kana.katakana}
+        </div>
+        <div>
+          { 
+            (props.kana.katakana.length === 1) &&
+            <Image src={baseImageUrl(props.kana.katakana)} alt="" width={100} height={100} />
+          }
+        </div>
+      </div> :
+      <div className={styles.KanaCardFiller}>
+
       </div>
-      <div className={styles.Katakana}>
-        {props.kana.katakana}
-      </div>
-      <div className={styles.Romaji}>
-        {props.kana.romaji}
-      </div>
-    </div>
   );
 };
 
@@ -150,8 +218,14 @@ const KanaChartPage = () => {
       <h1>Kana Chart</h1>
       
       <div className={styles.KanaGrid}>
-        {KANA.map((kana : Kana, index : number) => (
-          <KanaCard key={index} kana={kana} />
+        {KANA.map((kanaGroup : Kana[], index : number) => (
+          <div key={index} className={styles.KanaRow}>
+
+            { kanaGroup.map((kana : Kana, index : number) => (
+              <KanaCard key={index} kana={kana} />
+            ))}
+
+          </div>
         ))}
       </div>
     </div>

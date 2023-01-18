@@ -25,7 +25,7 @@ const MetaData = () => {
     setTitle(`${resultsContext.keyword} - ${AppInfoData.name}`) :
 
     (router.pathname === '/kana') ?
-    setTitle(`KANA - ${AppInfoData.name}`) :
+    setTitle(`Kana Chart on ${AppInfoData.name}`) :
 
     setTitle(`${AppInfoData.name}: Japanese-English Dictionary`);
   }, [resultsContext.keyword, router.pathname]);
