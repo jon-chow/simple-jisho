@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import { BsX } from 'react-icons/bs';
 import Image from 'next/image';
 
-import { KanjiContext } from '../configs/config';
+import { ModalContext, ModalType } from '../configs/config';
 
 import styles from '../styles/KanjiModal.module.scss';
 
@@ -16,12 +16,13 @@ import styles from '../styles/KanjiModal.module.scss';
  * The kanji info modal displays detailed information on a set of kanji.
  */
 const KanjiModal = () => {
-  const kanjiContext = useContext(KanjiContext);
+  const kanjiContext = useContext(ModalContext);
 
   // Toggle the kanji info modal.
   const toggleKanjiModal = () => {
+    kanjiContext.setModalType(ModalType.NONE);
     kanjiContext.setModalToggle(!kanjiContext.modalToggle);
-    kanjiContext.setKanji([]);
+    kanjiContext.setData({});
   };
 
   // Close the kanji info modal when the user clicks outside of it.
@@ -53,7 +54,7 @@ const KanjiModal = () => {
         </div>
 
         <div className={styles.KanjiItems}>
-          { kanjiContext.kanji.map((kanji, index) => (
+          { kanjiContext.data.map((kanji : any, index : number) => (
             <div className={styles.KanjiItem} key={index}>
               <div className={styles.KanjiContent}>
                 <div className={styles.KanjiHeader}>

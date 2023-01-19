@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { BsClipboard, BsInfoCircle } from 'react-icons/bs';
 
-import { KanjiContext } from '../configs/config';
+import { ModalContext, ModalType } from '../configs/config';
 
 import styles from '../styles/SearchResult.module.scss';
 
@@ -15,7 +15,7 @@ import styles from '../styles/SearchResult.module.scss';
  * The SearchResult component contains data on a search.
  */
 const SearchResult = (props: any) => {
-  const kanjiContext = useContext(KanjiContext);
+  const kanjiContext = useContext(ModalContext);
 
   const data = props.resultData;
   const mainForm = data.japanese[0];
@@ -27,7 +27,8 @@ const SearchResult = (props: any) => {
 
   // Toggle the kanji info modal.
   const toggleKanjiInfoModal = (kanji: any[]) => {
-    kanjiContext.setKanji(kanji);
+    kanjiContext.setModalType(ModalType.KANJI);
+    kanjiContext.setData(kanji);
     kanjiContext.setModalToggle(!kanjiContext.modalToggle);
   };
   

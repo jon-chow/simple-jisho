@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { BsX, BsFillTrashFill, BsSearch } from 'react-icons/bs';
 
-import { Status, SearchHistoryContext, ResultsContext, SearchContext } from '../configs/config';
+import { Status, ResultsContext, SearchContext, ModalContext, ModalType } from '../configs/config';
 
 import styles from '../styles/SearchHistoryModal.module.scss';
 import styles2 from '../styles/SearchBar.module.scss';
@@ -18,13 +18,14 @@ import styles2 from '../styles/SearchBar.module.scss';
  */
 const SearchHistoryModal = () => {
   const searchContext = useContext(SearchContext);
-  const searchHistoryContext = useContext(SearchHistoryContext);
   const resultsContext = useContext(ResultsContext);
+  const searchHistoryContext = useContext(ModalContext);
 
   const router = useRouter();
 
   // Toggle the search history modal.
   const toggleSearchHistoryModal = () => {
+    searchHistoryContext.setModalType(ModalType.NONE);
     searchHistoryContext.setModalToggle(!searchHistoryContext.modalToggle);
   };
 

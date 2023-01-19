@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import { FaHome, FaTable, FaSearch, FaTrashAlt, FaHistory } from 'react-icons/fa';
 
-import { Status, SearchContext, SearchHistoryContext, ResultsContext } from '../configs/config';
+import { Status, SearchContext, ResultsContext, ModalContext, ModalType } from '../configs/config';
 
 import styles from '../styles/SearchBar.module.scss';
 
@@ -79,7 +79,7 @@ const SEARCH_HISTORY_MAX_LENGTH = 10;
 const SearchBar = () => {
   const searchContext = useContext(SearchContext);
   const resultsContext = useContext(ResultsContext);
-  const searchHistoryContext = useContext(SearchHistoryContext);
+  const searchHistoryContext = useContext(ModalContext);
 
   const [querying, setQuerying] = useState<PromiseWithCancel<any> | undefined>(undefined);
 
@@ -87,6 +87,9 @@ const SearchBar = () => {
 
   // Toggle the search history modal.
   const toggleSearchHistoryModal = () => {
+    searchHistoryContext.setModalType(
+      searchHistoryContext.modalType === ModalType.SEARCH_HISTORY ? ModalType.NONE : ModalType.SEARCH_HISTORY
+    );
     searchHistoryContext.setModalToggle(!searchHistoryContext.modalToggle);
   };
 

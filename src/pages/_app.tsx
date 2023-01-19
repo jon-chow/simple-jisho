@@ -1,14 +1,16 @@
 import type { AppProps } from 'next/app';
 import { useState } from 'react';
 
-import { Status, ResultsContext, SearchContext, SearchHistoryContext, KanjiContext } from '../configs/config';
+import { Status, ResultsContext, SearchContext, ModalContext, ModalType } from '../configs/config';
 
 import MetaData from '../components/MetaData';
 import Background from '../components/Background';
 import TopBar from '../components/TopBar';
 import Footer from '../components/Footer';
+
 import SearchHistoryModal from '../components/SearchHistoryModal';
 import KanjiModal from '../components/KanjiModal';
+import KanaModal from '../components/KanaModal';
 
 import '../styles/_globals.scss';
 import styles from '../styles/Layout.module.scss';
@@ -26,10 +28,9 @@ const Layout = ({ children }: any) => {
   const [resultKeyword, setKeyword] = useState("");
   const [results, setResults] = useState<WordData[]>([]);
 
-  const [historyModalToggle, setHistoryModalToggle] = useState(false);
-
-  const [kanji, setKanji] = useState<any[]>([]);
-  const [kanjiModalToggle, setKanjiModalToggle] = useState(false);
+  const [modalType, setModalType] = useState<ModalType>(0);
+  const [modalToggle, setModalToggle] = useState<boolean>(false);
+  const [data, setData] = useState<any>({});
 
   return (
     <SearchContext.Provider value={{
@@ -40,33 +41,33 @@ const Layout = ({ children }: any) => {
         results: results, setResults,
         keyword: resultKeyword, setKeyword
       }}>
-        <SearchHistoryContext.Provider value={{
-          modalToggle: historyModalToggle, setModalToggle: setHistoryModalToggle
+        <ModalContext.Provider value={{
+          modalType, setModalType,
+          modalToggle, setModalToggle,
+          data, setData
         }}>
-          <KanjiContext.Provider value={{
-            modalToggle: kanjiModalToggle, setModalToggle: setKanjiModalToggle,
-            kanji: kanji, setKanji
-          }}>
-            <div className={styles.Container}>
-              <MetaData />
-              <Background />
-              <TopBar />
+          <div className={styles.Container}>
+            <MetaData />
+            <Background />
+            <TopBar />
 
-              {/* Search History Modal */}
-              { historyModalToggle && <SearchHistoryModal /> }
+            {/* Search History/Kanji Modal */}
+            { (modalType === ModalType.SEARCH_HISTORY && modalToggle) ?
+              <SearchHistoryModal /> :
+              (modalType === ModalType.KANJI && modalToggle) ?
+              <KanjiModal /> :
+              (modalType === ModalType.KANA && modalToggle) &&
+              <KanaModal />
+            }
 
-              {/* Kanji Modal */}
-              { kanjiModalToggle && <KanjiModal /> }
+            {/* Main Content */}
+            <main className={styles.Main}>
+              { children }
+            </main>
 
-              {/* Main Content */}
-              <main className={styles.Main}>
-                { children }
-              </main>
-
-              <Footer />
-            </div>
-          </KanjiContext.Provider>
-        </SearchHistoryContext.Provider>
+            <Footer />
+          </div>
+        </ModalContext.Provider>
       </ResultsContext.Provider>
     </SearchContext.Provider>
   );

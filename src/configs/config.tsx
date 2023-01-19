@@ -53,18 +53,16 @@ export enum Status {
   ERROR
 };
 
+/* -------------------------------------------------------------------------- */
+/*                                   CONTEXT                                  */
+/* -------------------------------------------------------------------------- */
+
 // Context for a search.
 export const SearchContext = createContext({
   query: "",
   setQuery: (query: string) => {},
   status: Status.IDLE,
   setStatus: (status: Status) => {},
-});
-
-// Context for search history.
-export const SearchHistoryContext = createContext({
-  modalToggle: false,
-  setModalToggle: (modalToggle: boolean) => {},
 });
 
 // Context for the result of a search.
@@ -75,10 +73,29 @@ export const ResultsContext = createContext({
   setResults: (results: WordData[]) => {},
 });
 
-// Context for the kanji modal.
-export const KanjiContext = createContext({
+
+/* --------------------------------- MODALS --------------------------------- */
+
+// Base context for a modal.
+const Modal = {
   modalToggle: false,
   setModalToggle: (modalToggle: boolean) => {},
-  kanji: [] as any[],
-  setKanji: (kanji: any[]) => {},
+};
+
+// Enumerates the different types of modals.
+export enum ModalType {
+  NONE,
+  SEARCH_HISTORY,
+  KANJI,
+  KANA,
+};
+
+// Context for modal.
+export const ModalContext = createContext({
+  modalType: 0 as ModalType,
+  setModalType: (modalType: ModalType) => {},
+  modalToggle: false,
+  setModalToggle: (modalToggle: boolean) => {},
+  data: {} as any,
+  setData: (data: any) => {},
 });
