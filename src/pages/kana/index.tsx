@@ -1,4 +1,6 @@
-import Image from 'next/image';
+import { useContext } from 'react';
+
+import { ModalContext, ModalType } from '../../configs/config';
 
 import styles from '../../styles/KanaChartPage.module.scss';
 
@@ -165,12 +167,22 @@ const DIACRITICS : Kana[] = [
  * depending on the settings.
  */
 const KanaCard = (props : {kana : Kana}) => {
+  const KanaContext = useContext(ModalContext);
+
+    // Toggle the kana info modal.
+  const toggleKanaModal = () => {
+    KanaContext.setModalType(ModalType.KANA);
+    KanaContext.setModalToggle(!KanaContext.modalToggle);
+    KanaContext.setData(props.kana);
+  };
+
   return (
     (props.kana.romaji.length > 0) ?
       <div
         className={styles.KanaCard}
         title={
           `Romaji: ${props.kana.romaji}\nHiragana: ${props.kana.hiragana}\nKatakana: ${props.kana.katakana}`}
+        onClick={() => toggleKanaModal()}
       >
         <div className={styles.Romaji}>
           {props.kana.romaji}
@@ -179,21 +191,9 @@ const KanaCard = (props : {kana : Kana}) => {
         <div className={styles.Hiragana}>
           {props.kana.hiragana}
         </div>
-        <div>
-          { 
-            (props.kana.hiragana.length === 1) &&
-            <Image src={baseImageUrl(props.kana.hiragana)} alt="" width={100} height={100} />
-          }
-        </div>
 
         <div className={styles.Katakana}>
           {props.kana.katakana}
-        </div>
-        <div>
-          { 
-            (props.kana.katakana.length === 1) &&
-            <Image src={baseImageUrl(props.kana.katakana)} alt="" width={100} height={100} />
-          }
         </div>
       </div> :
       <div className={styles.KanaCardFiller}>

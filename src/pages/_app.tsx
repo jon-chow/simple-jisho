@@ -8,9 +8,9 @@ import Background from '../components/Background';
 import TopBar from '../components/TopBar';
 import Footer from '../components/Footer';
 
-import SearchHistoryModal from '../components/SearchHistoryModal';
-import KanjiModal from '../components/KanjiModal';
-import KanaModal from '../components/KanaModal';
+import SearchHistoryModal from '../components/modals/SearchHistoryModal';
+import KanjiModal from '../components/modals/KanjiModal';
+import KanaModal from '../components/modals/KanaModal';
 
 import '../styles/_globals.scss';
 import styles from '../styles/Layout.module.scss';

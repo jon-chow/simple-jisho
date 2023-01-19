@@ -76,11 +76,6 @@ export const ResultsContext = createContext({
 
 /* --------------------------------- MODALS --------------------------------- */
 
-// Base context for a modal.
-const Modal = {
-  modalToggle: false,
-  setModalToggle: (modalToggle: boolean) => {},
-};
 
 // Enumerates the different types of modals.
 export enum ModalType {
@@ -90,12 +85,22 @@ export enum ModalType {
   KANA,
 };
 
-// Context for modal.
-export const ModalContext = createContext({
-  modalType: 0 as ModalType,
+// Base context for a modal.
+const Modal = {
+  modalType: ModalType.NONE,
   setModalType: (modalType: ModalType) => {},
   modalToggle: false,
   setModalToggle: (modalToggle: boolean) => {},
   data: {} as any,
   setData: (data: any) => {},
-});
+};
+
+// Context for modal.
+export const ModalContext = createContext(Modal);
+
+// Resets the modal context.
+export const resetModalContext = (context : typeof Modal) => {
+  context.setModalType(ModalType.NONE);
+  context.setModalToggle(false);
+  context.setData({});
+};

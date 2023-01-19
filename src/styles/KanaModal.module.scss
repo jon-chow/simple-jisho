@@ -1,3 +1,26 @@
-.KanaModal {
+.KanaContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  background: rgba(#000, 0.1);
+  border-radius: 1rem;
+  padding: 1rem;
+  width: 95%;
+  height: 100%;
+  gap: 1rem;
 
+  // .KanaItem {
+  //   display: flex;
+  //   flex-direction: row;
+  //   align-items: center;
+  //   padding: 2rem;
+  //   background: rgba(#fff, 0.05);
+  //   border-radius: 1rem;
+  //   gap: 2rem;
+
+  //   p {
+  //     margin: 0;
+  //   }
+  // }
 }
