@@ -1,7 +1,12 @@
 :root {
-  --primary-colour: rgb(254, 184, 225);
-  --primary-colour-dark: rgb(230, 154, 198);
-  --primary-colour-light: rgb(255, 211, 237);
+  --primary-colour-raw: 254, 184, 225;
+  --primary-colour: rgb(var(--primary-colour-raw));
+
+  --primary-colour-dark-raw: 230, 154, 198;
+  --primary-colour-dark: rgb(var(--primary-colour-dark-raw));
+
+  --primary-colour-light-raw: 255, 211, 237;
+  --primary-colour-light: rgb(var(--primary-colour-light-raw));
 }
 
 html,

@@ -6,6 +6,7 @@
   align-items: center;
   gap: 0.5rem;
 
+  .KanaButton,
   .HomeButton {
     padding: 0.5rem;
     border: hidden;
@@ -18,7 +19,6 @@
 
     &:hover {
       background-color: var(--primary-colour-dark);
-      transition: background-color 0.25s ease-in-out;
     }
   }
 
