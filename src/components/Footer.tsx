@@ -1,6 +1,7 @@
-import { FaGithub } from 'react-icons/fa';
+import { useContext } from 'react';
+import { FaGithub, FaBook } from 'react-icons/fa';
 
-import { AppInfoData, BackgroundData, SMButtonsData, TechStackData } from '../configs/config';
+import { AppInfoData, BackgroundData, SMButtonsData, TechStackData, ModalContext, ModalType } from '../configs/config';
 
 import styles from '../styles/Footer.module.scss';
 import styles2 from '../styles/Layout.module.scss';
@@ -16,6 +17,16 @@ import styles2 from '../styles/Layout.module.scss';
  * as well as a link to the source code (GitHub) and the Jisho website.
  */
 const Footer = () => {
+  const devLogsContext = useContext(ModalContext);
+
+  // Toggle the dev logs modal.
+  const toggleDevLogsModal = () => {
+    devLogsContext.setModalType(
+      devLogsContext.modalType === ModalType.DEVLOGS ? ModalType.NONE : ModalType.DEVLOGS
+    );
+    devLogsContext.setModalToggle(!devLogsContext.modalToggle);
+  };
+
   return (
     <footer className={styles.Footer}>
       {/* Copyright information */}
@@ -112,6 +123,16 @@ const Footer = () => {
         >
           <FaGithub />
         </a>
+      </div>
+
+      {/* Dev logs */}
+      <div className={styles.DevLogs}>
+        <button
+          className={styles.DevLogsButton}
+          onClick={toggleDevLogsModal}
+        >
+          <FaBook /> Dev Logs
+        </button>
       </div>
     </footer>
   );

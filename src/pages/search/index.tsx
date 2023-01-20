@@ -30,14 +30,12 @@ const SearchPage = () => {
 
   // Changes the current page to the next page.
   const nextPage = () => {
-    (currentPage < numPages) ? setCurrentPage(currentPage + 1) : setCurrentPage(1);
-    window.scrollTo(0, 0);
+    (currentPage < numPages) ? setPage(currentPage + 1) : setPage(1);
   };
 
   // Changes the current page to the previous page.
   const prevPage = () => {
-    (currentPage > 1) ? setCurrentPage(currentPage - 1) : setCurrentPage(numPages);
-    window.scrollTo(0, 0);
+    (currentPage > 1) ? setPage(currentPage - 1) : setPage(numPages);
   };
 
   // Changes the current page to the specified page.

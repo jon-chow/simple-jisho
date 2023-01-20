@@ -8,6 +8,7 @@ import Background from '../components/Background';
 import TopBar from '../components/TopBar';
 import Footer from '../components/Footer';
 
+import DevLogsModal from '../components/modals/DevLogsModal';
 import SearchHistoryModal from '../components/modals/SearchHistoryModal';
 import KanjiModal from '../components/modals/KanjiModal';
 import KanaModal from '../components/modals/KanaModal';
@@ -15,6 +16,25 @@ import KanaModal from '../components/modals/KanaModal';
 import '../styles/_globals.scss';
 import styles from '../styles/Layout.module.scss';
 
+
+/**
+ * Returns the modal component to be displayed.
+ * 
+ * @param modalType the type of modal to display.
+ * @param modalToggle whether or not to display the modal.
+ * @returns the modal to display.
+ */
+const getModal = (modalType: ModalType, modalToggle: boolean) => {
+  if (!modalToggle) return null;
+
+  switch (modalType) {
+    case ModalType.DEVLOGS:        return <DevLogsModal />;
+    case ModalType.SEARCH_HISTORY: return <SearchHistoryModal />;
+    case ModalType.KANJI:          return <KanjiModal />;
+    case ModalType.KANA:           return <KanaModal />;
+    default:                       return null;
+  }
+};
 
 /**
  * Exports the Layout component.
@@ -28,7 +48,7 @@ const Layout = ({ children }: any) => {
   const [resultKeyword, setKeyword] = useState("");
   const [results, setResults] = useState<WordData[]>([]);
 
-  const [modalType, setModalType] = useState<ModalType>(0);
+  const [modalType, setModalType] = useState<ModalType>(ModalType.NONE);
   const [modalToggle, setModalToggle] = useState<boolean>(false);
   const [data, setData] = useState<any>({});
 
@@ -39,7 +59,7 @@ const Layout = ({ children }: any) => {
     }}>
       <ResultsContext.Provider value={{
         results: results, setResults,
-        keyword: resultKeyword, setKeyword
+        keyword: resultKeyword, setKeyword,
       }}>
         <ModalContext.Provider value={{
           modalType, setModalType,
@@ -51,14 +71,8 @@ const Layout = ({ children }: any) => {
             <Background />
             <TopBar />
 
-            {/* Search History/Kanji Modal */}
-            { (modalType === ModalType.SEARCH_HISTORY && modalToggle) ?
-              <SearchHistoryModal /> :
-              (modalType === ModalType.KANJI && modalToggle) ?
-              <KanjiModal /> :
-              (modalType === ModalType.KANA && modalToggle) &&
-              <KanaModal />
-            }
+            {/* Modal */}
+            { getModal(modalType, modalToggle) }
 
             {/* Main Content */}
             <main className={styles.Main}>

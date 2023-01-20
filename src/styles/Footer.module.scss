@@ -47,4 +47,27 @@
       transition: color 0.25s ease;
     }
   }
+
+  .DevLogs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .DevLogsButton {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.3rem 0.5rem;
+      border: hidden;
+      border-radius: 5px;
+      font-size: normal;
+      cursor: pointer;
+      transition: background-color 0.25s ease-in-out;
+
+      &:hover {
+        background-color: var(--primary-colour-dark);
+      }
+    }
+  }
 }

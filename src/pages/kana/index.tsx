@@ -5,18 +5,8 @@ import { ModalContext, ModalType } from '../../configs/config';
 import styles from '../../styles/KanaChartPage.module.scss';
 
 
-// Returns the base image URL for a given character.
-const baseImageUrl = (character : string) => {
-  return `https://raw.githubusercontent.com/mistval/kanji_images/master/gifs/${charToUnicode(character)}.gif`;
-};
-
-// Converts a character to its unicode representation.
-const charToUnicode = (char : string) => {
-  return char.charCodeAt(0).toString(16).toLowerCase();
-};
-
-// List of kana.
-const KANA : Kana[][] = [
+// List of basic kana.
+const BASIC_KANA : Kana[][] = [
   [
     {romaji: 'a', hiragana: 'あ', katakana: 'ア'},
     {romaji: 'i', hiragana: 'い', katakana: 'イ'},
@@ -96,67 +86,124 @@ const KANA : Kana[][] = [
   ]
 ];
 
-// List of diacritics.
-const DIACRITICS : Kana[] = [
-  {romaji: 'ga', hiragana: 'が', katakana: 'ガ'},
-  {romaji: 'gi', hiragana: 'ぎ', katakana: 'ギ'},
-  {romaji: 'gu', hiragana: 'ぐ', katakana: 'グ'},
-  {romaji: 'ge', hiragana: 'げ', katakana: 'ゲ'},
-  {romaji: 'go', hiragana: 'ご', katakana: 'ゴ'},
-  {romaji: 'za', hiragana: 'ざ', katakana: 'ザ'},
-  {romaji: 'ji', hiragana: 'じ', katakana: 'ジ'},
-  {romaji: 'zu', hiragana: 'ず', katakana: 'ズ'},
-  {romaji: 'ze', hiragana: 'ぜ', katakana: 'ゼ'},
-  {romaji: 'zo', hiragana: 'ぞ', katakana: 'ゾ'},
-  {romaji: 'da', hiragana: 'だ', katakana: 'ダ'},
-  {romaji: 'ji', hiragana: 'ぢ', katakana: 'ヂ'},
-  {romaji: 'zu', hiragana: 'づ', katakana: 'ヅ'},
-  {romaji: 'de', hiragana: 'で', katakana: 'デ'},
-  {romaji: 'do', hiragana: 'ど', katakana: 'ド'},
-  {romaji: 'ba', hiragana: 'ば', katakana: 'バ'},
-  {romaji: 'bi', hiragana: 'び', katakana: 'ビ'},
-  {romaji: 'bu', hiragana: 'ぶ', katakana: 'ブ'},
-  {romaji: 'be', hiragana: 'べ', katakana: 'ベ'},
-  {romaji: 'bo', hiragana: 'ぼ', katakana: 'ボ'},
-  {romaji: 'pa', hiragana: 'ぱ', katakana: 'パ'},
-  {romaji: 'pi', hiragana: 'ぴ', katakana: 'ピ'},
-  {romaji: 'pu', hiragana: 'ぷ', katakana: 'プ'},
-  {romaji: 'pe', hiragana: 'ぺ', katakana: 'ペ'},
-  {romaji: 'po', hiragana: 'ぽ', katakana: 'ポ'},
+// List of daku-on and handaku-on kana.
+const DAKUON_HANDAKUON_KANA : Kana[][] = [
+  [
+    {romaji: 'ga', hiragana: 'が', katakana: 'ガ'},
+    {romaji: 'gi', hiragana: 'ぎ', katakana: 'ギ'},
+    {romaji: 'gu', hiragana: 'ぐ', katakana: 'グ'},
+    {romaji: 'ge', hiragana: 'げ', katakana: 'ゲ'},
+    {romaji: 'go', hiragana: 'ご', katakana: 'ゴ'},
+  ],
+  [
+    {romaji: 'za', hiragana: 'ざ', katakana: 'ザ'},
+    {romaji: 'ji', hiragana: 'じ', katakana: 'ジ'},
+    {romaji: 'zu', hiragana: 'ず', katakana: 'ズ'},
+    {romaji: 'ze', hiragana: 'ぜ', katakana: 'ゼ'},
+    {romaji: 'zo', hiragana: 'ぞ', katakana: 'ゾ'},
+  ],
+  [
+    {romaji: 'da', hiragana: 'だ', katakana: 'ダ'},
+    {romaji: 'ji', hiragana: 'ぢ', katakana: 'ヂ'},
+    {romaji: 'zu', hiragana: 'づ', katakana: 'ヅ'},
+    {romaji: 'de', hiragana: 'で', katakana: 'デ'},
+    {romaji: 'do', hiragana: 'ど', katakana: 'ド'},
+  ],
+  [
+    {romaji: 'ba', hiragana: 'ば', katakana: 'バ'},
+    {romaji: 'bi', hiragana: 'び', katakana: 'ビ'},
+    {romaji: 'bu', hiragana: 'ぶ', katakana: 'ブ'},
+    {romaji: 'be', hiragana: 'べ', katakana: 'ベ'},
+    {romaji: 'bo', hiragana: 'ぼ', katakana: 'ボ'},
+  ],
+  [
+    {romaji: 'pa', hiragana: 'ぱ', katakana: 'パ'},
+    {romaji: 'pi', hiragana: 'ぴ', katakana: 'ピ'},
+    {romaji: 'pu', hiragana: 'ぷ', katakana: 'プ'},
+    {romaji: 'pe', hiragana: 'ぺ', katakana: 'ペ'},
+    {romaji: 'po', hiragana: 'ぽ', katakana: 'ポ'},
+  ],
+];
 
-  {romaji: 'kya', hiragana: 'きゃ', katakana: 'キャ'},
-  {romaji: 'kyu', hiragana: 'きゅ', katakana: 'キュ'},
-  {romaji: 'kyo', hiragana: 'きょ', katakana: 'キョ'},
-  {romaji: 'sha', hiragana: 'しゃ', katakana: 'シャ'},
-  {romaji: 'shu', hiragana: 'しゅ', katakana: 'シュ'},
-  {romaji: 'sho', hiragana: 'しょ', katakana: 'ショ'},
-  {romaji: 'cha', hiragana: 'ちゃ', katakana: 'チャ'},
-  {romaji: 'chu', hiragana: 'ちゅ', katakana: 'チュ'},
-  {romaji: 'cho', hiragana: 'ちょ', katakana: 'チョ'},
-  {romaji: 'nya', hiragana: 'にゃ', katakana: 'ニャ'},
-  {romaji: 'nyu', hiragana: 'にゅ', katakana: 'ニュ'},
-  {romaji: 'nyo', hiragana: 'にょ', katakana: 'ニョ'},
-  {romaji: 'hya', hiragana: 'ひゃ', katakana: 'ヒャ'},
-  {romaji: 'hyu', hiragana: 'ひゅ', katakana: 'ヒュ'},
-  {romaji: 'hyo', hiragana: 'ひょ', katakana: 'ヒョ'},
-  {romaji: 'mya', hiragana: 'みゃ', katakana: 'ミャ'},
-  {romaji: 'myu', hiragana: 'みゅ', katakana: 'ミュ'},
-  {romaji: 'myo', hiragana: 'みょ', katakana: 'ミョ'},
-  {romaji: 'rya', hiragana: 'りゃ', katakana: 'リャ'},
-  {romaji: 'ryu', hiragana: 'りゅ', katakana: 'リュ'},
-  {romaji: 'ryo', hiragana: 'りょ', katakana: 'リョ'},
-  {romaji: 'gya', hiragana: 'ぎゃ', katakana: 'ギャ'},
-  {romaji: 'gyu', hiragana: 'ぎゅ', katakana: 'ギュ'},
-  {romaji: 'gyo', hiragana: 'ぎょ', katakana: 'ギョ'},
-  {romaji: 'ja', hiragana: 'じゃ', katakana: 'ジャ'},
-  {romaji: 'ju', hiragana: 'じゅ', katakana: 'ジュ'},
-  {romaji: 'jo', hiragana: 'じょ', katakana: 'ジョ'},
-  {romaji: 'bya', hiragana: 'びゃ', katakana: 'ビャ'},
-  {romaji: 'byu', hiragana: 'びゅ', katakana: 'ビュ'},
-  {romaji: 'byo', hiragana: 'びょ', katakana: 'ビョ'},
-  {romaji: 'pya', hiragana: 'ぴゃ', katakana: 'ピャ'},
-  {romaji: 'pyu', hiragana: 'ぴゅ', katakana: 'ピュ'},
-  {romaji: 'pyo', hiragana: 'ぴょ', katakana: 'ピョ'},
+// List of you-on kana.
+const YOUON_KANA : Kana[][] = [
+  [
+    {romaji: 'kya', hiragana: 'きゃ', katakana: 'キャ'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: 'kyu', hiragana: 'きゅ', katakana: 'キュ'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: 'kyo', hiragana: 'きょ', katakana: 'キョ'},
+  ],
+  [
+    {romaji: 'gya', hiragana: 'ぎゃ', katakana: 'ギャ'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: 'gyu', hiragana: 'ぎゅ', katakana: 'ギュ'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: 'gyo', hiragana: 'ぎょ', katakana: 'ギョ'},
+  ],
+  [
+    {romaji: 'sha', hiragana: 'しゃ', katakana: 'シャ'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: 'shu', hiragana: 'しゅ', katakana: 'シュ'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: 'sho', hiragana: 'しょ', katakana: 'ショ'},
+  ],
+  [
+    {romaji: 'ja', hiragana: 'じゃ', katakana: 'ジャ'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: 'ju', hiragana: 'じゅ', katakana: 'ジュ'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: 'jo', hiragana: 'じょ', katakana: 'ジョ'},
+  ],
+  [
+    {romaji: 'cha', hiragana: 'ちゃ', katakana: 'チャ'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: 'chu', hiragana: 'ちゅ', katakana: 'チュ'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: 'cho', hiragana: 'ちょ', katakana: 'チョ'},
+  ],
+  [
+    {romaji: 'nya', hiragana: 'にゃ', katakana: 'ニャ'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: 'nyu', hiragana: 'にゅ', katakana: 'ニュ'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: 'nyo', hiragana: 'にょ', katakana: 'ニョ'},
+  ],
+  [
+    {romaji: 'hya', hiragana: 'ひゃ', katakana: 'ヒャ'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: 'hyu', hiragana: 'ひゅ', katakana: 'ヒュ'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: 'hyo', hiragana: 'ひょ', katakana: 'ヒョ'},
+  ],
+  [
+    {romaji: 'bya', hiragana: 'びゃ', katakana: 'ビャ'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: 'byu', hiragana: 'びゅ', katakana: 'ビュ'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: 'byo', hiragana: 'びょ', katakana: 'ビョ'},
+  ],
+  [
+    {romaji: 'pya', hiragana: 'ぴゃ', katakana: 'ピャ'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: 'pyu', hiragana: 'ぴゅ', katakana: 'ピュ'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: 'pyo', hiragana: 'ぴょ', katakana: 'ピョ'},
+  ],
+  [
+    {romaji: 'mya', hiragana: 'みゃ', katakana: 'ミャ'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: 'myu', hiragana: 'みゅ', katakana: 'ミュ'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: 'myo', hiragana: 'みょ', katakana: 'ミョ'},
+  ],
+  [
+    {romaji: 'rya', hiragana: 'りゃ', katakana: 'リャ'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: 'ryu', hiragana: 'りゅ', katakana: 'リュ'},
+    {romaji: '', hiragana: '', katakana: ''},
+    {romaji: 'ryo', hiragana: 'りょ', katakana: 'リョ'},
+  ],
 ];
 
 
@@ -197,7 +244,7 @@ const KanaCard = (props : {kana : Kana}) => {
         </div>
       </div> :
       <div className={styles.KanaCardFiller}>
-
+        <hr />
       </div>
   );
 };
@@ -215,10 +262,10 @@ const KanaCard = (props : {kana : Kana}) => {
 const KanaChartPage = () => {
   return (
     <div className={styles.KanaChartPage}>
-      <h1>Kana Chart</h1>
-      
+      <h1>Basic Hiragana & Katakana</h1>
+      <h2>ひらがな・カタカナ</h2>
       <div className={styles.KanaGrid}>
-        {KANA.map((kanaGroup : Kana[], index : number) => (
+        {BASIC_KANA.map((kanaGroup : Kana[], index : number) => (
           <div key={index} className={styles.KanaRow}>
 
             { kanaGroup.map((kana : Kana, index : number) => (
@@ -228,6 +275,34 @@ const KanaChartPage = () => {
           </div>
         ))}
       </div>
+      
+      <h1>Daku-on & Handaku-on</h1>
+      <h2>濁音・半濁音</h2>
+      <div className={styles.KanaGrid}>
+        {DAKUON_HANDAKUON_KANA.map((kanaGroup : Kana[], index : number) => (
+          <div key={index} className={styles.KanaRow}>
+
+            { kanaGroup.map((kana : Kana, index : number) => (
+              <KanaCard key={index} kana={kana} />
+            ))}
+
+          </div>
+        ))}
+      </div>
+
+      {/* <h1>You-on</h1>
+      <h2>拗音</h2>
+      <div className={styles.KanaGrid}>
+        {YOUON_KANA.map((kanaGroup : Kana[], index : number) => (
+          <div key={index} className={styles.KanaRow}>
+
+            { kanaGroup.map((kana : Kana, index : number) => (
+              <KanaCard key={index} kana={kana} />
+            ))}
+
+          </div>
+        ))}
+      </div> */}
     </div>
   );
 };

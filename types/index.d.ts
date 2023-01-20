@@ -9,6 +9,17 @@ declare module "*.svg" {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                                API PROMISES                                */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Extended Promise to allow for cancellation.
+ */ 
+interface PromiseWithCancel<T> extends Promise<T> {
+  cancel: () => void;
+};
+
+/* -------------------------------------------------------------------------- */
 /*                                    TYPES                                   */
 /* -------------------------------------------------------------------------- */
 
@@ -33,6 +44,13 @@ type TechStack = {
   name: string,
   link: string,
 }
+
+// Type definition for a version.
+type Version = {
+  version: string,
+  date: Date,
+  changes: string[],
+};
 
 // Type definition for an instance of a past search.
 type SearchHistory = {

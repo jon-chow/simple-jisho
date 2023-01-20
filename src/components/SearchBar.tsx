@@ -8,13 +8,6 @@ import styles from '../styles/SearchBar.module.scss';
 
 
 /**
- * Extended Promise to allow for cancellation.
- */ 
-interface PromiseWithCancel<T> extends Promise<T> {
-  cancel: () => void;
-};
-
-/**
  * Checks if an error is an AbortError.
  * @param error The error to check.
  */
@@ -177,7 +170,6 @@ const SearchBar = () => {
   /**
    * Runs a dictionary search for the given query term.
    * @param query The query to search for.
-   * @param addHistory Whether to add the search to the browser history.
    */
   const search = async (query: string) => {
     if (query) {

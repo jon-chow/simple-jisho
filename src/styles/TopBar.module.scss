@@ -24,6 +24,11 @@
       width: 2.5rem;
       height: 2.5rem;
       margin-right: 0.5rem;
+      transition: fill 0.2s linear;
+
+      &:hover {
+        fill: var(--primary-colour);
+      }
     }
   }
 
