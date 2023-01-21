@@ -229,7 +229,11 @@ const KanaCard = (props : {kana : Kana}) => {
         className={styles.KanaCard}
         title={
           `Romaji: ${props.kana.romaji}\nHiragana: ${props.kana.hiragana}\nKatakana: ${props.kana.katakana}`}
-        onClick={() => toggleKanaModal()}
+        onClick={
+          () => {
+            (props.kana.hiragana.length === 1) && toggleKanaModal();
+          }
+        }
       >
         <div className={styles.Romaji}>
           {props.kana.romaji}
@@ -290,7 +294,7 @@ const KanaChartPage = () => {
         ))}
       </div>
 
-      {/* <h1>You-on</h1>
+      <h1>You-on</h1>
       <h2>拗音</h2>
       <div className={styles.KanaGrid}>
         {YOUON_KANA.map((kanaGroup : Kana[], index : number) => (
@@ -302,7 +306,7 @@ const KanaChartPage = () => {
 
           </div>
         ))}
-      </div> */}
+      </div>
     </div>
   );
 };

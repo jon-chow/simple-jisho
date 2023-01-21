@@ -1,17 +1,37 @@
-# **Simple Jisho:**
-#### About:
-Simple Jisho is a simple, lightweight, and easy to use Japanese-English dictionary powered by the Jisho API.
+# 📕**Simple Jisho**
+### **About:**
+Simple Jisho is a simple, condensed, and easy-to-use Japanese-English dictionary powered by the Jisho API.
 
-#### Features:
-- Search for words
-- View word meanings
-- View word readings
-- View word examples
-- View word kanji
+### **Features:**
+- Search for words in Japanese, English, or Romaji
+- View their meanings, parts of speech, and example sentences
+- Look up a word's kanji
+- View on- and kun- readings
+- Review hiragana and katakana charts
+- View stroke order diagrams for kana and kanji
+- View past searches (up to 10)
 
-#### To Be Implemented:
-- Search history controls
+### **To Be Added in the Future:**
+- Example audio (using react-speech-kit)
+- Bookmarking/Saving words (data will be stored in local storage)
+- Replace alerts with notifications (something similar to toastify)
+- Optimize for mobile devices
+- Add a theme toggle (light/dark/system)
+- Include a kanji page (similar to kana page)
+  - categorized by Jouyou grade or JLPT level
+  - kanji stroke order diagrams and radicals
+  - kanji meanings and readings
+  - kanji example words
+- Include a grammar page
+  - categorized by JLPT level
+  - grammar rules and examples
+  - grammar example sentences
+- Include a vocabulary page (maybe)
+  - categorized by JLPT level
+  - vocabulary words and meanings
+  - vocabulary example sentences
 
-#### Credits:
+### **Credits:**
 - [Jisho API](https://jisho.org/api)
-- [Background Image](https://wall.alphacoders.com/big.php?i=496311)
+- [Unofficial Jisho API](https://github.com/mistval/unofficial-jisho-api)
+- [Background Image](https://wall.alphacoders.com/big.php?i=937175)
