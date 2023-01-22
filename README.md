@@ -13,8 +13,7 @@ Simple Jisho is a simple, condensed, and easy-to-use Japanese-English dictionary
 
 ### **To Be Added in the Future:**
 - Example audio (using react-speech-kit)
-- Bookmarking/Saving words (data will be stored in local storage)
-- Replace alerts with notifications (something similar to toastify)
+- Create a bookmarked page
 - Optimize for mobile devices
 - Add a theme toggle (light/dark/system)
 - Include a kanji page (similar to kana page)

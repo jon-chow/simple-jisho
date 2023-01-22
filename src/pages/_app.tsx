@@ -1,11 +1,12 @@
 import type { AppProps } from 'next/app';
 import { useState } from 'react';
 
-import { Status, ResultsContext, SearchContext, ModalContext, ModalType } from '../configs/config';
+import { Status, ResultsContext, SearchContext, NotificationsContext, ModalContext, ModalType } from '../configs/config';
 
 import MetaData from '../components/MetaData';
 import Background from '../components/Background';
 import TopBar from '../components/TopBar';
+import Notifications from '../components/Notifications';
 import Footer from '../components/Footer';
 
 import DevLogsModal from '../components/modals/DevLogsModal';
@@ -36,8 +37,9 @@ const getModal = (modalType: ModalType, modalToggle: boolean) => {
   }
 };
 
+
 /**
- * Exports the Layout component.
+ * Creates the Layout component.
  * 
  * The Layout component is the default page layout. 
  */
@@ -48,9 +50,15 @@ const Layout = ({ children }: any) => {
   const [resultKeyword, setKeyword] = useState("");
   const [results, setResults] = useState<WordData[]>([]);
 
+  const [messages, setMessages] = useState<MessageProps[]>([]);
+
   const [modalType, setModalType] = useState<ModalType>(ModalType.NONE);
   const [modalToggle, setModalToggle] = useState<boolean>(false);
   const [data, setData] = useState<any>({});
+
+  const pushMessage = (message: MessageProps) => {
+    setMessages([...messages, message]);
+  };
 
   return (
     <SearchContext.Provider value={{
@@ -61,32 +69,41 @@ const Layout = ({ children }: any) => {
         results: results, setResults,
         keyword: resultKeyword, setKeyword,
       }}>
-        <ModalContext.Provider value={{
-          modalType, setModalType,
-          modalToggle, setModalToggle,
-          data, setData
+        <NotificationsContext.Provider value={{
+          messages: messages, setMessages, pushMessage
         }}>
-          <div className={styles.Container}>
-            <MetaData />
-            <Background />
-            <TopBar />
+          <ModalContext.Provider value={{
+            modalType, setModalType,
+            modalToggle, setModalToggle,
+            data, setData
+          }}>
+            <div className={styles.Container}>
+              <MetaData />
+              <Background />
+              <TopBar />
 
-            {/* Modal */}
-            { getModal(modalType, modalToggle) }
+              {/* Modal */}
+              { getModal(modalType, modalToggle) }
 
-            {/* Main Content */}
-            <main className={styles.Main}>
-              { children }
-            </main>
+              {/* Main Content */}
+              <main className={styles.Main}>
+                { children }
+              </main>
+              <Footer />
+            </div>
 
-            <Footer />
-          </div>
-        </ModalContext.Provider>
+            <Notifications />
+          </ModalContext.Provider>
+        </NotificationsContext.Provider>
       </ResultsContext.Provider>
     </SearchContext.Provider>
   );
 };
 
+
+/* -------------------------------------------------------------------------- */
+/*                             EXPORTED COMPONENT                             */
+/* -------------------------------------------------------------------------- */
 /**
  * Exports the App component.
  * 

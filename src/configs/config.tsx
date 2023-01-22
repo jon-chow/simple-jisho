@@ -93,6 +93,15 @@ export enum Status {
   ERROR
 };
 
+// Enumerates the type of a notification message.
+export enum MessageType {
+  ERROR = 'error',
+  WARNING = 'warning',
+  INFO = 'info',
+  SUCCESS = 'success'
+};
+
+
 /* -------------------------------------------------------------------------- */
 /*                                   CONTEXT                                  */
 /* -------------------------------------------------------------------------- */
@@ -111,6 +120,13 @@ export const ResultsContext = createContext({
   setKeyword: (keyword: string) => {},
   results: [] as WordData[],
   setResults: (results: WordData[]) => {},
+});
+
+// Context for notifications.
+export const NotificationsContext = createContext({
+  messages: [] as MessageProps[],
+  setMessages: (messages: MessageProps[]) => {},
+  pushMessage: (message: MessageProps) => {},
 });
 
 

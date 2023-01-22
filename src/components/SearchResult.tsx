@@ -1,7 +1,7 @@
-import { useContext } from 'react';
-import { BsClipboard, BsInfoCircle } from 'react-icons/bs';
+import { useContext, useState } from 'react';
+import { BsClipboard, BsInfoCircle, BsStar, BsStarFill } from 'react-icons/bs';
 
-import { ModalContext, ModalType } from '../configs/config';
+import { NotificationsContext, MessageType, ModalContext, ModalType } from '../configs/config';
 
 import styles from '../styles/SearchResult.module.scss';
 
@@ -15,15 +15,44 @@ import styles from '../styles/SearchResult.module.scss';
  * The SearchResult component contains data on a search.
  */
 const SearchResult = (props: any) => {
+  const [isSaved, setIsSaved] = useState(false);
+
   const kanjiContext = useContext(ModalContext);
+  const notificationsContext = useContext(NotificationsContext);
 
   const data = props.resultData;
   const mainForm = data.japanese[0];
 
-  const copyToClipboard = (text: string) => {
+  const copyToClipboard = async (text: string) => {
+    const currentText = await navigator.clipboard.readText();
+
+    if (currentText === text) return;
+    
     navigator.clipboard.writeText(text);
-    alert(`Copied "${text}" to clipboard!`);
-  }
+
+    const message: MessageProps = {
+      type: MessageType.SUCCESS,
+      title: "Copied to Clipboard!",
+      message: `Copied "${text}" to clipboard!`,
+      duration: 3000,
+    };
+    notificationsContext.pushMessage(message);
+  };
+
+  const saveWord = (word: any) => {
+    const savedWords = JSON.parse(localStorage.getItem('savedWords') || '[]');
+    const wordExists = savedWords.some((w: any) => w.slug === word.slug);
+
+    if (wordExists) {
+      const newSavedWords = savedWords.filter((w: any) => w.slug !== word.slug);
+      localStorage.setItem('savedWords', JSON.stringify(newSavedWords));
+      setIsSaved(false);
+    } else {
+      savedWords.push(word);
+      localStorage.setItem('savedWords', JSON.stringify(savedWords));
+      setIsSaved(true);
+    }
+  };
 
   // Toggle the kanji info modal.
   const toggleKanjiInfoModal = (kanji: any[]) => {
@@ -45,7 +74,6 @@ const SearchResult = (props: any) => {
             </ruby>
 
             <button
-              className={styles.CopyButton}
               title="Copy to Clipboard"
               onClick={() => copyToClipboard(mainForm.word ? mainForm.word : mainForm.reading)}
             >
@@ -55,13 +83,19 @@ const SearchResult = (props: any) => {
             {/* Kanji Info */}
             { (data.kanji.length > 0) &&
               <button
-                className={styles.KanjiInfoButton}
                 title="Kanji Info"
                 onClick={() => toggleKanjiInfoModal(data.kanji)}
               >
                 <BsInfoCircle />
               </button>
             }
+
+            <button
+              title="Save"
+              onClick={() => saveWord(data)}
+            >
+              { isSaved ? <BsStarFill /> : <BsStar />}
+            </button>
           </div>
 
           {/* JLPT / Rarity Tags */}

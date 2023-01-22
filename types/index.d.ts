@@ -52,6 +52,15 @@ type Version = {
   changes: string[],
 };
 
+// Type definition for a notification message.
+type MessageProps = {
+  type?: MessageType;
+  title: string;
+  message: string;
+  duration?: number;
+};
+
+
 // Type definition for an instance of a past search.
 type SearchHistory = {
   keyword: string,
