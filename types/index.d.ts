@@ -54,6 +54,7 @@ type Version = {
 
 // Type definition for a notification message.
 type MessageProps = {
+  id: string;
   type?: MessageType;
   title: string;
   message: string;

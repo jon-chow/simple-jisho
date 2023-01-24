@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { BsClipboard, BsInfoCircle, BsStar, BsStarFill } from 'react-icons/bs';
 
 import { NotificationsContext, MessageType, ModalContext, ModalType } from '../configs/config';
@@ -23,14 +23,14 @@ const SearchResult = (props: any) => {
   const data = props.resultData;
   const mainForm = data.japanese[0];
 
-  const copyToClipboard = async (text: string) => {
-    const currentText = await navigator.clipboard.readText();
-
-    if (currentText === text) return;
+  const copyToClipboard = (text: string) => {
+    // const currentText = await navigator.clipboard.readText();
+    // if (currentText === text) return;
     
     navigator.clipboard.writeText(text);
 
     const message: MessageProps = {
+      id: notificationsContext.hashMessage(),
       type: MessageType.SUCCESS,
       title: "Copied to Clipboard!",
       message: `Copied "${text}" to clipboard!`,
@@ -60,6 +60,14 @@ const SearchResult = (props: any) => {
     kanjiContext.setData(kanji);
     kanjiContext.setModalToggle(!kanjiContext.modalToggle);
   };
+
+  // Check if word is saved.
+  useEffect(() => {
+    const savedWords = JSON.parse(localStorage.getItem('savedWords') || '[]');
+    const wordExists = savedWords.some((w: any) => w.slug === data.slug);
+
+    setIsSaved(wordExists);
+  }, [data]);
   
   return (
     <article className={styles.ResultPanel}>

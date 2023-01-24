@@ -43,6 +43,17 @@ export const VersionData : Version[] = [
   //   ],
   // },
   {
+    version: "1.4.1",
+    date: new Date("Jan. 23, 2023"),
+    changes: [
+      "Added notifications feature.",
+      "Implemented saving functionality for terms.",
+      "Created a page for displaying saved terms.",
+      "Created a 404 page.",
+      "Fixed a bug where searching a new word would not refresh the page number.",
+    ],
+  },
+  {
     version: "1.3.0",
     date: new Date("Jan. 19, 2023"),
     changes: [
@@ -53,7 +64,7 @@ export const VersionData : Version[] = [
     ],
   },
   {
-    version: "1.2.0",
+    version: "1.2.2",
     date: new Date("Jan. 15, 2023"),
     changes: [
       "Added copying functionality for search results.",
@@ -127,6 +138,7 @@ export const NotificationsContext = createContext({
   messages: [] as MessageProps[],
   setMessages: (messages: MessageProps[]) => {},
   pushMessage: (message: MessageProps) => {},
+  hashMessage: () : string => { return ""; },
 });
 
 

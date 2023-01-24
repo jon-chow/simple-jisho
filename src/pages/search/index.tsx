@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 
 import { Status, SearchContext, ResultsContext } from "../../configs/config";
@@ -100,6 +100,11 @@ const SearchPage = () => {
       </div>
     </div>
   );
+
+  // Set the page to the first page when the results change.
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [results]);
 
   return (
     <div className={styles.SearchPage}>

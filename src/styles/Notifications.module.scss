@@ -51,10 +51,10 @@
     background: rgba(#fff, 0.75);
     border-radius: 0.25rem;
   }
-
-  .ProgressBarActive {
-    @extend .ProgressBar;
-    width: 0;
+  
+  @keyframes Progress {
+    0% { width: 100%; }
+    100% { width: 0%; }
   }
 
   &:hover {

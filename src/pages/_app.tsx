@@ -60,6 +60,11 @@ const Layout = ({ children }: any) => {
     setMessages([...messages, message]);
   };
 
+  const hashMessage = () => {
+    const hash = Date.now().toString(36) + Math.random().toString(36);
+    return hash;
+  };
+
   return (
     <SearchContext.Provider value={{
       query: currentSearch, setQuery,
@@ -70,7 +75,8 @@ const Layout = ({ children }: any) => {
         keyword: resultKeyword, setKeyword,
       }}>
         <NotificationsContext.Provider value={{
-          messages: messages, setMessages, pushMessage
+          messages: messages, setMessages,
+          pushMessage, hashMessage
         }}>
           <ModalContext.Provider value={{
             modalType, setModalType,

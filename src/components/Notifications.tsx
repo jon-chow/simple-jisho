@@ -14,15 +14,17 @@ import styles from '../styles/Notifications.module.scss';
 /**
  * Creates a message.
  */
-const Message = (props: { type? : MessageType, title : string, message : string, duration? : number }) => {
-  const duration = props.duration || 5000;
+const Message = (props: { message : MessageProps }) => {
+  const { type, title, message } = props.message;
+  const duration = props.message.duration || 5000;
+
+  const notificationsContext = useContext(NotificationsContext);
 
   const messageRef = useRef<HTMLDivElement>(null);
-  const progressBarRef = useRef<HTMLDivElement>(null);
 
   // Map the message type to an icon.
   const mapTypeIcon = () => {
-    switch (props.type) {
+    switch (type) {
       case MessageType.ERROR:   return <ErrorIcon />;
       case MessageType.WARNING: return <WarningIcon />;
       case MessageType.INFO:    return <InfoIcon />;
@@ -34,21 +36,18 @@ const Message = (props: { type? : MessageType, title : string, message : string,
   // Closes the message.
   const closeMessage = () => {
     messageRef.current?.classList.add(styles.ClosedMessage);
+
     setTimeout(() => {
       messageRef.current?.remove();
     }, 400);
   };
 
-  // Progress bar animation.
+  // Open the message, then close it after a set amount of time.
   useEffect(() => {
     setTimeout(() => {
       messageRef.current?.classList.add(styles.MessageActive);
-      progressBarRef.current?.classList.add(styles.ProgressBarActive);
     }, 1);
-  }, []);
 
-  // Close the message after a set amount of time.
-  useEffect(() => {
     setTimeout(() => {
       closeMessage();
     }, duration);
@@ -57,10 +56,10 @@ const Message = (props: { type? : MessageType, title : string, message : string,
   return (
     <div
       className={`${styles.Message} ${
-        props.type === MessageType.ERROR   ? styles.Error   :
-        props.type === MessageType.WARNING ? styles.Warning :
-        props.type === MessageType.INFO    ? styles.Info    :
-        props.type === MessageType.SUCCESS ? styles.Success :
+        type === MessageType.ERROR   ? styles.Error   :
+        type === MessageType.WARNING ? styles.Warning :
+        type === MessageType.INFO    ? styles.Info    :
+        type === MessageType.SUCCESS ? styles.Success :
         ''
       }`}
       ref={messageRef}
@@ -68,17 +67,16 @@ const Message = (props: { type? : MessageType, title : string, message : string,
     >
       <div className={styles.Header}>
         { mapTypeIcon() }
-        <h1>{props.title}</h1>
+        <h1>{title}</h1>
       </div>
       
       <hr />
 
-      { props.message }
+      { message }
 
       <div
         className={styles.ProgressBar}
-        ref={progressBarRef}
-        style={{ transition: `width ${duration}ms linear` }}
+        style={{ animation: `${styles.Progress} ${duration}ms linear forwards` }}
       />
     </div>
   );
@@ -101,10 +99,7 @@ const Notifications = () => {
       { messages.map((message, index) => (
         <Message
           key={index}
-          type={message.type}
-          title={message.title}
-          message={message.message}
-          duration={message.duration}
+          message={message}
         />
       )) }
     </div>

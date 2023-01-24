@@ -5,16 +5,32 @@
   justify-content: center;
   height: 100%;
   width: 100%;
-  padding: 4rem 0;
+  padding: 1rem 0;
+  padding-bottom: 4rem;
+
+  .Header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .Logo {
+      fill: var(--primary-colour);
+      width: 10rem;
+      height: 10rem;
+      scale: 1.5;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 3rem;
+      margin: 0;
+    }
+  }
   
   hr {
     width: 50%;
     margin: 1rem 0;
-  }
-
-  h1 {
-    font-size: 3rem;
-    margin: 0;
   }
 
   blockquote {
