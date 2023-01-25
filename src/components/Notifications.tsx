@@ -1,4 +1,4 @@
-import { useEffect, useRef, useContext } from 'react';
+import { useEffect, useRef } from 'react';
 import {
   BsXOctagonFill as ErrorIcon,
   BsExclamationTriangleFill as WarningIcon,
@@ -6,7 +6,7 @@ import {
   BsCheckCircleFill as SuccessIcon
 } from 'react-icons/bs';
 
-import { MessageType, NotificationsContext } from '../configs/config';
+import { useNotifications, MessageType } from '../contexts/NotificationsProvider';
 
 import styles from '../styles/Notifications.module.scss';
 
@@ -18,7 +18,7 @@ const Message = (props: { message : MessageProps }) => {
   const { type, title, message } = props.message;
   const duration = props.message.duration || 5000;
 
-  const notificationsContext = useContext(NotificationsContext);
+  const notificationsContext = useNotifications();
 
   const messageRef = useRef<HTMLDivElement>(null);
 
@@ -38,6 +38,7 @@ const Message = (props: { message : MessageProps }) => {
     messageRef.current?.classList.add(styles.ClosedMessage);
 
     setTimeout(() => {
+      // notificationsContext.setMessages([...notificationsContext.messages.filter((m) => m.id !== props.message.id)]);
       messageRef.current?.remove();
     }, 400);
   };
@@ -92,7 +93,7 @@ const Message = (props: { message : MessageProps }) => {
  * The notifications component contains notification messages.
  */
 const Notifications = () => {
-  const { messages } = useContext(NotificationsContext);
+  const { messages } = useNotifications();
 
   return (
     <div className={styles.Notifications}>

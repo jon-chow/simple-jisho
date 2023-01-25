@@ -1,7 +1,6 @@
-import { useContext } from 'react';
 import Image from 'next/image';
 
-import { ModalContext } from '../../configs/config';
+import { useModal } from '../../contexts/ModalProvider';
 
 import ModalLayout from './ModalLayout';
 
@@ -31,7 +30,7 @@ const getAudio =(character : string) => {
  * The kana info modal displays detailed information on a kana.
  */
 const KanaModal = () => {
-  const kanaContext = useContext(ModalContext);
+  const kanaContext = useModal();
 
   return (
     <ModalLayout title={`Hiragana: ${kanaContext.data.hiragana} / Katakana: ${kanaContext.data.katakana} / Romaji: ${kanaContext.data.romaji}`} width="60%">

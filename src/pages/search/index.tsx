@@ -1,7 +1,8 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 
-import { Status, SearchContext, ResultsContext } from "../../configs/config";
+import { useSearch, Status } from "../../contexts/SearchProvider";
+import { useResults } from "../../contexts/ResultsProvider";
 
 import DefaultResults from "../../components/DefaultResults";
 import SearchResult from '../../components/SearchResult';
@@ -20,8 +21,8 @@ const MAX_RESULTS_PER_PAGE = 5;
 const SearchPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { status } = useContext(SearchContext);
-  const { results } = useContext(ResultsContext);
+  const { status } = useSearch();
+  const { results } = useResults();
 
   const numPages = Math.ceil(results.length / MAX_RESULTS_PER_PAGE);
   const startIndex = (currentPage - 1) * MAX_RESULTS_PER_PAGE;

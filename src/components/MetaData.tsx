@@ -1,8 +1,10 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 
-import { ResultsContext, AppInfoData } from '../configs/config';
+import { useResults } from '../contexts/ResultsProvider';
+
+import { AppInfoData } from '../configs/config';
 
 
 /* -------------------------------------------------------------------------- */
@@ -15,7 +17,7 @@ import { ResultsContext, AppInfoData } from '../configs/config';
  * description (for SEO), and favicon.
  */
 const MetaData = () => {
-  const resultsContext = useContext(ResultsContext);
+  const resultsContext = useResults();
   const [title, setTitle] = useState(AppInfoData.name);
 
   const router = useRouter();

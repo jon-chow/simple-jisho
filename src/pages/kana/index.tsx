@@ -1,6 +1,4 @@
-import { useContext } from 'react';
-
-import { ModalContext, ModalType } from '../../configs/config';
+import { useModal, ModalType } from '../../contexts/ModalProvider';
 
 import styles from '../../styles/KanaChartPage.module.scss';
 
@@ -214,7 +212,7 @@ const YOUON_KANA : Kana[][] = [
  * depending on the settings.
  */
 const KanaCard = (props : {kana : Kana}) => {
-  const KanaContext = useContext(ModalContext);
+  const KanaContext = useModal();
 
     // Toggle the kana info modal.
   const toggleKanaModal = () => {

@@ -1,7 +1,8 @@
-import { useContext } from 'react';
 import { FaGithub, FaBook } from 'react-icons/fa';
 
-import { AppInfoData, BackgroundData, SMButtonsData, TechStackData, ModalContext, ModalType } from '../configs/config';
+import { AppInfoData, BackgroundData, SMButtonsData, TechStackData } from '../configs/config';
+
+import { useModal, ModalType } from '../contexts/ModalProvider';
 
 import styles from '../styles/Footer.module.scss';
 import styles2 from '../styles/Layout.module.scss';
@@ -17,7 +18,7 @@ import styles2 from '../styles/Layout.module.scss';
  * as well as a link to the source code (GitHub) and the Jisho website.
  */
 const Footer = () => {
-  const devLogsContext = useContext(ModalContext);
+  const devLogsContext = useModal();
 
   // Toggle the dev logs modal.
   const toggleDevLogsModal = () => {

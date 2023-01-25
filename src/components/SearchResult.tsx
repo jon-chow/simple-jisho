@@ -1,7 +1,8 @@
-import { useContext, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { BsClipboard, BsInfoCircle, BsStar, BsStarFill } from 'react-icons/bs';
 
-import { NotificationsContext, MessageType, ModalContext, ModalType } from '../configs/config';
+import { useNotifications, MessageType } from '../contexts/NotificationsProvider';
+import { useModal, ModalType } from '../contexts/ModalProvider';
 
 import styles from '../styles/SearchResult.module.scss';
 
@@ -17,8 +18,8 @@ import styles from '../styles/SearchResult.module.scss';
 const SearchResult = (props: any) => {
   const [isSaved, setIsSaved] = useState(false);
 
-  const kanjiContext = useContext(ModalContext);
-  const notificationsContext = useContext(NotificationsContext);
+  const notificationsContext = useNotifications();
+  const kanjiContext = useModal();
 
   const data = props.resultData;
   const mainForm = data.japanese[0];

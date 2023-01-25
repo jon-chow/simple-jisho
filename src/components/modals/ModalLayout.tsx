@@ -1,7 +1,7 @@
-import { PropsWithChildren, useContext, useEffect } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 import { BsX } from 'react-icons/bs';
 
-import { ModalContext, resetModalContext } from '../../configs/config';
+import { useModal, resetModalContext } from '../../contexts/ModalProvider';
 
 import styles from '../../styles/ModalLayout.module.scss';
 
@@ -21,7 +21,7 @@ type ModalProps = {
  * Creates the template layout for a modal.
  */
 const ModalLayout = (props: PropsWithChildren<ModalProps>) => {
-  const modalContext = useContext(ModalContext);
+  const modalContext = useModal();
 
   // Closes the modal.
   const closeModal = () => {

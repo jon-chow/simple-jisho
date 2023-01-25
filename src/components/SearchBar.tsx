@@ -1,8 +1,10 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { FaHome, FaTable, FaStar, FaSearch, FaTrashAlt, FaHistory } from 'react-icons/fa';
 
-import { Status, SearchContext, ResultsContext, ModalContext, ModalType } from '../configs/config';
+import { useSearch, Status } from '../contexts/SearchProvider';
+import { useResults } from '../contexts/ResultsProvider';
+import { useModal, ModalType } from '../contexts/ModalProvider';
 
 import styles from '../styles/SearchBar.module.scss';
 
@@ -88,9 +90,9 @@ const NavButtons = [
  * The search bar is included in the header.
  */
 const SearchBar = () => {
-  const searchContext = useContext(SearchContext);
-  const resultsContext = useContext(ResultsContext);
-  const searchHistoryContext = useContext(ModalContext);
+  const searchContext = useSearch();
+  const resultsContext = useResults();
+  const searchHistoryContext = useModal();
 
   const [querying, setQuerying] = useState<PromiseWithCancel<any> | undefined>(undefined);
 

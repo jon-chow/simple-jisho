@@ -1,8 +1,9 @@
-import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { BsFillTrashFill, BsSearch } from 'react-icons/bs';
 
-import { Status, ResultsContext, SearchContext, ModalContext, resetModalContext } from '../../configs/config';
+import { useSearch, Status } from '../../contexts/SearchProvider';
+import { useResults } from '../../contexts/ResultsProvider';
+import { useModal, resetModalContext } from '../../contexts/ModalProvider';
 
 import ModalLayout from './ModalLayout';
 
@@ -19,9 +20,9 @@ import styles2 from '../../styles/SearchBar.module.scss';
  * The search history modal displays a list of past search terms.
  */
 const SearchHistoryModal = () => {
-  const searchContext = useContext(SearchContext);
-  const resultsContext = useContext(ResultsContext);
-  const searchHistoryContext = useContext(ModalContext);
+  const searchContext = useSearch();
+  const resultsContext = useResults();
+  const searchHistoryContext = useModal();
 
   const router = useRouter();
 
