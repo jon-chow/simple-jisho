@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
-import { FaHome, FaTable, FaSearch, FaTrashAlt, FaHistory } from 'react-icons/fa';
+import { FaHome, FaTable, FaStar, FaSearch, FaTrashAlt, FaHistory } from 'react-icons/fa';
 
 import { Status, SearchContext, ResultsContext, ModalContext, ModalType } from '../configs/config';
 
@@ -60,6 +60,24 @@ const getQueryVariable = (variable: string) => {
 
 
 const SEARCH_HISTORY_MAX_LENGTH = 10;
+
+const NavButtons = [
+  {
+    title: 'Home',
+    icon: <FaHome />,
+    link: '/'
+  },
+  {
+    title: 'Kana Chart',
+    icon: <FaTable />,
+    link: '/kana'
+  },
+  {
+    title: 'Bookmarks',
+    icon: <FaStar />,
+    link: '/bookmarks'
+  }
+]
 
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
@@ -229,23 +247,20 @@ const SearchBar = () => {
 
   return (
     <form className={styles.Search} onSubmit={(e) => handleSubmit(e)}>
-      <button
-        className={styles.HomeButton}
-        type="button"
-        title="Home"
-        onClick={() => navigatePages()}
-      >
-        <FaHome />
-      </button>
-
-      <button
-        className={styles.KanaButton}
-        type="button"
-        title="Kana Charts"
-        onClick={() => navigatePages("/kana")}
-      >
-        <FaTable />
-      </button>
+      {/* Navigation Buttons */}
+      <div className={styles.Navigation}>
+        { NavButtons.map((button, index) => (
+          <button
+            key={index}
+            className={(router.pathname === button.link) ? styles.Active : undefined}
+            type="button"
+            title={button.title}
+            onClick={() => navigatePages(button.link)}
+          >
+            { button.icon }
+          </button>
+        ))}
+      </div>
 
       {/* Search Input */}
       <input

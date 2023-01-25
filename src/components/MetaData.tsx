@@ -27,6 +27,9 @@ const MetaData = () => {
     (router.pathname === '/kana') ?
     setTitle(`Kana Chart on ${AppInfoData.name}`) :
 
+    (router.pathname === '/bookmarks') ?
+    setTitle(`Saved Terms on ${AppInfoData.name}`) :
+
     setTitle(`${AppInfoData.name}: Japanese-English Dictionary`);
   }, [resultsContext.keyword, router.pathname]);
 

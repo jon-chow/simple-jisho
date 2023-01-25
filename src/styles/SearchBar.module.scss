@@ -6,19 +6,33 @@
   align-items: center;
   gap: 0.5rem;
 
-  .KanaButton,
-  .HomeButton {
-    padding: 0.5rem;
-    border: hidden;
-    border-radius: 5px;
-    text-align: center;
-    line-height: 0;
-    font-size: 1.25rem;
-    cursor: pointer;
-    transition: background-color 0.25s ease-in-out;
+  .Navigation {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
 
-    &:hover {
+    button {
+      padding: 0.5rem;
+      border: hidden;
+      border-radius: 5px;
+      text-align: center;
+      line-height: 0;
+      font-size: 1.25rem;
+      cursor: pointer;
+      transition:
+        background-color 0.25s ease-in-out,
+        box-shadow 0.25s ease-in-out;
+
+      &:hover {
+        background-color: var(--primary-colour-dark);
+      }
+    }
+
+    .Active {
       background-color: var(--primary-colour-dark);
+      box-shadow: 0 0 0.5rem rgba(var(--primary-colour-raw), 0.8);
     }
   }
 
@@ -38,7 +52,14 @@
     gap: inherit;
 
     button {
-      @extend .HomeButton;
+      padding: 0.5rem;
+      border: hidden;
+      border-radius: 5px;
+      text-align: center;
+      line-height: 0;
+      font-size: 1.25rem;
+      cursor: pointer;
+      transition: background-color 0.25s ease-in-out;
 
       &:hover {
         &[type="submit"] {

@@ -31,7 +31,7 @@ const SearchResult = (props: any) => {
 
     const message: MessageProps = {
       id: notificationsContext.hashMessage(),
-      type: MessageType.SUCCESS,
+      type: MessageType.INFO,
       title: "Copied to Clipboard!",
       message: `Copied "${text}" to clipboard!`,
       duration: 3000,
@@ -99,10 +99,23 @@ const SearchResult = (props: any) => {
             }
 
             <button
-              title="Save"
+              title={isSaved ? "Unsave Term" : "Save Term"}
               onClick={() => saveWord(data)}
             >
-              { isSaved ? <BsStarFill /> : <BsStar />}
+              { isSaved ?
+                <BsStarFill
+                  style={{
+                    fill: "rgb(255, 225, 120)",
+                    filter: "drop-shadow(0 0 0.25rem rgba(255, 225, 120, 0.5))",
+                    animation: `${styles.Favourite} 0.25s ease-in-out forwards`
+                  }}
+                /> :
+                <BsStar
+                  style={{
+                    animation: `${styles.Favourite} 0.25s ease-in-out backwards`
+                  }}
+                />
+              }
             </button>
           </div>
 

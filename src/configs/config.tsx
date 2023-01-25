@@ -44,12 +44,13 @@ export const VersionData : Version[] = [
   // },
   {
     version: "1.4.1",
-    date: new Date("Jan. 23, 2023"),
+    date: new Date("Jan. 24, 2023"),
     changes: [
       "Added notifications feature.",
       "Implemented saving functionality for terms.",
       "Created a page for displaying saved terms.",
       "Created a 404 page.",
+      "Added animation to favourite (save) button.",
       "Fixed a bug where searching a new word would not refresh the page number.",
     ],
   },

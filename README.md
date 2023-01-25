@@ -11,9 +11,11 @@ Simple Jisho is a simple, condensed, and easy-to-use Japanese-English dictionary
 - View stroke order diagrams for kana and kanji
 - View past searches (up to 10)
 
+### **Working On:**
+- Fix the notifications deletion problem
+
 ### **To Be Added in the Future:**
 - Example audio (using react-speech-kit)
-- Create a bookmarked page
 - Optimize for mobile devices
 - Add a theme toggle (light/dark/system)
 - Include a kanji page (similar to kana page)
