@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 
-import { useResults } from '../contexts/ResultsProvider';
+import { useResults } from '@/contexts/ResultsProvider';
 
 import { AppInfoData } from '../configs/config';
 

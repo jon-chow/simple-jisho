@@ -1,10 +1,10 @@
 import Image from 'next/image';
 
-import { useModal } from '../../contexts/ModalProvider';
+import { useModal } from '@/contexts/ModalProvider';
 
 import ModalLayout from './ModalLayout';
 
-import styles from '../../styles/KanaModal.module.scss';
+import styles from '@/styles/KanaModal.module.scss';
 
 
 // Returns the image URL for a given character.

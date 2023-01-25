@@ -1,14 +1,14 @@
 import { useRouter } from 'next/router';
 import { BsFillTrashFill, BsSearch } from 'react-icons/bs';
 
-import { useSearch, Status } from '../../contexts/SearchProvider';
-import { useResults } from '../../contexts/ResultsProvider';
-import { useModal, resetModalContext } from '../../contexts/ModalProvider';
+import { useSearch, Status } from '@/contexts/SearchProvider';
+import { useResults } from '@/contexts/ResultsProvider';
+import { useModal, resetModalContext } from '@/contexts/ModalProvider';
 
 import ModalLayout from './ModalLayout';
 
-import styles from '../../styles/SearchHistoryModal.module.scss';
-import styles2 from '../../styles/SearchBar.module.scss';
+import styles from '@/styles/SearchHistoryModal.module.scss';
+import styles2 from '@/styles/SearchBar.module.scss';
 
 
 /* -------------------------------------------------------------------------- */

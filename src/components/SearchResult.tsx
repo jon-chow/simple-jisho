@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { BsClipboard, BsInfoCircle, BsStar, BsStarFill } from 'react-icons/bs';
 
-import { useNotifications, MessageType } from '../contexts/NotificationsProvider';
-import { useModal, ModalType } from '../contexts/ModalProvider';
+import { useNotifications, MessageType } from '@/contexts/NotificationsProvider';
+import { useModal, ModalType } from '@/contexts/ModalProvider';
 
-import styles from '../styles/SearchResult.module.scss';
+import styles from '@/styles/SearchResult.module.scss';
 
 
 /* -------------------------------------------------------------------------- */

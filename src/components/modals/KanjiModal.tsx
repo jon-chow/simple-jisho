@@ -1,10 +1,10 @@
 import Image from 'next/image';
 
-import { useModal } from '../../contexts/ModalProvider';
+import { useModal } from '@/contexts/ModalProvider';
 
 import ModalLayout from './ModalLayout';
 
-import styles from '../../styles/KanjiModal.module.scss';
+import styles from '@/styles/KanjiModal.module.scss';
 
 
 /* -------------------------------------------------------------------------- */

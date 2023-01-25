@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 import { BackgroundData } from '../configs/config';
 
-import styles from '../styles/Background.module.scss';
+import styles from '@/styles/Background.module.scss';
 
 
 /* -------------------------------------------------------------------------- */

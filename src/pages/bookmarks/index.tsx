@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 
-import SearchResult from '../../components/SearchResult';
+import SearchResult from '@/components/SearchResult';
 
-import Logo from '../../../public/static/logo.svg';
+import Logo from '@/public/static/logo.svg';
 
-import styles from '../../styles/BookmarksPage.module.scss';
+import styles from '@/styles/BookmarksPage.module.scss';
 
 
 /* -------------------------------------------------------------------------- */

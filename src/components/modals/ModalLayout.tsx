@@ -1,9 +1,9 @@
 import { PropsWithChildren, useEffect } from 'react';
 import { BsX } from 'react-icons/bs';
 
-import { useModal, resetModalContext } from '../../contexts/ModalProvider';
+import { useModal, resetModalContext } from '@/contexts/ModalProvider';
 
-import styles from '../../styles/ModalLayout.module.scss';
+import styles from '@/styles/ModalLayout.module.scss';
 
 
 /* -------------------------------------------------------------------------- */

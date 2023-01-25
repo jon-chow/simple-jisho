@@ -1,17 +1,17 @@
 import type { AppProps } from 'next/app';
 
-import SearchContextProvider from '../contexts/SearchProvider';
-import ResultsContextProvider from '../contexts/ResultsProvider';
-import NotificationsContextProvider from '../contexts/NotificationsProvider';
-import ModalContextProvider from '../contexts/ModalProvider';
+import SearchContextProvider from '@/contexts/SearchProvider';
+import ResultsContextProvider from '@/contexts/ResultsProvider';
+import NotificationsContextProvider from '@/contexts/NotificationsProvider';
+import ModalContextProvider from '@/contexts/ModalProvider';
 
-import MetaData from '../components/MetaData';
-import Background from '../components/Background';
-import TopBar from '../components/TopBar';
-import Footer from '../components/Footer';
+import MetaData from '@/components/MetaData';
+import Background from '@/components/Background';
+import TopBar from '@/components/TopBar';
+import Footer from '@/components/Footer';
 
-import '../styles/_globals.scss';
-import styles from '../styles/Layout.module.scss';
+import '@/styles/_globals.scss';
+import styles from '@/styles/Layout.module.scss';
 
 
 /**

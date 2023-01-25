@@ -6,9 +6,9 @@ import {
   BsCheckCircleFill as SuccessIcon
 } from 'react-icons/bs';
 
-import { useNotifications, MessageType } from '../contexts/NotificationsProvider';
+import { useNotifications, MessageType } from '@/contexts/NotificationsProvider';
 
-import styles from '../styles/Notifications.module.scss';
+import styles from '@/styles/Notifications.module.scss';
 
 
 /**

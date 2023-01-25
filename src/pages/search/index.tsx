@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 
-import { useSearch, Status } from "../../contexts/SearchProvider";
-import { useResults } from "../../contexts/ResultsProvider";
+import { useSearch, Status } from "@/contexts/SearchProvider";
+import { useResults } from "@/contexts/ResultsProvider";
 
-import DefaultResults from "../../components/DefaultResults";
-import SearchResult from '../../components/SearchResult';
+import DefaultResults from "@/components/DefaultResults";
+import SearchResult from '@/components/SearchResult';
 
-import styles from '../../styles/SearchPage.module.scss';
+import styles from '@/styles/SearchPage.module.scss';
 
 
 const MAX_RESULTS_PER_PAGE = 5;

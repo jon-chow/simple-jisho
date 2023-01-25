@@ -1,14 +1,14 @@
 import { AppInfoData } from '../configs/config';
 
-import { useSearch, Status } from '../contexts/SearchProvider';
-import { useResults } from '../contexts/ResultsProvider';
+import { useSearch, Status } from '@/contexts/SearchProvider';
+import { useResults } from '@/contexts/ResultsProvider';
 
 import SearchBar from './SearchBar';
 
-import Logo from '../../public/static/logo.svg';
+import Logo from '@/public/static/logo.svg';
 
-import styles from '../styles/TopBar.module.scss';
-import styles2 from '../styles/Layout.module.scss';
+import styles from '@/styles/TopBar.module.scss';
+import styles2 from '@/styles/Layout.module.scss';
 
 
 /* -------------------------------------------------------------------------- */

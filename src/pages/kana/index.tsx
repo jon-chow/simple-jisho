@@ -1,6 +1,6 @@
-import { useModal, ModalType } from '../../contexts/ModalProvider';
+import { useModal, ModalType } from '@/contexts/ModalProvider';
 
-import styles from '../../styles/KanaChartPage.module.scss';
+import styles from '@/styles/KanaChartPage.module.scss';
 
 
 // List of basic kana.

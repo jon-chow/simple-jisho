@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { FaHome, FaTable, FaStar, FaSearch, FaTrashAlt, FaHistory } from 'react-icons/fa';
 
-import { useSearch, Status } from '../contexts/SearchProvider';
-import { useResults } from '../contexts/ResultsProvider';
-import { useModal, ModalType } from '../contexts/ModalProvider';
+import { useSearch, Status } from '@/contexts/SearchProvider';
+import { useResults } from '@/contexts/ResultsProvider';
+import { useModal, ModalType } from '@/contexts/ModalProvider';
 
-import styles from '../styles/SearchBar.module.scss';
+import styles from '@/styles/SearchBar.module.scss';
 
 
 /**

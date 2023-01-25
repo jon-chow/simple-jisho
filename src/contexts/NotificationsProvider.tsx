@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, PropsWithChildren } from "react";
 
-import Notifications from '../components/Notifications';
+import Notifications from '@/components/Notifications';
 
 
 // Enumerates the type of a notification message.

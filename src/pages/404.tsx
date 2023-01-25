@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
-import Logo from '../../public/static/logo.svg';
+import Logo from '@/public/static/logo.svg';
 
-import styles from '../styles/ErrorPage.module.scss';
+import styles from '@/styles/ErrorPage.module.scss';
 
 
 const ErrorPage = () => {
