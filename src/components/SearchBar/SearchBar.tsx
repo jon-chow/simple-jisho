@@ -6,7 +6,7 @@ import { useSearch, Status } from '@/contexts/SearchProvider';
 import { useResults } from '@/contexts/ResultsProvider';
 import { useModal, ModalType } from '@/contexts/ModalProvider';
 
-import styles from '@/styles/SearchBar.module.scss';
+import styles from './SearchBar.module.scss';
 
 
 /**

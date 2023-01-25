@@ -1,8 +1,8 @@
-import ModalLayout from './ModalLayout';
+import ModalLayout from '../ModalLayout/ModalLayout';
 
-import { VersionData } from '../../configs/versionHistory';
+import { VersionData } from '@/configs/versionHistory';
 
-import styles from '@/styles/DevLogsModal.module.scss';
+import styles from './DevLogsModal.module.scss';
 
 
 /**

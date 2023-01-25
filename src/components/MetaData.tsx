@@ -32,7 +32,10 @@ const MetaData = () => {
     (router.pathname === '/bookmarks') ?
     setTitle(`Saved Terms on ${AppInfoData.name}`) :
 
-    setTitle(`${AppInfoData.name}: Japanese-English Dictionary`);
+    (router.pathname === '/') ?
+    setTitle(`${AppInfoData.name}: Japanese-English Dictionary`) :
+
+    setTitle(`404 - Page Not Found! ${AppInfoData.name}`)
   }, [resultsContext.keyword, router.pathname]);
 
   return (

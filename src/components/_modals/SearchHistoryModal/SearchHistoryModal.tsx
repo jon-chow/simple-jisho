@@ -5,10 +5,10 @@ import { useSearch, Status } from '@/contexts/SearchProvider';
 import { useResults } from '@/contexts/ResultsProvider';
 import { useModal, resetModalContext } from '@/contexts/ModalProvider';
 
-import ModalLayout from './ModalLayout';
+import ModalLayout from '../ModalLayout/ModalLayout';
 
-import styles from '@/styles/SearchHistoryModal.module.scss';
-import styles2 from '@/styles/SearchBar.module.scss';
+import styles from './SearchHistoryModal.module.scss';
+import styles2 from '../../SearchBar/SearchBar.module.scss';
 
 
 /* -------------------------------------------------------------------------- */

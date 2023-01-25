@@ -8,7 +8,7 @@ import {
 
 import { useNotifications, MessageType } from '@/contexts/NotificationsProvider';
 
-import styles from '@/styles/Notifications.module.scss';
+import styles from './Notifications.module.scss';
 
 
 /**

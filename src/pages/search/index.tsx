@@ -4,10 +4,10 @@ import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import { useSearch, Status } from "@/contexts/SearchProvider";
 import { useResults } from "@/contexts/ResultsProvider";
 
-import DefaultResults from "@/components/DefaultResults";
-import SearchResult from '@/components/SearchResult';
+import DefaultResults from "@/components/DefaultResults/DefaultResults";
+import SearchResult from '@/components/SearchResult/SearchResult';
 
-import styles from '@/styles/SearchPage.module.scss';
+import styles from './SearchPage.module.scss';
 
 
 const MAX_RESULTS_PER_PAGE = 5;

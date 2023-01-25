@@ -1,6 +1,6 @@
 import Logo from '@/public/static/logo.svg';
 
-import styles from '@/styles/DefaultResults.module.scss';
+import styles from './DefaultResults.module.scss';
 
 
 /* -------------------------------------------------------------------------- */

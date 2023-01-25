@@ -19,7 +19,7 @@ const nextConfig = {
     ]
   },
   sassOptions: {
-    includePaths: [path.join(__dirname, "styles")],
+    includePaths: [path.join(__dirname, "src/styles")],
   }
 }
 

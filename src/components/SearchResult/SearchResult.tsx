@@ -4,7 +4,7 @@ import { BsClipboard, BsInfoCircle, BsStar, BsStarFill } from 'react-icons/bs';
 import { useNotifications, MessageType } from '@/contexts/NotificationsProvider';
 import { useModal, ModalType } from '@/contexts/ModalProvider';
 
-import styles from '@/styles/SearchResult.module.scss';
+import styles from './SearchResult.module.scss';
 
 
 /* -------------------------------------------------------------------------- */

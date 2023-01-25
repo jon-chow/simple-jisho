@@ -2,7 +2,7 @@ import {  useEffect } from 'react';
 
 import { Status, useSearch } from '@/contexts/SearchProvider';
 
-import DefaultResults from '@/components/DefaultResults';
+import DefaultResults from '@/components/DefaultResults/DefaultResults';
 
 
 /* -------------------------------------------------------------------------- */

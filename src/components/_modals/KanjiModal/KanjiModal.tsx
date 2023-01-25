@@ -2,9 +2,9 @@ import Image from 'next/image';
 
 import { useModal } from '@/contexts/ModalProvider';
 
-import ModalLayout from './ModalLayout';
+import ModalLayout from '../ModalLayout/ModalLayout';
 
-import styles from '@/styles/KanjiModal.module.scss';
+import styles from './KanjiModal.module.scss';
 
 
 /* -------------------------------------------------------------------------- */

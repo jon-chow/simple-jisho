@@ -1,9 +1,9 @@
 import { createContext, useContext, useState, PropsWithChildren } from "react";
 
-import DevLogsModal from '@/components/modals/DevLogsModal';
-import SearchHistoryModal from '@/components/modals/SearchHistoryModal';
-import KanjiModal from '@/components/modals/KanjiModal';
-import KanaModal from '@/components/modals/KanaModal';
+import DevLogsModal from '@/components/_modals/DevLogsModal/DevLogsModal';
+import SearchHistoryModal from '@/components/_modals/SearchHistoryModal/SearchHistoryModal';
+import KanjiModal from '@/components/_modals/KanjiModal/KanjiModal';
+import KanaModal from '@/components/_modals/KanaModal/KanaModal';
 
 
 // Enumerates the different types of modals.
