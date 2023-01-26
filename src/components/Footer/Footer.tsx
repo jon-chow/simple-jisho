@@ -2,7 +2,7 @@ import { FaGithub, FaBook } from 'react-icons/fa';
 
 import { AppInfoData, BackgroundData, SMButtonsData, TechStackData } from '@/configs/config';
 
-import { useModal, ModalType } from '@/contexts/ModalProvider';
+import { useModal, ModalType, toggleModal } from '@/contexts/ModalProvider';
 
 import styles from './Footer.module.scss';
 import styles2 from '@/styles/Layout.module.scss';
@@ -19,14 +19,6 @@ import styles2 from '@/styles/Layout.module.scss';
  */
 const Footer = () => {
   const devLogsContext = useModal();
-
-  // Toggle the dev logs modal.
-  const toggleDevLogsModal = () => {
-    devLogsContext.setModalType(
-      devLogsContext.modalType === ModalType.DEVLOGS ? ModalType.NONE : ModalType.DEVLOGS
-    );
-    devLogsContext.setModalToggle(!devLogsContext.modalToggle);
-  };
 
   return (
     <footer className={styles.Footer}>
@@ -130,7 +122,7 @@ const Footer = () => {
       <div className={styles.DevLogs}>
         <button
           className={styles.DevLogsButton}
-          onClick={toggleDevLogsModal}
+          onClick={() => { toggleModal(devLogsContext, ModalType.DEVLOGS); }}
         >
           <FaBook /> Dev Logs
         </button>

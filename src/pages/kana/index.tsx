@@ -1,4 +1,4 @@
-import { useModal, ModalType } from '@/contexts/ModalProvider';
+import { useModal, ModalType, toggleModal } from '@/contexts/ModalProvider';
 
 import styles from './KanaChartPage.module.scss';
 
@@ -216,8 +216,7 @@ const KanaCard = (props : {kana : Kana}) => {
 
     // Toggle the kana info modal.
   const toggleKanaModal = () => {
-    KanaContext.setModalType(ModalType.KANA);
-    KanaContext.setModalToggle(!KanaContext.modalToggle);
+    toggleModal(KanaContext, ModalType.KANA);
     KanaContext.setData(props.kana);
   };
 

@@ -29,11 +29,11 @@
         background-color: var(--primary-colour-dark);
       }
     }
+  }
 
-    .Active {
-      background-color: var(--primary-colour-dark);
-      box-shadow: 0 0 0.5rem rgba(var(--primary-colour-raw), 0.8);
-    }
+  .Active {
+    background-color: var(--primary-colour-dark);
+    box-shadow: 0 0 0.5rem rgba(var(--primary-colour-raw), 0.8);
   }
 
   .SearchInput {
@@ -62,16 +62,16 @@
       transition: background-color 0.25s ease-in-out;
 
       &:hover {
-        &[type="submit"] {
-          background-color: rgba(#4f4, 0.8);
+        &[type="submit"]:not(.Active) {
+          background-color: #4c4;
         }
 
         &[type="reset"] {
-          background-color: rgba(#f44, 0.8);
+          background-color: #c44;
         }
 
         &[type="button"] {
-          background-color: rgba(#44f, 0.8);
+          background-color: var(--primary-colour-dark);
         }
       }
     }

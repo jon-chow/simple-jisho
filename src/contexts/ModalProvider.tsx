@@ -2,6 +2,7 @@ import { createContext, useContext, useState, PropsWithChildren } from "react";
 
 import DevLogsModal from '@/components/_modals/DevLogsModal/DevLogsModal';
 import SearchHistoryModal from '@/components/_modals/SearchHistoryModal/SearchHistoryModal';
+import SettingsModal from '@/components/_modals/SettingsModal/SettingsModal';
 import KanjiModal from '@/components/_modals/KanjiModal/KanjiModal';
 import KanaModal from '@/components/_modals/KanaModal/KanaModal';
 
@@ -11,6 +12,7 @@ export enum ModalType {
   NONE,
   DEVLOGS,
   SEARCH_HISTORY,
+  SETTINGS,
   KANJI,
   KANA,
 };
@@ -28,6 +30,7 @@ export const getModal = (modalType: ModalType, modalToggle: boolean) => {
   switch (modalType) {
     case ModalType.DEVLOGS:        return <DevLogsModal />;
     case ModalType.SEARCH_HISTORY: return <SearchHistoryModal />;
+    case ModalType.SETTINGS:       return <SettingsModal />;
     case ModalType.KANJI:          return <KanjiModal />;
     case ModalType.KANA:           return <KanaModal />;
     default:                       return null;
@@ -52,6 +55,12 @@ export const resetModalContext = (context : typeof Modal) => {
   context.setModalType(ModalType.NONE);
   context.setModalToggle(false);
   context.setData({});
+};
+
+// Toggle the modal given the modal type.
+export const toggleModal = (context : typeof Modal, modalType : ModalType) => {
+  context.setModalType(context.modalType === modalType ? ModalType.NONE : modalType);
+  context.setModalToggle(context.modalType === modalType ? false : true);
 };
 
 // Use the modal context.

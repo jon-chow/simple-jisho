@@ -1,0 +1,14 @@
+.SettingsContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  background: rgba(#000, 0.1);
+  border-radius: 1rem;
+  padding: 1rem 3rem;
+  width: 95%;
+  height: 100%;
+  gap: 1rem;
+
+  
+}

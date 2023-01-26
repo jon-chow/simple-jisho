@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { BsClipboard, BsInfoCircle, BsStar, BsStarFill } from 'react-icons/bs';
 
 import { useNotifications, MessageType } from '@/contexts/NotificationsProvider';
-import { useModal, ModalType } from '@/contexts/ModalProvider';
+import { useModal, ModalType, toggleModal } from '@/contexts/ModalProvider';
 
 import styles from './SearchResult.module.scss';
 
@@ -57,9 +57,8 @@ const SearchResult = (props: any) => {
 
   // Toggle the kanji info modal.
   const toggleKanjiInfoModal = (kanji: any[]) => {
-    kanjiContext.setModalType(ModalType.KANJI);
     kanjiContext.setData(kanji);
-    kanjiContext.setModalToggle(!kanjiContext.modalToggle);
+    toggleModal(kanjiContext, ModalType.KANJI);
   };
 
   // Check if word is saved.

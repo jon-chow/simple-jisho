@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { FaHome, FaTable, FaStar, FaSearch, FaTrashAlt, FaHistory } from 'react-icons/fa';
+import { FaHome, FaTable, FaStar, FaSearch, FaTrashAlt, FaHistory, FaCog } from 'react-icons/fa';
 
 import { useSearch, Status } from '@/contexts/SearchProvider';
 import { useResults } from '@/contexts/ResultsProvider';
-import { useModal, ModalType } from '@/contexts/ModalProvider';
+import { useModal, ModalType, toggleModal } from '@/contexts/ModalProvider';
 
 import styles from './SearchBar.module.scss';
 
@@ -92,19 +92,11 @@ const NavButtons = [
 const SearchBar = () => {
   const searchContext = useSearch();
   const resultsContext = useResults();
-  const searchHistoryContext = useModal();
+  const modalContext = useModal();
 
   const [querying, setQuerying] = useState<PromiseWithCancel<any> | undefined>(undefined);
 
   const router = useRouter();
-
-  // Toggle the search history modal.
-  const toggleSearchHistoryModal = () => {
-    searchHistoryContext.setModalType(
-      searchHistoryContext.modalType === ModalType.SEARCH_HISTORY ? ModalType.NONE : ModalType.SEARCH_HISTORY
-    );
-    searchHistoryContext.setModalToggle(!searchHistoryContext.modalToggle);
-  };
 
   // Updates the search history.
   const updateSearchHistory = (query: SearchHistory) => {
@@ -275,14 +267,35 @@ const SearchBar = () => {
 
       {/* Control Buttons */}
       <div className={styles.SearchControls}>
-        <button type="submit" title="Search">
+        <button 
+          className={(router.pathname === '/search') ? styles.Active : undefined}
+          type="submit"
+          title="Search"
+        >
           <FaSearch />
         </button>
-        <button type="reset" title="Clear">
+
+        <button
+          type="reset"
+          title="Clear"
+        >
           <FaTrashAlt />
         </button>
-        <button type="button" title="History" onClick={toggleSearchHistoryModal}>
+
+        <button
+          type="button"
+          title="Search History"
+          onClick={() => { toggleModal(modalContext, ModalType.SEARCH_HISTORY); }}
+        >
           <FaHistory />
+        </button>
+
+        <button
+          type="button"
+          title="Settings"
+          onClick={() => { toggleModal(modalContext, ModalType.SETTINGS); }}
+        >
+          <FaCog /> 
         </button>
       </div>
     </form>
