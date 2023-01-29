@@ -13,14 +13,19 @@
   .Group {
     display: flex;
     flex-direction: column;
-    border-left: 4px solid var(--primary-colour-dark);
+    border-left: 0.5rem solid var(--primary-colour-dark);
+    background: rgba(#111, 0.25);
+    border-radius: 0.5rem;
     padding: 1rem 2rem;
 
     h1 {
+      display: flex;
+      align-items: center;
       font-size: 1.5rem;
       font-weight: bold;
       color: #fff;
       margin: 0;
+      gap: 0.5rem;
     }
 
     p {
@@ -41,13 +46,6 @@
   width: 100%;
   padding: 0.5rem 1rem;
 
-  h2 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #fff;
-    margin: 0;
-  }
-
   .Container {
     display: flex;
     flex-direction: column;
@@ -63,6 +61,7 @@
       width: 100%;
       padding: 0.5rem 1rem;
       border-radius: 0.5rem;
+      border: 0.25rem solid #222;
       cursor: pointer;
 
       .Icon {
@@ -106,7 +105,7 @@
   }
 }
 
-.CheckBox {
+.InputBox {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -114,12 +113,25 @@
   gap: 0.5rem;
   padding: 0.5rem 1rem;
 
-  h2 {
-    font-size: 1.2rem;
-    font-weight: 600;
+  input {
+    max-width: 40%;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background: #2b2b2b;
+    border: 0.25rem solid #222;
     color: #fff;
-    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
   }
+}
+
+.CheckBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
 
   .Container {
     display: flex;
@@ -141,5 +153,16 @@
       0% { opacity: 0; }
       100% { opacity: 1; }
     }
+  }
+}
+
+.DropDown,
+.InputBox,
+.CheckBox {
+  h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
   }
 }

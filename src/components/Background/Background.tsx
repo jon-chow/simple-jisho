@@ -20,12 +20,12 @@ const Background = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    setIsLoaded(getSetting("background"));
+    setIsLoaded(getSetting("backgroundImage"));
   }, []);
 
   return (
     <div className={styles.Background}>
-      { isLoaded && (
+      { isLoaded ? (
         <>
           <div className={styles.Overlay}
             style={{
@@ -33,7 +33,6 @@ const Background = () => {
               backdropFilter: `blur(${BackgroundData.blurAmount}px)`
             }}
           />
-
           <Image
             className={styles.BackgroundImage}
             loader={({ src }) => src}
@@ -44,6 +43,8 @@ const Background = () => {
             quality={100}
           />
         </>
+      ) : (
+        <div className={styles.BackgroundSimple} />
       )}
     </div>
   );

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { FaAngleDown, FaCheck } from 'react-icons/fa';
+import { FaRegEye, FaSearch, FaAngleDown, FaCheck, FaEye } from 'react-icons/fa';
 
-import { ThemeOptions, activeOption, useSettings, getSetting } from '@/contexts/SettingsProvider';
+import { ThemeOptions, useSettings, getSetting, getDefaultSetting } from '@/contexts/SettingsProvider';
 
 import ModalLayout from '../ModalLayout/ModalLayout';
 
@@ -16,16 +16,14 @@ import styles from './SettingsModal.module.scss';
  * @param title The title of the dropdown.
  * @param options The list of options to choose from.
  */
-const DropDown = (props : {title : string, options : Option[], initOption? : Option, selection : (option : Option) => void}) => {
+const DropDown = (props : {title : string, options : Option[], initValue? : Option, selection : (option : Option) => void}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(props.initOption || props.options[0]);
+  const [selectedOption, setSelectedOption] = useState(props.initValue || props.options[0]);
 
   const dropDownRef = useRef<HTMLDivElement>(null);
 
   // Toggle the dropdown when the user clicks the button.
-  const toggleDropDown = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleDropDown = () => setIsOpen(!isOpen);
 
   // Select an option when the user clicks it.
   const selectOption = (option : Option) => {
@@ -55,7 +53,7 @@ const DropDown = (props : {title : string, options : Option[], initOption? : Opt
         <div
           className={styles.DropDownButton}
           onClick={toggleDropDown}
-          style={{ backgroundColor: isOpen ? 'rgb(34,34,34)' : 'rgba(34,34,34,0.6)' }}
+          style={{ backgroundColor: isOpen ? 'rgb(34,34,34)' : 'rgba(34,34,34,0.8)' }}
         >
           <span>{selectedOption.title}</span>
           <FaAngleDown
@@ -93,11 +91,15 @@ const DropDown = (props : {title : string, options : Option[], initOption? : Opt
  * @param title The title of the input box.
  * @param placeholder The placeholder text of the input box.
  */
-const InputBox = (props : {title : string, placeholder : string}) => {
+const InputBox = (props : {title : string, initValue? : any, placeholder : string}) => {
   return (
     <div className={styles.InputBox}>
       <h2>{props.title}</h2>
-      <input type="text" placeholder={props.placeholder} />
+      <input
+        type="text"
+        placeholder={props.placeholder}
+        defaultValue={props.initValue}
+      />
     </div>
   );
 };
@@ -144,42 +146,34 @@ const CheckBox = (props : {title : string, initValue : boolean, selection : (val
 const SettingsModal = () => {
   const settingsContext = useSettings();
 
-  const changeTheme = (option : Option) => {
-    settingsContext.setSetting("theme", option.value);
-  };
-
-  const changeBackground = (value : boolean) => {
-    settingsContext.setSetting("background", value);
-  };
-
-  const changeHighContrast = (value : boolean) => {
-    settingsContext.setSetting("highContrast", value);
+  // Change a specified setting.
+  const changeSetting = (setting : string, value : any) => {
+    settingsContext.setSetting(setting, value);
   };
 
   return (
     <ModalLayout title="Settings" width="50vw">
       <div className={styles.SettingsContainer}>
         <div className={styles.Group}>
-          <h1>Display Options</h1>
-          <p>*reload the page to apply changes.</p>
+          <h1><FaEye /> Display Options</h1>
 
           <DropDown
             title="Theme"
-            initOption={activeOption()}
+            initValue={getSetting("theme")}
             options={ThemeOptions}
-            selection={(option) => { changeTheme(option); }}
+            selection={(option) => { changeSetting("theme", option.value); }}
           />
 
           <CheckBox
-            title="Background"
-            initValue={getSetting("background")}
-            selection={(value) => { changeBackground(value); }}
+            title="Background Image"
+            initValue={getSetting("backgroundImage")}
+            selection={(value) => { changeSetting("backgroundImage", value); }}
           />
 
           <CheckBox
             title="High Contrast"
             initValue={getSetting("highContrast")}
-            selection={(value) => { changeHighContrast(value); }}
+            selection={(value) => { changeSetting("highContrast", value); }}
           />
 
           {/* <DropDown
@@ -190,13 +184,21 @@ const SettingsModal = () => {
         </div>
 
         <div className={styles.Group}>
-          <h1>History Options</h1>
+          <h1><FaSearch /> Search Options</h1>
           <InputBox
-            title="Max History"
-            placeholder="10"
+            title="Max Results To Display"
+            initValue={getDefaultSetting("maxResultsToDisplay")}
+            placeholder={getSetting("maxResultsToDisplay")}
+          />
+
+          <InputBox
+            title="Max Search History"
+            initValue={getDefaultSetting("maxSearchHistory")}
+            placeholder={getSetting("maxSearchHistory")}
           />
         </div>
       </div>
+      <span>*reload the page to apply changes.</span>
     </ModalLayout>
   );
 };
