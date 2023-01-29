@@ -1,5 +1,6 @@
 import type { AppProps } from 'next/app';
 
+import ThemeContextProvider from '@/contexts/ThemeProvider';
 import SearchContextProvider from '@/contexts/SearchProvider';
 import ResultsContextProvider from '@/contexts/ResultsProvider';
 import NotificationsContextProvider from '@/contexts/NotificationsProvider';
@@ -21,25 +22,27 @@ import styles from '@/styles/Layout.module.scss';
  */
 const Layout = ({ children }: any) => {
   return (
-    <SearchContextProvider>
-      <ResultsContextProvider>
-        <NotificationsContextProvider>
-          <ModalContextProvider>
-            <div className={styles.Container}>
-              <MetaData />
-              <Background />
-              <TopBar />
+    <ThemeContextProvider>
+      <SearchContextProvider>
+        <ResultsContextProvider>
+          <NotificationsContextProvider>
+            <ModalContextProvider>
+              <div className={styles.Container}>
+                <MetaData />
+                <Background />
+                <TopBar />
 
-              <main className={styles.Main}>
-                { children }
-              </main>
+                <main className={styles.Main}>
+                  { children }
+                </main>
 
-              <Footer />
-            </div>
-          </ModalContextProvider>
-        </NotificationsContextProvider>
-      </ResultsContextProvider>
-    </SearchContextProvider>
+                <Footer />
+              </div>
+            </ModalContextProvider>
+          </NotificationsContextProvider>
+        </ResultsContextProvider>
+      </SearchContextProvider>
+    </ThemeContextProvider>
   );
 };
 

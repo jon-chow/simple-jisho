@@ -106,3 +106,9 @@ type Kana = {
   hiragana: string,
   katakana: string,
 };
+
+// Type definition for a drop down option.
+type Option = {
+  title : string;
+  value : string;
+};
