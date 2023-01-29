@@ -1,4 +1,7 @@
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
+
+import { getSetting } from '@/contexts/SettingsProvider';
 
 import { BackgroundData } from '@/configs/config';
 
@@ -14,24 +17,34 @@ import styles from './Background.module.scss';
  * An image background with a blurring overlay.
  */
 const Background = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(getSetting("background"));
+  }, []);
+
   return (
     <div className={styles.Background}>
-      <div className={styles.Overlay}
-        style={{
-          background: BackgroundData.overlayColor,
-          backdropFilter: `blur(${BackgroundData.blurAmount}px)`
-        }}
-      />
-      
-      <Image
-        className={styles.BackgroundImage}
-        loader={({ src }) => src}
-        unoptimized={true}
-        src={BackgroundData.image}
-        alt="Background"
-        fill={true}
-        quality={100}
-      />
+      { isLoaded && (
+        <>
+          <div className={styles.Overlay}
+            style={{
+              background: BackgroundData.overlayColor,
+              backdropFilter: `blur(${BackgroundData.blurAmount}px)`
+            }}
+          />
+
+          <Image
+            className={styles.BackgroundImage}
+            loader={({ src }) => src}
+            unoptimized={true}
+            src={BackgroundData.image}
+            alt=""
+            fill={true}
+            quality={100}
+          />
+        </>
+      )}
     </div>
   );
 };

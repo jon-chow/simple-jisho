@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { FaAngleDown } from 'react-icons/fa';
+import { FaAngleDown, FaCheck } from 'react-icons/fa';
 
-import { Options, activeOption, useTheme } from '@/contexts/ThemeProvider';
+import { ThemeOptions, activeOption, useSettings, getSetting } from '@/contexts/SettingsProvider';
 
 import ModalLayout from '../ModalLayout/ModalLayout';
 
@@ -49,40 +49,84 @@ const DropDown = (props : {title : string, options : Option[], initOption? : Opt
 
   return (
     <div className={styles.DropDown} ref={dropDownRef}>
-      <div className={styles.Header}>
-        <h2>{props.title}</h2>
+      <h2>{props.title}</h2>
 
-        <div className={styles.Container}>
-          <div
-            className={styles.DropDownButton}
-            onClick={toggleDropDown}
-            style={{ backgroundColor: isOpen ? '#222' : 'rgba(0, 0, 0, 0.2)' }}
-          >
-            <span>{selectedOption.title}</span>
-            <FaAngleDown
-              className={styles.Icon}
-              style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
-            />
-          </div>
-
-          <div className={styles.Body}>
-            <div
-              className={styles.Content} 
-              style={{ maxHeight: isOpen ? '100%' : '0', opacity: isOpen ? '1' : '0' }}
-            >
-              { props.options.map((option, index) => (
-                <span
-                  key={index}
-                  className={styles.Option}
-                  onClick={() => selectOption(option)}
-                >
-                  {option.title}
-                </span>
-              ))}
-            </div>
-          </div>
+      <div className={styles.Container}>
+        <div
+          className={styles.DropDownButton}
+          onClick={toggleDropDown}
+          style={{ backgroundColor: isOpen ? 'rgb(34,34,34)' : 'rgba(34,34,34,0.6)' }}
+        >
+          <span>{selectedOption.title}</span>
+          <FaAngleDown
+            className={styles.Icon}
+            style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+          />
         </div>
 
+        <div className={styles.Body}>
+          <div
+            className={styles.Content} 
+            style={{ maxHeight: isOpen ? '100%' : '0', opacity: isOpen ? '1' : '0', visibility: isOpen ? 'visible' : 'hidden' }}
+          >
+            { props.options.map((option, index) => (
+              <span
+                key={index}
+                className={styles.Option}
+                onClick={() => selectOption(option)}
+              >
+                {option.title}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/**
+ * Creates an input box component.
+ * 
+ * The input box component allows the user to enter text.
+ * 
+ * @param title The title of the input box.
+ * @param placeholder The placeholder text of the input box.
+ */
+const InputBox = (props : {title : string, placeholder : string}) => {
+  return (
+    <div className={styles.InputBox}>
+      <h2>{props.title}</h2>
+      <input type="text" placeholder={props.placeholder} />
+    </div>
+  );
+};
+
+/**
+ * Creates a checkbox component.
+ * 
+ * The checkbox component allows the user to toggle a setting.
+ * 
+ * @param title The title of the checkbox.
+ * @param initValue The initial value of the checkbox.
+ * @param selection The function to call when the checkbox is toggled.
+ */
+const CheckBox = (props : {title : string, initValue : boolean, selection : (value : boolean) => void}) => {
+  const [value, setValue] = useState(props.initValue);
+
+  const toggleValue = () => {
+    props.selection(!value);
+    setValue(!value);
+  };
+
+  return (
+    <div className={styles.CheckBox}>
+      <h2>{props.title}</h2>
+      <div
+        className={styles.Container}
+        onClick={toggleValue}
+      >
+        { value ? <FaCheck /> : null }
       </div>
     </div>
   );
@@ -98,27 +142,60 @@ const DropDown = (props : {title : string, options : Option[], initOption? : Opt
  * The settings modal allows the user to change app preferences.
  */
 const SettingsModal = () => {
-  const themeContext = useTheme();
+  const settingsContext = useSettings();
 
   const changeTheme = (option : Option) => {
-    themeContext.setTheme(option.value);
+    settingsContext.setSetting("theme", option.value);
+  };
+
+  const changeBackground = (value : boolean) => {
+    settingsContext.setSetting("background", value);
+  };
+
+  const changeHighContrast = (value : boolean) => {
+    settingsContext.setSetting("highContrast", value);
   };
 
   return (
     <ModalLayout title="Settings" width="50vw">
       <div className={styles.SettingsContainer}>
-        <fieldset>
-          <legend>General</legend>
-          <div className={styles.Group}>
-            <h1>Display Options</h1>
-            <DropDown
-              title="Appearance"
-              initOption={activeOption()}
-              options={Options}
-              selection={(option) => { changeTheme(option); }}
-            />
-          </div>
-        </fieldset>
+        <div className={styles.Group}>
+          <h1>Display Options</h1>
+          <p>*reload the page to apply changes.</p>
+
+          <DropDown
+            title="Theme"
+            initOption={activeOption()}
+            options={ThemeOptions}
+            selection={(option) => { changeTheme(option); }}
+          />
+
+          <CheckBox
+            title="Background"
+            initValue={getSetting("background")}
+            selection={(value) => { changeBackground(value); }}
+          />
+
+          <CheckBox
+            title="High Contrast"
+            initValue={getSetting("highContrast")}
+            selection={(value) => { changeHighContrast(value); }}
+          />
+
+          {/* <DropDown
+            title="Font Size"
+            options={Options}
+            selection={(option) => { changeTheme(option); }}
+          /> */}
+        </div>
+
+        <div className={styles.Group}>
+          <h1>History Options</h1>
+          <InputBox
+            title="Max History"
+            placeholder="10"
+          />
+        </div>
       </div>
     </ModalLayout>
   );

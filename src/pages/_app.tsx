@@ -1,6 +1,6 @@
 import type { AppProps } from 'next/app';
 
-import ThemeContextProvider from '@/contexts/ThemeProvider';
+import SettingsContextProvider from '@/contexts/SettingsProvider';
 import SearchContextProvider from '@/contexts/SearchProvider';
 import ResultsContextProvider from '@/contexts/ResultsProvider';
 import NotificationsContextProvider from '@/contexts/NotificationsProvider';
@@ -22,7 +22,7 @@ import styles from '@/styles/Layout.module.scss';
  */
 const Layout = ({ children }: any) => {
   return (
-    <ThemeContextProvider>
+    <SettingsContextProvider>
       <SearchContextProvider>
         <ResultsContextProvider>
           <NotificationsContextProvider>
@@ -42,7 +42,7 @@ const Layout = ({ children }: any) => {
           </NotificationsContextProvider>
         </ResultsContextProvider>
       </SearchContextProvider>
-    </ThemeContextProvider>
+    </SettingsContextProvider>
   );
 };
 
