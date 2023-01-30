@@ -21,11 +21,14 @@
     "baseUrl": ".",
     "paths": {
       "@/public/*": ["public/*"],
-      "@/styles/*": ["src/styles/*"],
-      "@/configs/*": ["src/configs/*"],
+      "@/src/*": ["src/*"],
       "@/components/*": ["src/components/*"],
+      "@/configs/*": ["src/configs/*"],
       "@/contexts/*": ["src/contexts/*"],
       "@/hooks/*": ["src/hooks/*"],
+      "@/pages/*": ["src/pages/*"],
+      "@/styles/*": ["src/styles/*"],
+      "@/utils/*": ["src/utils/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
