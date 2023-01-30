@@ -57,10 +57,10 @@ type MessageProps = {
   id: string;
   type?: MessageType;
   title: string;
-  message: string;
+  message: string | React.ReactNode;
+  timestamp: number;
   duration?: number;
 };
-
 
 // Type definition for an instance of a past search.
 type SearchHistory = {

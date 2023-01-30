@@ -4,7 +4,7 @@
   flex-direction: column-reverse;
   top: 0;
   left: 0;
-  width: 30vw;
+  width: max-content;
   height: 100vh;
   padding: 1rem;
   gap: 1rem;
@@ -16,14 +16,21 @@
   min-height: 15vh;
   border-radius: 1rem;
   padding: 1rem;
+  padding-right: 2rem;
   background: rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(5px);
   transform: translateX(-200%);
   transition: 
     background-color 0.2s linear,
     transform 0.4s ease-in-out;
+  animation: open 0.4s ease-in-out forwards;
   pointer-events: auto;
   cursor: pointer;
+
+  @keyframes open {
+    0% { transform: translateX(-200%); }
+    100% { transform: translateX(0); }
+  }
 
   .Header {
     display: flex;
@@ -51,19 +58,10 @@
     background: rgba(#fff, 0.75);
     border-radius: 0.25rem;
   }
-  
-  @keyframes Progress {
-    0% { width: 100%; }
-    100% { width: 0%; }
-  }
 
   &:hover {
     background: rgba(0, 0, 0, 0.5);
   }
-}
-
-.MessageActive {
-  transform: translateX(0);
 }
 
 .Error {
@@ -96,8 +94,4 @@
   &:hover {
     background: rgba(0, 0, 255, 0.5);
   }
-}
-
-.ClosedMessage {
-  transform: translateX(-200%);
 }

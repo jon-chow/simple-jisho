@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BsClipboard, BsInfoCircle, BsStar, BsStarFill } from 'react-icons/bs';
 
-import { useNotifications, MessageType } from '@/contexts/NotificationsProvider';
+import { useNotifications, MessageType, createMessage } from '@/contexts/NotificationsProvider';
 import { useModal, ModalType, toggleModal } from '@/contexts/ModalProvider';
 
 import styles from './SearchResult.module.scss';
@@ -24,22 +24,23 @@ const SearchResult = (props: any) => {
   const data = props.resultData;
   const mainForm = data.japanese[0];
 
-  const copyToClipboard = (text: string) => {
+  // Copy text to clipboard.
+  const copyToClipboard = async (text: string) => {
     // const currentText = await navigator.clipboard.readText();
     // if (currentText === text) return;
     
     navigator.clipboard.writeText(text);
-
-    const message: MessageProps = {
-      id: notificationsContext.hashMessage(),
-      type: MessageType.INFO,
-      title: "Copied to Clipboard!",
-      message: `Copied "${text}" to clipboard!`,
-      duration: 3000,
-    };
-    notificationsContext.pushMessage(message);
+    notificationsContext.addMessage(
+      createMessage(
+        MessageType.INFO,
+        "Copied to Clipboard!",
+        `Copied "${text}" to clipboard!`,
+        3000
+      )
+    );
   };
 
+  // Save or unsave a word to local storage.
   const saveWord = (word: any) => {
     const savedWords = JSON.parse(localStorage.getItem('savedWords') || '[]');
     const wordExists = savedWords.some((w: any) => w.slug === word.slug);

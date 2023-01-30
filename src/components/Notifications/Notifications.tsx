@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef, useCallback } from 'react';
 import {
   BsXOctagonFill as ErrorIcon,
   BsExclamationTriangleFill as WarningIcon,
@@ -6,7 +6,8 @@ import {
   BsCheckCircleFill as SuccessIcon
 } from 'react-icons/bs';
 
-import { useNotifications, MessageType } from '@/contexts/NotificationsProvider';
+import useInterval from '@/hooks/useInterval';
+import { useNotifications, MessageType, DEFAULT_DURATION } from '@/contexts/NotificationsProvider';
 
 import styles from './Notifications.module.scss';
 
@@ -16,11 +17,12 @@ import styles from './Notifications.module.scss';
  */
 const Message = (props: { message : MessageProps }) => {
   const { type, title, message } = props.message;
-  const duration = props.message.duration || 5000;
+  const duration = props.message.duration;
 
-  const notificationsContext = useNotifications();
+  const { clearMessage } = useNotifications();
 
   const messageRef = useRef<HTMLDivElement>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
 
   // Map the message type to an icon.
   const mapTypeIcon = () => {
@@ -34,25 +36,19 @@ const Message = (props: { message : MessageProps }) => {
   };
 
   // Closes the message.
-  const closeMessage = () => {
-    messageRef.current?.classList.add(styles.ClosedMessage);
+  const closeMessage = () => clearMessage(props.message.id);
 
-    setTimeout(() => {
-      // notificationsContext.setMessages([...notificationsContext.messages.filter((m) => m.id !== props.message.id)]);
-      messageRef.current?.remove();
-    }, 400);
-  };
+  // Update progress bar.
+  const updateProgressBar = useCallback(() => {
+    if (progressRef.current) {
+      const progress = (Date.now() - props.message.timestamp) / (duration || DEFAULT_DURATION);
+      progressRef.current.style.width = `${
+        progress >= 1 ? 0 : 100 - (progress * 100)
+      }%`;
+    }
+  }, [duration, props.message.timestamp]);
 
-  // Open the message, then close it after a set amount of time.
-  useEffect(() => {
-    setTimeout(() => {
-      messageRef.current?.classList.add(styles.MessageActive);
-    }, 1);
-
-    setTimeout(() => {
-      closeMessage();
-    }, duration);
-  }, []);
+  useInterval(updateProgressBar, 10);
 
   return (
     <div
@@ -75,10 +71,7 @@ const Message = (props: { message : MessageProps }) => {
 
       { message }
 
-      <div
-        className={styles.ProgressBar}
-        style={{ animation: `${styles.Progress} ${duration}ms linear forwards` }}
-      />
+      <div className={styles.ProgressBar} ref={progressRef} />
     </div>
   );
 };

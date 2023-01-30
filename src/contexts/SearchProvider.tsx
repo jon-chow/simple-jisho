@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, PropsWithChildren } from "react";
+import { createContext, useContext, useState, useEffect, PropsWithChildren } from "react";
 
 
 // Enumerates the different states of a search.
@@ -27,6 +27,12 @@ export const useSearch = () => useContext(SearchContext);
 const SearchContextProvider = ({ children } : PropsWithChildren) => {
   const [currentSearch, setQuery] = useState("");
   const [searchStatus, setStatus] = useState<Status>(Status.IDLE);
+
+  // Creates the search history in local storage if it doesn't exist.
+  useEffect(() => {
+    if (localStorage.getItem("searchHistory") === null)
+      localStorage.setItem("searchHistory", JSON.stringify([]));
+  }, []);
 
   return (
     <SearchContext.Provider value={{

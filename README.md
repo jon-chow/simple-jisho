@@ -12,7 +12,15 @@ Simple Jisho is a simple, condensed, and easy-to-use Japanese-English dictionary
 - View past searches (up to 10)
 
 ### **Working On:**
-- Fix the notifications deletion problem
+- Complete implementation of settings
+  - theme toggle (light/dark/system)
+  - high contrast toggle
+  - max results to display
+  - max past searches to save
+- Improve bookmarks page
+  - add sorting options
+  - add a filtering search bar
+  - add pagination
 
 ### **To Be Added in the Future:**
 - Example audio (using react-speech-kit)

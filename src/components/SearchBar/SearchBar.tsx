@@ -152,11 +152,7 @@ const SearchBar = () => {
     resultsContext.setResults([]);
     searchContext.setStatus(Status.IDLE);
 
-    { pathname ?
-      router.push(pathname, undefined, { shallow: true })
-      : router.push("/", undefined, { shallow: true });
-    };
-
+    router.push(pathname ? pathname : "/", undefined, { shallow: true });
     const input = document.getElementById("search") as HTMLInputElement;
     input.value = "";
   };
@@ -218,12 +214,6 @@ const SearchBar = () => {
       navigatePages();
     };
   };
-
-  // Creates the search history in local storage if it doesn't exist.
-  useEffect(() => {
-    if (localStorage.getItem("searchHistory") === null)
-      localStorage.setItem("searchHistory", JSON.stringify([]));
-  }, []);
 
   // Automatically searches for the query parameter in the URL.
   useEffect(() => {
