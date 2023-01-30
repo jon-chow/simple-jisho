@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { FaHome, FaTable, FaStar, FaSearch, FaTrashAlt, FaHistory, FaCog } from 'react-icons/fa';
 
+import { setLocalStorage } from '@/src/utils/setLocalStorage';
+
 import { useSearch, Status } from '@/contexts/SearchProvider';
 import { useResults } from '@/contexts/ResultsProvider';
 import { useModal, ModalType, toggleModal } from '@/contexts/ModalProvider';
@@ -103,10 +105,6 @@ const SearchBar = () => {
     // Ignore empty queries.
     if (query.results.length === 0) return;
 
-    // Initialize the search history if it doesn't exist.
-    if (localStorage.getItem("searchHistory") === null)
-      localStorage.setItem("searchHistory", JSON.stringify([]));
-
     // Update the search history.
     const searchHistory = localStorage.getItem("searchHistory");
     if (searchHistory) {
@@ -118,7 +116,7 @@ const SearchBar = () => {
       (history.length >= SEARCH_HISTORY_MAX_LENGTH) && history.shift();
       
       history.push(query);
-      localStorage.setItem("searchHistory", JSON.stringify(history));
+      setLocalStorage("searchHistory", JSON.stringify(history));
     };
   };
 

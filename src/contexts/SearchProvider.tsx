@@ -1,5 +1,7 @@
 import { createContext, useContext, useState, useEffect, PropsWithChildren } from "react";
 
+import { setLocalStorage } from "../utils/setLocalStorage";
+
 
 // Enumerates the different states of a search.
 export enum Status {
@@ -31,7 +33,7 @@ const SearchContextProvider = ({ children } : PropsWithChildren) => {
   // Creates the search history in local storage if it doesn't exist.
   useEffect(() => {
     if (localStorage.getItem("searchHistory") === null)
-      localStorage.setItem("searchHistory", JSON.stringify([]));
+      setLocalStorage("searchHistory", JSON.stringify([]));
   }, []);
 
   return (

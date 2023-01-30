@@ -19,8 +19,17 @@ import styles from './Background.module.scss';
 const Background = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
+  // Handle background image toggles.
+  const handleBackgroundChange = () => {
+    setIsLoaded(getSetting("backgroundImage"));
+  };
+
+  // Check if the background image is loaded and updates the state.
   useEffect(() => {
     setIsLoaded(getSetting("backgroundImage"));
+
+    window.addEventListener("storage_settings", handleBackgroundChange);
+    return () => window.removeEventListener("storage_settings", handleBackgroundChange);
   }, []);
 
   return (

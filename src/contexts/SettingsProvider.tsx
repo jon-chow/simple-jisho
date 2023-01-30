@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, PropsWithChildren } from "react";
 
+import { setLocalStorage } from "../utils/setLocalStorage";
+
 
 // The default settings.
 const DEFAULT_SETTINGS = {
@@ -71,9 +73,9 @@ const SettingsContextProvider = ({ children } : PropsWithChildren) => {
     if (settings) {
       const parsedSettings = JSON.parse(settings);
       parsedSettings[key] = value;
-      localStorage.setItem("settings", JSON.stringify(parsedSettings));
+      setLocalStorage("settings", JSON.stringify(parsedSettings));
     } else {
-      localStorage.setItem("settings", JSON.stringify({
+      setLocalStorage("settings", JSON.stringify({
         ...DEFAULT_SETTINGS, [key]: value
       }));
     };
@@ -94,10 +96,11 @@ const SettingsContextProvider = ({ children } : PropsWithChildren) => {
       Object.keys(DEFAULT_SETTINGS).forEach((key) => {
         if (!(key in parsedSettings))
           parsedSettings[key] = DEFAULT_SETTINGS[key as keyof typeof DEFAULT_SETTINGS];
+        document.documentElement.setAttribute(`data-${key}`, parsedSettings[key]);
       });
-      localStorage.setItem("settings", JSON.stringify(parsedSettings));
+      setLocalStorage("settings", JSON.stringify(parsedSettings));
     } else { // If the settings are missing.
-      localStorage.setItem("settings", JSON.stringify(DEFAULT_SETTINGS));
+      setLocalStorage("settings", JSON.stringify(DEFAULT_SETTINGS));
       Object.keys(DEFAULT_SETTINGS).forEach((key) => {
         document.documentElement.setAttribute(`data-${key}`,
           DEFAULT_SETTINGS[key as keyof typeof DEFAULT_SETTINGS].toString());
@@ -110,7 +113,7 @@ const SettingsContextProvider = ({ children } : PropsWithChildren) => {
       if (!(key in DEFAULT_SETTINGS))
         delete parsedSettings[key];
     });
-    localStorage.setItem("settings", JSON.stringify(parsedSettings));
+    setLocalStorage("settings", JSON.stringify(parsedSettings));
   }, []);
 
   return (

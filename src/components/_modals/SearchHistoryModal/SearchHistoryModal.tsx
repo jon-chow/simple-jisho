@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router';
 import { BsFillTrashFill, BsSearch } from 'react-icons/bs';
 
+import { setLocalStorage } from '@/src/utils/setLocalStorage'; 
+
 import { useSearch, Status } from '@/contexts/SearchProvider';
 import { useResults } from '@/contexts/ResultsProvider';
 import { useModal, resetModalContext } from '@/contexts/ModalProvider';
@@ -67,7 +69,7 @@ const SearchHistoryModal = () => {
                       history.splice(index, 1);
                     };
 
-                    localStorage.setItem("searchHistory", JSON.stringify(history));
+                    setLocalStorage("searchHistory", history);
                     e.currentTarget.parentElement?.parentElement?.remove();
                   };
                 }}
@@ -87,7 +89,7 @@ const SearchHistoryModal = () => {
           if (historyItems.length !== 0) {
             if (confirm("Are you sure you want to clear your search history? " +
               `(${historyItems.length} search item${historyItems.length !== 1 ? "s" : ""})`)) {
-              localStorage.setItem("searchHistory", JSON.stringify([]));
+              setLocalStorage("searchHistory", []);
               historyItems.forEach((item) => item.remove());
             };
           };

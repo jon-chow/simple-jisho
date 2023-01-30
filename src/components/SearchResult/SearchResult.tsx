@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { BsClipboard, BsInfoCircle, BsStar, BsStarFill } from 'react-icons/bs';
 
+import { setLocalStorage } from '@/src/utils/setLocalStorage';
+
 import { useNotifications, MessageType, createMessage } from '@/contexts/NotificationsProvider';
 import { useModal, ModalType, toggleModal } from '@/contexts/ModalProvider';
 
@@ -47,11 +49,11 @@ const SearchResult = (props: any) => {
 
     if (wordExists) {
       const newSavedWords = savedWords.filter((w: any) => w.slug !== word.slug);
-      localStorage.setItem('savedWords', JSON.stringify(newSavedWords));
+      setLocalStorage('savedWords', newSavedWords);
       setIsSaved(false);
     } else {
       savedWords.push(word);
-      localStorage.setItem('savedWords', JSON.stringify(savedWords));
+      setLocalStorage('savedWords', savedWords);
       setIsSaved(true);
     }
   };
