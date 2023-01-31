@@ -62,9 +62,6 @@ const getQueryVariable = (variable: string) => {
   };
 };
 
-
-const SEARCH_HISTORY_MAX_LENGTH = 10;
-
 const NavButtons = [
   {
     title: 'Home',
@@ -92,6 +89,8 @@ const NavButtons = [
  * The search bar is included in the header.
  */
 const SearchBar = () => {
+  const [maxSearchHistory, setMaxSearchHistory] = useState<number>(10);
+
   const searchContext = useSearch();
   const resultsContext = useResults();
   const modalContext = useModal();
@@ -113,7 +112,7 @@ const SearchBar = () => {
 
       (index !== -1) && history.splice(index, 1);
       
-      (history.length >= SEARCH_HISTORY_MAX_LENGTH) && history.shift();
+      (history.length >= maxSearchHistory) && history.shift();
       
       history.push(query);
       setLocalStorage("searchHistory", JSON.stringify(history));
@@ -212,6 +211,23 @@ const SearchBar = () => {
       navigatePages();
     };
   };
+
+  // Handle max search history changes.
+  const handleMaxSearchHistory = () => {
+    const settings = localStorage.getItem("settings");
+
+    if (settings) {
+      const parsedSettings = JSON.parse(settings);
+      parsedSettings.maxSearchHistory &&
+        setMaxSearchHistory(parsedSettings.maxSearchHistory);
+    };
+  };
+
+  // Update the max results per page from event listeners.
+  useEffect(() => {
+    window.addEventListener("storage_settings", handleMaxSearchHistory);
+    return () => window.removeEventListener("storage_settings", handleMaxSearchHistory);
+  }, []);
 
   // Automatically searches for the query parameter in the URL.
   useEffect(() => {

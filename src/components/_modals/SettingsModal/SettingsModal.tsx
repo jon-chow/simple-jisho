@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { FaRegEye, FaSearch, FaAngleDown, FaCheck, FaEye } from 'react-icons/fa';
+import { FaEye, FaSearch, FaAngleDown, FaCheck } from 'react-icons/fa';
 
 import { ThemeOptions, useSettings, getSetting, getDefaultSetting } from '@/contexts/SettingsProvider';
+import { useNotifications, MessageType, createMessage } from '@/src/contexts/NotificationsProvider';
 
 import ModalLayout from '../ModalLayout/ModalLayout';
 
@@ -91,14 +92,61 @@ const DropDown = (props : {title : string, options : Option[], initValue? : Opti
  * @param title The title of the input box.
  * @param placeholder The placeholder text of the input box.
  */
-const InputBox = (props : {title : string, initValue? : any, placeholder : string}) => {
+const InputBox = (props : {
+  title : string,
+  initValue? : any,
+  placeholder : string,
+  min?: number,
+  max?: number,
+  entered : (value : number) => void
+}) => {
+  const [value, setValue] = useState<number>(parseInt(props.placeholder));
+
+  const notificationsContext = useNotifications();
+
+  const min = props.min || 1;
+  const max = props.max || 10;
+
+  // Validate the input is a positive integer.
+  const validateInput = (val : number) => {
+    if (val < min || val > max || isNaN(val)) {
+      const message = createMessage(
+        MessageType.ERROR,
+        "Invalid Input",
+        `The input must be a positive integer between [${min}-${max}].`,
+        3000
+      );
+      notificationsContext.addMessage(message);
+      return false;
+    };
+
+    const message = createMessage(
+      MessageType.SUCCESS,
+      "Change Successful",
+      "The setting has been changed successfully.",
+      3000
+    );
+    notificationsContext.addMessage(message);
+    return true;
+  };
+
+  // Submit the input box when the user presses enter.
+  const submitBox = () => {
+    if (!validateInput(value)) return;
+    props.entered(value);
+  };
+
   return (
     <div className={styles.InputBox}>
       <h2>{props.title}</h2>
       <input
-        type="text"
+        type="number"
+        min={min}
+        max={max}
         placeholder={props.placeholder}
         defaultValue={props.initValue}
+        onChange={(event) => setValue(parseInt(event.target.value))}
+        onKeyDown={(event) => event.key === 'Enter' ? submitBox() : null}
       />
     </div>
   );
@@ -151,6 +199,12 @@ const SettingsModal = () => {
     settingsContext.setSetting(setting, value);
   };
 
+  // Reset all settings to their default values.
+  const resetSettings = () => {
+    window.confirm("Are you sure you want to reset to default settings?") &&
+      settingsContext.resetSettings();
+  };
+
   return (
     <ModalLayout title="Settings" width="50vw">
       <div className={styles.SettingsContainer}>
@@ -187,18 +241,27 @@ const SettingsModal = () => {
           <h1><FaSearch /> Search Options</h1>
           <InputBox
             title="Max Results To Display"
-            initValue={getDefaultSetting("maxResultsToDisplay")}
-            placeholder={getSetting("maxResultsToDisplay")}
+            initValue={getSetting("maxResultsToDisplay")}
+            placeholder={getDefaultSetting("maxResultsToDisplay") as string}
+            entered={(value) => { changeSetting("maxResultsToDisplay", value); }}
           />
 
           <InputBox
             title="Max Search History"
-            initValue={getDefaultSetting("maxSearchHistory")}
-            placeholder={getSetting("maxSearchHistory")}
+            initValue={getSetting("maxSearchHistory")}
+            placeholder={getDefaultSetting("maxSearchHistory") as string}
+            max={20}
+            entered={(value) => { changeSetting("maxSearchHistory", value); }}
           />
         </div>
       </div>
-      <span>*reload the page to apply changes.</span>
+      
+      <button
+        className={styles.ResetButton}
+        onClick={resetSettings}
+      >
+        Reset To Default
+      </button>
     </ModalLayout>
   );
 };

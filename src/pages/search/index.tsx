@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 
+import { setLocalStorage } from "@/src/utils/setLocalStorage";
+
 import { useSearch, Status } from "@/contexts/SearchProvider";
 import { useResults } from "@/contexts/ResultsProvider";
 
@@ -10,8 +12,6 @@ import SearchResult from '@/components/SearchResult/SearchResult';
 import styles from './SearchPage.module.scss';
 
 
-const MAX_RESULTS_PER_PAGE = 5;
-
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
@@ -19,14 +19,15 @@ const MAX_RESULTS_PER_PAGE = 5;
  * Creates a page that displays search results.
  */
 const SearchPage = () => {
+  const [maxResultsPerPage, setMaxResultsPerPage] = useState(2);
   const [currentPage, setCurrentPage] = useState(1);
 
   const { status } = useSearch();
   const { results } = useResults();
 
-  const numPages = Math.ceil(results.length / MAX_RESULTS_PER_PAGE);
-  const startIndex = (currentPage - 1) * MAX_RESULTS_PER_PAGE;
-  const endIndex = startIndex + MAX_RESULTS_PER_PAGE;
+  const numPages = Math.ceil(results.length / maxResultsPerPage);
+  const startIndex = (currentPage - 1) * maxResultsPerPage;
+  const endIndex = startIndex + maxResultsPerPage;
   const resultsToDisplay = results.slice(startIndex, endIndex);
 
   // Changes the current page to the next page.
@@ -101,6 +102,23 @@ const SearchPage = () => {
       </div>
     </div>
   );
+
+  // Handle max results per page changes.
+  const handleMaxResultsPerPageChange = () => {
+    const settings = localStorage.getItem("settings");
+
+    if (settings) {
+      const parsedSettings = JSON.parse(settings);
+      parsedSettings.maxResultsToDisplay &&
+        setMaxResultsPerPage(parsedSettings.maxResultsToDisplay);
+    };
+  };
+
+  // Update the max results per page from event listeners.
+  useEffect(() => {
+    window.addEventListener("storage_settings", handleMaxResultsPerPageChange);
+    return () => window.removeEventListener("storage_settings", handleMaxResultsPerPageChange);
+  }, []);
 
   // Set the page to the first page when the results change.
   useEffect(() => {

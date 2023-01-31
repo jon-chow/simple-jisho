@@ -22,7 +22,8 @@ export const ThemeOptions : Option[] = [
 // Context for settings.
 export const SettingsContext = createContext({
   ...DEFAULT_SETTINGS,
-  setSetting: (key: string, value: any) => {}
+  setSetting: (key: string, value: any) => {},
+  resetSettings: () => {}
 });
 
 // Use the settings context.
@@ -82,6 +83,15 @@ const SettingsContextProvider = ({ children } : PropsWithChildren) => {
     document.documentElement.setAttribute(`data-${key}`, value);
   };
 
+  // Reset the settings to the default settings.
+  const resetSettings = () => {
+    setLocalStorage("settings", JSON.stringify(DEFAULT_SETTINGS));
+    Object.keys(DEFAULT_SETTINGS).forEach((key) => {
+      document.documentElement.setAttribute(`data-${key}`,
+        DEFAULT_SETTINGS[key as keyof typeof DEFAULT_SETTINGS].toString());
+    });
+  };
+
   // Set the initial settings on load.
   useEffect(() => {
     const settings = localStorage?.getItem("settings");
@@ -117,7 +127,7 @@ const SettingsContextProvider = ({ children } : PropsWithChildren) => {
   }, []);
 
   return (
-    <SettingsContext.Provider value={{ ...getAllSettings(), setSetting }}>
+    <SettingsContext.Provider value={{ ...getAllSettings(), setSetting, resetSettings }}>
       { children }
     </SettingsContext.Provider>
   );
