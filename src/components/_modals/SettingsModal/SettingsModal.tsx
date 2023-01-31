@@ -1,7 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { FaEye, FaSearch, FaAngleDown, FaCheck } from 'react-icons/fa';
 
-import { ThemeOptions, useSettings, getSetting, getDefaultSetting } from '@/contexts/SettingsProvider';
+import { 
+  useSettings, getSetting, getDefaultSetting,
+  ThemeOptions, FontSizeOptions,
+} from '@/contexts/SettingsProvider';
 import { useNotifications, MessageType, createMessage } from '@/src/contexts/NotificationsProvider';
 
 import ModalLayout from '../ModalLayout/ModalLayout';
@@ -211,12 +214,12 @@ const SettingsModal = () => {
         <div className={styles.Group}>
           <h1><FaEye /> Display Options</h1>
 
-          <DropDown
+          {/* <DropDown
             title="Theme"
-            initValue={getSetting("theme")}
+            initValue={getSetting("theme", ThemeOptions)}
             options={ThemeOptions}
             selection={(option) => { changeSetting("theme", option.value); }}
-          />
+          /> */}
 
           <CheckBox
             title="Background Image"
@@ -224,30 +227,32 @@ const SettingsModal = () => {
             selection={(value) => { changeSetting("backgroundImage", value); }}
           />
 
-          <CheckBox
+          {/* <CheckBox
             title="High Contrast"
             initValue={getSetting("highContrast")}
             selection={(value) => { changeSetting("highContrast", value); }}
-          />
+          /> */}
 
           {/* <DropDown
             title="Font Size"
-            options={Options}
-            selection={(option) => { changeTheme(option); }}
+            initValue={getSetting("fontSize", FontSizeOptions)}
+            options={FontSizeOptions}
+            selection={(option) => { changeSetting("fontSize", option.value); }}
           /> */}
         </div>
 
         <div className={styles.Group}>
           <h1><FaSearch /> Search Options</h1>
           <InputBox
-            title="Max Results To Display"
+            title="Results To Display (10 max.)"
             initValue={getSetting("maxResultsToDisplay")}
             placeholder={getDefaultSetting("maxResultsToDisplay") as string}
+            max={10}
             entered={(value) => { changeSetting("maxResultsToDisplay", value); }}
           />
 
           <InputBox
-            title="Max Search History"
+            title="Saved Searches (20 max.)"
             initValue={getSetting("maxSearchHistory")}
             placeholder={getDefaultSetting("maxSearchHistory") as string}
             max={20}

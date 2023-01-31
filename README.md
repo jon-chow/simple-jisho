@@ -20,7 +20,7 @@ Simple Jisho is a simple, condensed, and easy-to-use Japanese-English dictionary
 - Improve bookmarks page
   - add sorting options
   - add a filtering search bar
-  - add pagination
+- Refactor pagination code
 
 ### **To Be Added in the Future:**
 - Example audio (using react-speech-kit)

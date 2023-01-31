@@ -10,14 +10,8 @@ const DEFAULT_SETTINGS = {
   highContrast: false,
   maxResultsToDisplay: 5,
   maxSearchHistory: 10,
+  fontSize: "medium"
 };
-
-// The options for the theme.
-export const ThemeOptions : Option[] = [
-  { title: "Light Mode", value: "light" },
-  { title: "Dark Mode", value: "dark" },
-  { title: "System", value: "system" }
-];
 
 // Context for settings.
 export const SettingsContext = createContext({
@@ -30,14 +24,17 @@ export const SettingsContext = createContext({
 export const useSettings = () => useContext(SettingsContext);
 
 // Getters for the settings.
-export const getSetting = (key : string) => {
+export const getSetting = (key : string, selections?: Option[]) => {
   try {
     const settings = localStorage.getItem("settings");
 
-    if (key === "theme") {
-      const theme = settings ? JSON.parse(settings).theme : null;
-      if (theme) return ThemeOptions.find((option) => option.value === theme);
-      return ThemeOptions[0];
+    // For things that require a selection.
+    if (selections) {
+      if (key === "theme" || key === "fontSize") {
+        const val = settings ? JSON.parse(settings)[key] : null;
+        if (val) return selections.find((option) => option.value === val);
+        return selections[0];
+      };
     };
 
     if (settings) return JSON.parse(settings)[key]; 
@@ -134,3 +131,24 @@ const SettingsContextProvider = ({ children } : PropsWithChildren) => {
 };
 
 export default SettingsContextProvider;
+
+
+/* -------------------------------------------------------------------------- */
+/*                            OPTIONS FOR SETTINGS                            */
+/* -------------------------------------------------------------------------- */
+
+// The options for the theme.
+export const ThemeOptions : Option[] = [
+  { title: "Light Mode", value: "light" },
+  { title: "Dark Mode", value: "dark" },
+  { title: "System", value: "system" }
+];
+
+// The options for font size.
+export const FontSizeOptions : Option[] = [
+  { title: "Extra Small", value: "extra-small"},
+  { title: "Small", value: "small" },
+  { title: "Medium", value: "medium" },
+  { title: "Large", value: "large" },
+  { title: "Extra Large", value: "extra-large" }
+];

@@ -225,6 +225,8 @@ const SearchBar = () => {
 
   // Update the max results per page from event listeners.
   useEffect(() => {
+    handleMaxSearchHistory();
+
     window.addEventListener("storage_settings", handleMaxSearchHistory);
     return () => window.removeEventListener("storage_settings", handleMaxSearchHistory);
   }, []);

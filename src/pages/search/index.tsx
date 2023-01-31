@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 
-import { setLocalStorage } from "@/src/utils/setLocalStorage";
-
 import { useSearch, Status } from "@/contexts/SearchProvider";
 import { useResults } from "@/contexts/ResultsProvider";
 
@@ -19,7 +17,7 @@ import styles from './SearchPage.module.scss';
  * Creates a page that displays search results.
  */
 const SearchPage = () => {
-  const [maxResultsPerPage, setMaxResultsPerPage] = useState(2);
+  const [maxResultsPerPage, setMaxResultsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
 
   const { status } = useSearch();
@@ -116,6 +114,8 @@ const SearchPage = () => {
 
   // Update the max results per page from event listeners.
   useEffect(() => {
+    handleMaxResultsPerPageChange();
+
     window.addEventListener("storage_settings", handleMaxResultsPerPageChange);
     return () => window.removeEventListener("storage_settings", handleMaxResultsPerPageChange);
   }, []);
