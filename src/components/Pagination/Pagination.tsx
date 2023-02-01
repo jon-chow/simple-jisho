@@ -1,11 +1,21 @@
 import { useState, useEffect } from 'react';
-import { BsArrowRight, BsArrowLeft } from 'react-icons/bs';
+import { FaAngleDoubleLeft, FaAngleLeft, FaAngleRight, FaAngleDoubleRight } from 'react-icons/fa';
 
 import SearchResult from '@/components/SearchResult/SearchResult';
 
 import styles from './Pagination.module.scss';
 
-// Renders the pagination controls.
+
+const BUTTONS_TO_SHOW = 5; // Must be odd number.
+
+/* -------------------------------------------------------------------------- */
+/*                             EXPORTED COMPONENT                             */
+/* -------------------------------------------------------------------------- */
+/**
+ * Creates the a pagination component.
+ * 
+ * Shows a specified number of results per page and allows the user to navigate between pages.
+ */
 const Pagination = (props : { results : any[], condition : boolean, default : JSX.Element } ) => {
   const [maxResultsPerPage, setMaxResultsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
@@ -30,6 +40,33 @@ const Pagination = (props : { results : any[], condition : boolean, default : JS
     setCurrentPage(page);
     window.scrollTo(0, 0);
   };
+
+  // Truncates page buttons to only show a specified number of buttons.
+  const truncatePageButtons = (page : number) => {
+    // Button element to render.
+    const ButtonElement = () => (
+      <button
+        key={page}
+        className={styles.PaginationPageNumber}
+        disabled={currentPage === page + 1}
+        onClick={() => setPage(page + 1)}
+      >
+        {page + 1}
+      </button>
+    );
+
+    const firstHalf = (BUTTONS_TO_SHOW + 1) / 2;
+    const secondHalf = BUTTONS_TO_SHOW - firstHalf;
+
+    if (numPages <= BUTTONS_TO_SHOW)
+      return <ButtonElement />
+    else if (currentPage < firstHalf)
+      return (page < BUTTONS_TO_SHOW) ? <ButtonElement /> : null;
+    else if (currentPage > numPages - secondHalf)
+      return (page + 1 > numPages - BUTTONS_TO_SHOW) ? <ButtonElement /> : null;
+    else
+      return (page + 1 > currentPage - firstHalf && page < currentPage + secondHalf) ? <ButtonElement /> : null;
+  };
   
   // Renders the results to display on the current page.
   const renderedResults = resultsToDisplay.map((result : any, index : number) => (
@@ -43,29 +80,42 @@ const Pagination = (props : { results : any[], condition : boolean, default : JS
         <button
           className={styles.PaginationButton}
           disabled={currentPage === 1}
-          onClick={prevPage}
+          onClick={() => setPage(1)}
+          title="First Page"
         >
-          <BsArrowLeft />
+          <FaAngleDoubleLeft />
+        </button>
+
+        <button
+          className={styles.PaginationButton}
+          disabled={currentPage === 1}
+          onClick={prevPage}
+          title="Previous Page"
+        >
+          <FaAngleLeft />
         </button>
 
         {/* Page Numbers */}
         { Array.from(Array(numPages).keys()).map((page) => (
-          <button
-            key={page}
-            className={styles.PaginationPageNumber}
-            disabled={currentPage === page + 1}
-            onClick={() => setPage(page + 1)}
-          >
-            {page + 1}
-          </button>
+          truncatePageButtons(page)
         ))}
 
         <button
           className={styles.PaginationButton}
           disabled={currentPage === numPages}
           onClick={nextPage}
+          title="Next Page"
         >
-          <BsArrowRight />
+          <FaAngleRight />
+        </button>
+
+        <button
+          className={styles.PaginationButton}
+          disabled={currentPage === numPages}
+          onClick={() => setPage(numPages)}
+          title="Last Page"
+        >
+          <FaAngleDoubleRight />
         </button>
       </div>
 
