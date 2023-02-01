@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { BsFillTrashFill, BsSearch } from 'react-icons/bs';
 
-import { setLocalStorage } from '@/src/utils/setLocalStorage'; 
+import { setLocalStorage } from '@/utils/setLocalStorage'; 
 
 import { useSearch, Status } from '@/contexts/SearchProvider';
 import { useResults } from '@/contexts/ResultsProvider';

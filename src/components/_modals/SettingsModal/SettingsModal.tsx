@@ -5,7 +5,7 @@ import {
   useSettings, getSetting, getDefaultSetting,
   ThemeOptions, FontSizeOptions,
 } from '@/contexts/SettingsProvider';
-import { useNotifications, MessageType, createMessage } from '@/src/contexts/NotificationsProvider';
+import { useNotifications, MessageType, createMessage } from '@/contexts/NotificationsProvider';
 
 import ModalLayout from '../ModalLayout/ModalLayout';
 

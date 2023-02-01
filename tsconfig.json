@@ -20,8 +20,6 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/public/*": ["public/*"],
-      "@/src/*": ["src/*"],
       "@/components/*": ["src/components/*"],
       "@/configs/*": ["src/configs/*"],
       "@/contexts/*": ["src/contexts/*"],
@@ -29,6 +27,8 @@
       "@/pages/*": ["src/pages/*"],
       "@/styles/*": ["src/styles/*"],
       "@/utils/*": ["src/utils/*"],
+      "@/public/*": ["public/*"],
+      "@/src/*": ["src/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

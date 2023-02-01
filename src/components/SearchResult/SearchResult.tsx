@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BsClipboard, BsInfoCircle, BsStar, BsStarFill } from 'react-icons/bs';
 
-import { setLocalStorage } from '@/src/utils/setLocalStorage';
+import { setLocalStorage } from '@/utils/setLocalStorage';
 
 import { useNotifications, MessageType, createMessage } from '@/contexts/NotificationsProvider';
 import { useModal, ModalType, toggleModal } from '@/contexts/ModalProvider';
