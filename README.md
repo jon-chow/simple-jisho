@@ -1,4 +1,5 @@
 # 📕**Simple Jisho**
+
 ### **About:**
 Simple Jisho is a simple, condensed, and easy-to-use Japanese-English dictionary powered by the Jisho API.
 
