@@ -1,8 +1,6 @@
-import { useContext } from 'react';
+import { useModal, ModalType, toggleModal } from '@/contexts/ModalProvider';
 
-import { ModalContext, ModalType } from '../../configs/config';
-
-import styles from '../../styles/KanaChartPage.module.scss';
+import styles from './KanaChartPage.module.scss';
 
 
 // List of basic kana.
@@ -214,12 +212,11 @@ const YOUON_KANA : Kana[][] = [
  * depending on the settings.
  */
 const KanaCard = (props : {kana : Kana}) => {
-  const KanaContext = useContext(ModalContext);
+  const KanaContext = useModal();
 
     // Toggle the kana info modal.
   const toggleKanaModal = () => {
-    KanaContext.setModalType(ModalType.KANA);
-    KanaContext.setModalToggle(!KanaContext.modalToggle);
+    toggleModal(KanaContext, ModalType.KANA);
     KanaContext.setData(props.kana);
   };
 
@@ -229,7 +226,11 @@ const KanaCard = (props : {kana : Kana}) => {
         className={styles.KanaCard}
         title={
           `Romaji: ${props.kana.romaji}\nHiragana: ${props.kana.hiragana}\nKatakana: ${props.kana.katakana}`}
-        onClick={() => toggleKanaModal()}
+        onClick={
+          () => {
+            (props.kana.hiragana.length === 1) && toggleKanaModal();
+          }
+        }
       >
         <div className={styles.Romaji}>
           {props.kana.romaji}
@@ -290,7 +291,7 @@ const KanaChartPage = () => {
         ))}
       </div>
 
-      {/* <h1>You-on</h1>
+      <h1>You-on</h1>
       <h2>拗音</h2>
       <div className={styles.KanaGrid}>
         {YOUON_KANA.map((kanaGroup : Kana[], index : number) => (
@@ -302,7 +303,7 @@ const KanaChartPage = () => {
 
           </div>
         ))}
-      </div> */}
+      </div>
     </div>
   );
 };

@@ -1,10 +1,14 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { FaHome, FaTable, FaSearch, FaTrashAlt, FaHistory } from 'react-icons/fa';
+import { FaHome, FaTable, FaStar, FaSearch, FaTrashAlt, FaHistory, FaCog } from 'react-icons/fa';
 
-import { Status, SearchContext, ResultsContext, ModalContext, ModalType } from '../configs/config';
+import { setLocalStorage } from '@/utils/setLocalStorage';
 
-import styles from '../styles/SearchBar.module.scss';
+import { useSearch, Status } from '@/contexts/SearchProvider';
+import { useResults } from '@/contexts/ResultsProvider';
+import { useModal, ModalType, toggleModal } from '@/contexts/ModalProvider';
+
+import styles from './SearchBar.module.scss';
 
 
 /**
@@ -58,8 +62,23 @@ const getQueryVariable = (variable: string) => {
   };
 };
 
-
-const SEARCH_HISTORY_MAX_LENGTH = 10;
+const NavButtons = [
+  {
+    title: 'Home',
+    icon: <FaHome />,
+    link: '/'
+  },
+  {
+    title: 'Kana Chart',
+    icon: <FaTable />,
+    link: '/kana'
+  },
+  {
+    title: 'Bookmarks',
+    icon: <FaStar />,
+    link: '/bookmarks'
+  }
+]
 
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
@@ -70,30 +89,20 @@ const SEARCH_HISTORY_MAX_LENGTH = 10;
  * The search bar is included in the header.
  */
 const SearchBar = () => {
-  const searchContext = useContext(SearchContext);
-  const resultsContext = useContext(ResultsContext);
-  const searchHistoryContext = useContext(ModalContext);
+  const [maxSearchHistory, setMaxSearchHistory] = useState<number>(10);
+
+  const searchContext = useSearch();
+  const resultsContext = useResults();
+  const modalContext = useModal();
 
   const [querying, setQuerying] = useState<PromiseWithCancel<any> | undefined>(undefined);
 
   const router = useRouter();
 
-  // Toggle the search history modal.
-  const toggleSearchHistoryModal = () => {
-    searchHistoryContext.setModalType(
-      searchHistoryContext.modalType === ModalType.SEARCH_HISTORY ? ModalType.NONE : ModalType.SEARCH_HISTORY
-    );
-    searchHistoryContext.setModalToggle(!searchHistoryContext.modalToggle);
-  };
-
   // Updates the search history.
   const updateSearchHistory = (query: SearchHistory) => {
     // Ignore empty queries.
     if (query.results.length === 0) return;
-
-    // Initialize the search history if it doesn't exist.
-    if (localStorage.getItem("searchHistory") === null)
-      localStorage.setItem("searchHistory", JSON.stringify([]));
 
     // Update the search history.
     const searchHistory = localStorage.getItem("searchHistory");
@@ -103,10 +112,10 @@ const SearchBar = () => {
 
       (index !== -1) && history.splice(index, 1);
       
-      (history.length >= SEARCH_HISTORY_MAX_LENGTH) && history.shift();
+      (history.length >= maxSearchHistory) && history.shift();
       
       history.push(query);
-      localStorage.setItem("searchHistory", JSON.stringify(history));
+      setLocalStorage("searchHistory", JSON.stringify(history));
     };
   };
 
@@ -140,11 +149,7 @@ const SearchBar = () => {
     resultsContext.setResults([]);
     searchContext.setStatus(Status.IDLE);
 
-    { pathname ?
-      router.push(pathname, undefined, { shallow: true })
-      : router.push("/", undefined, { shallow: true });
-    };
-
+    router.push(pathname ? pathname : "/", undefined, { shallow: true });
     const input = document.getElementById("search") as HTMLInputElement;
     input.value = "";
   };
@@ -207,10 +212,23 @@ const SearchBar = () => {
     };
   };
 
-  // Creates the search history in local storage if it doesn't exist.
+  // Handle max search history changes.
+  const handleMaxSearchHistory = () => {
+    const settings = localStorage.getItem("settings");
+
+    if (settings) {
+      const parsedSettings = JSON.parse(settings);
+      parsedSettings.maxSearchHistory &&
+        setMaxSearchHistory(parsedSettings.maxSearchHistory);
+    };
+  };
+
+  // Update the max results per page from event listeners.
   useEffect(() => {
-    if (localStorage.getItem("searchHistory") === null)
-      localStorage.setItem("searchHistory", JSON.stringify([]));
+    handleMaxSearchHistory();
+
+    window.addEventListener("storage_settings", handleMaxSearchHistory);
+    return () => window.removeEventListener("storage_settings", handleMaxSearchHistory);
   }, []);
 
   // Automatically searches for the query parameter in the URL.
@@ -229,23 +247,20 @@ const SearchBar = () => {
 
   return (
     <form className={styles.Search} onSubmit={(e) => handleSubmit(e)}>
-      <button
-        className={styles.HomeButton}
-        type="button"
-        title="Home"
-        onClick={() => navigatePages()}
-      >
-        <FaHome />
-      </button>
-
-      <button
-        className={styles.KanaButton}
-        type="button"
-        title="Kana Charts"
-        onClick={() => navigatePages("/kana")}
-      >
-        <FaTable />
-      </button>
+      {/* Navigation Buttons */}
+      <div className={styles.Navigation}>
+        { NavButtons.map((button, index) => (
+          <button
+            key={index}
+            className={(router.pathname === button.link) ? styles.Active : undefined}
+            type="button"
+            title={button.title}
+            onClick={() => navigatePages(button.link)}
+          >
+            { button.icon }
+          </button>
+        ))}
+      </div>
 
       {/* Search Input */}
       <input
@@ -258,14 +273,35 @@ const SearchBar = () => {
 
       {/* Control Buttons */}
       <div className={styles.SearchControls}>
-        <button type="submit" title="Search">
+        <button 
+          className={(router.pathname === '/search') ? styles.Active : undefined}
+          type="submit"
+          title="Search"
+        >
           <FaSearch />
         </button>
-        <button type="reset" title="Clear">
+
+        <button
+          type="reset"
+          title="Clear"
+        >
           <FaTrashAlt />
         </button>
-        <button type="button" title="History" onClick={toggleSearchHistoryModal}>
+
+        <button
+          type="button"
+          title="Search History"
+          onClick={() => { toggleModal(modalContext, ModalType.SEARCH_HISTORY); }}
+        >
           <FaHistory />
+        </button>
+
+        <button
+          type="button"
+          title="Settings"
+          onClick={() => { toggleModal(modalContext, ModalType.SETTINGS); }}
+        >
+          <FaCog /> 
         </button>
       </div>
     </form>

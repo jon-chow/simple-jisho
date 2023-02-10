@@ -1,0 +1,189 @@
+.SettingsContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  background: rgba(#000, 0.1);
+  border-radius: 1rem;
+  padding: 1rem 3rem;
+  width: 95%;
+  height: 100%;
+  gap: 1rem;
+
+  .Group {
+    display: flex;
+    flex-direction: column;
+    border-left: 0.5rem solid var(--primary-colour-dark);
+    background: rgba(#111, 0.25);
+    border-radius: 0.5rem;
+    padding: 1rem 2rem;
+
+    h1 {
+      display: flex;
+      align-items: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #fff;
+      margin: 0;
+      gap: 0.5rem;
+    }
+
+    p {
+      font-size: 1rem;
+      color: #fff;
+      margin: 0;
+      margin-bottom: 0.5rem;
+    }
+  }
+}
+
+.ResetButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background: #2b2b2b;
+  border: 0.25rem solid #222;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background: rgba(#f44, 0.5);
+  }
+}
+
+.DropDown {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 1rem;
+
+  .Container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 15rem;
+    
+    .DropDownButton {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      width: 100%;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      border: 0.25rem solid #222;
+      cursor: pointer;
+
+      .Icon {
+        width: 1rem;
+        height: 1rem;
+        fill: #fff;
+        transition: transform 0.1s linear;
+      }
+    }
+
+    .Body {
+      min-width: inherit;
+
+      .Content {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        gap: 0.5rem;
+        background: rgba(#222, 1);
+        z-index: 1;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        min-width: inherit;
+        height: 10rem;
+        transition: max-height 0.1s linear, opacity 0.2s linear, visibility 0.2s linear;
+
+        .Option {
+          width: 100%;
+          padding: 0.5rem;
+          cursor: pointer;
+          background: #2b2b2b;
+          border-radius: 0.5rem;
+          transition: background-color 0.2s ease-in-out;
+
+          &:hover {
+            background: #333;
+          }
+        }
+      }
+    }
+  }
+}
+
+.InputBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+
+  input {
+    max-width: 40%;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background: #2b2b2b;
+    border: 0.25rem solid #222;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+}
+
+.CheckBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+
+  .Container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 0.25rem solid #222;
+    background: #2b2b2b;
+    border-radius: 0.5rem;
+    margin-inline-end: 1rem;
+    cursor: pointer;
+
+    svg {
+      animation: fade-in 0.1s linear;
+    }
+
+    @keyframes fade-in {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+  }
+}
+
+.DropDown,
+.InputBox,
+.CheckBox {
+  h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+  }
+}

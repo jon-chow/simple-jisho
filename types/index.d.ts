@@ -52,6 +52,16 @@ type Version = {
   changes: string[],
 };
 
+// Type definition for a notification message.
+type MessageProps = {
+  id: string;
+  type?: MessageType;
+  title: string;
+  message: string | React.ReactNode;
+  timestamp: number;
+  duration?: number;
+};
+
 // Type definition for an instance of a past search.
 type SearchHistory = {
   keyword: string,
@@ -95,4 +105,10 @@ type Kana = {
   romaji: string,
   hiragana: string,
   katakana: string,
+};
+
+// Type definition for a drop down option.
+type Option = {
+  title : string;
+  value : string;
 };

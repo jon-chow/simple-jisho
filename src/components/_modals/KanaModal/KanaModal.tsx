@@ -1,11 +1,10 @@
-import { useContext } from 'react';
 import Image from 'next/image';
 
-import { ModalContext } from '../../configs/config';
+import { useModal } from '@/contexts/ModalProvider';
 
-import ModalLayout from './ModalLayout';
+import ModalLayout from '../ModalLayout/ModalLayout';
 
-import styles from '../../styles/KanaModal.module.scss';
+import styles from './KanaModal.module.scss';
 
 
 // Returns the image URL for a given character.
@@ -31,7 +30,7 @@ const getAudio =(character : string) => {
  * The kana info modal displays detailed information on a kana.
  */
 const KanaModal = () => {
-  const kanaContext = useContext(ModalContext);
+  const kanaContext = useModal();
 
   return (
     <ModalLayout title={`Hiragana: ${kanaContext.data.hiragana} / Katakana: ${kanaContext.data.katakana} / Romaji: ${kanaContext.data.romaji}`} width="60%">

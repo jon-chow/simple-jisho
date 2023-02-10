@@ -1,11 +1,10 @@
-import { useContext } from 'react';
 import Image from 'next/image';
 
-import { ModalContext } from '../../configs/config';
+import { useModal } from '@/contexts/ModalProvider';
 
-import ModalLayout from './ModalLayout';
+import ModalLayout from '../ModalLayout/ModalLayout';
 
-import styles from '../../styles/KanjiModal.module.scss';
+import styles from './KanjiModal.module.scss';
 
 
 /* -------------------------------------------------------------------------- */
@@ -17,7 +16,7 @@ import styles from '../../styles/KanjiModal.module.scss';
  * The kanji info modal displays detailed information on a set of kanji.
  */
 const KanjiModal = () => {
-  const kanjiContext = useContext(ModalContext);
+  const kanjiContext = useModal();
 
   return (
     <ModalLayout title="Kanji Information">

@@ -1,8 +1,8 @@
-import { useContext, useEffect } from 'react';
+import {  useEffect } from 'react';
 
-import { Status, SearchContext } from '../configs/config';
+import { Status, useSearch } from '@/contexts/SearchProvider';
 
-import DefaultResults from '../components/DefaultResults';
+import DefaultResults from '@/components/DefaultResults/DefaultResults';
 
 
 /* -------------------------------------------------------------------------- */
@@ -14,7 +14,7 @@ import DefaultResults from '../components/DefaultResults';
  * The Home component is basically the entire page.
  */
 const HomePage = () => {
-  const { setStatus } = useContext(SearchContext);
+  const { setStatus } = useSearch();
 
   // Reset search status to idle.
   useEffect(() => {

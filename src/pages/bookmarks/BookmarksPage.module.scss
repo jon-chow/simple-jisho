@@ -1,0 +1,50 @@
+.BookmarksPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  padding: 0 1rem;
+  box-sizing: border-box;
+
+  .Results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 1rem;
+    padding: 2rem 0;
+  }
+
+  .NoResults {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 3rem 0;
+    padding-bottom: 6rem;
+    gap: 1rem;
+
+    .Logo {
+      fill: var(--primary-colour-light);
+      width: 10rem;
+      height: 10rem;
+      scale: 2;
+    }
+    
+    h1 {
+      margin: 0;
+      font-size: 3rem;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 400;
+    }
+  }
+}

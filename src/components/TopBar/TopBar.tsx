@@ -1,13 +1,14 @@
-import { useContext } from 'react';
+import { AppInfoData } from '@/configs/config';
 
-import { Status, SearchContext, ResultsContext, AppInfoData } from '../configs/config';
+import { useSearch, Status } from '@/contexts/SearchProvider';
+import { useResults } from '@/contexts/ResultsProvider';
 
-import SearchBar from './SearchBar';
+import SearchBar from '../SearchBar/SearchBar';
 
-import Logo from '../../public/static/logo.svg';
+import Logo from '@/public/static/logo.svg';
 
-import styles from '../styles/TopBar.module.scss';
-import styles2 from '../styles/Layout.module.scss';
+import styles from './TopBar.module.scss';
+import styles2 from '@/styles/Layout.module.scss';
 
 
 /* -------------------------------------------------------------------------- */
@@ -20,8 +21,8 @@ import styles2 from '../styles/Layout.module.scss';
  * as well as a search bar.
  */
 const TopBar = () => {
-  const searchContext = useContext(SearchContext);
-  const resultsContext = useContext(ResultsContext);
+  const searchContext = useSearch();
+  const resultsContext = useResults();
 
   /**
    * Checks the query status and updates the status label.
