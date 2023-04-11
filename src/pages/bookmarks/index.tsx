@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import Pagination from '@/components/Pagination/Pagination';
+import Pagination from '@components/Pagination';
 
-import Logo from '@/public/static/logo.svg';
+import Logo from '@public/static/logo.svg';
 
 import styles from './BookmarksPage.module.scss';
 

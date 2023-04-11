@@ -1,4 +1,4 @@
-import { useModal, ModalType, toggleModal } from '@/contexts/ModalProvider';
+import { useModal, ModalType, toggleModal } from '@contexts/ModalProvider';
 
 import styles from './KanaChartPage.module.scss';
 

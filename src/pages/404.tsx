@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import Logo from '@/public/static/logo.svg';
+import Logo from '@public/static/logo.svg';
 
 import styles from './ErrorPage.module.scss';
 

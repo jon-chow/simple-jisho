@@ -1,6 +1,6 @@
-import ModalLayout from '../ModalLayout/ModalLayout';
+import ModalLayout from '../ModalLayout';
 
-import { VersionData } from '@/configs/versionHistory';
+import { VersionData } from '@configs/versionHistory';
 
 import styles from './DevLogsModal.module.scss';
 

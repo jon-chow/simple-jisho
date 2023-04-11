@@ -1,4 +1,4 @@
-import Logo from '@/public/static/logo.svg';
+import Logo from '@public/static/logo.svg';
 
 import styles from './DefaultResults.module.scss';
 
@@ -14,7 +14,7 @@ import styles from './DefaultResults.module.scss';
  */
 const DefaultResults = () => {
   return (
-    <article className={styles.DefaultResults}>
+    <article className={styles.DefaultResults} data-testid="default-results">
       <div className={styles.DefaultResultsHeader}>
         <Logo className={styles.DefaultResultsLogo} />
         <span className={styles.DefaultResultsTitle}>About Simple Jisho</span>

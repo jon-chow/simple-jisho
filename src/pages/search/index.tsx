@@ -1,9 +1,9 @@
-import { useSearch, Status } from "@/contexts/SearchProvider";
-import { useResults } from "@/contexts/ResultsProvider";
+import { useSearch, Status } from "@contexts/SearchProvider";
+import { useResults } from "@contexts/ResultsProvider";
 
-import DefaultResults from "@/components/DefaultResults/DefaultResults";
+import DefaultResults from "@components/DefaultResults";
 
-import Pagination from "@/components/Pagination/Pagination";
+import Pagination from "@components/Pagination";
 
 import styles from './SearchPage.module.scss';
 

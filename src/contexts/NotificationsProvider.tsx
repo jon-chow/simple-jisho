@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useCallback, PropsWithChildren } from "react";
 
-import useInterval from "@/hooks/useInterval";
-import Notifications from '@/components/Notifications/Notifications';
+import useInterval from "@hooks/useInterval";
+import Notifications from '@components/Notifications';
 
 
 // Default duration of a notification message.

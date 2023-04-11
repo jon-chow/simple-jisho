@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { BsClipboard, BsInfoCircle, BsStar, BsStarFill } from 'react-icons/bs';
 
-import { setLocalStorage } from '@/utils/setLocalStorage';
+import { setLocalStorage } from '@utils/setLocalStorage';
 
-import { useNotifications, MessageType, createMessage } from '@/contexts/NotificationsProvider';
-import { useModal, ModalType, toggleModal } from '@/contexts/ModalProvider';
+import { useNotifications, MessageType, createMessage } from '@contexts/NotificationsProvider';
+import { useModal, ModalType, toggleModal } from '@contexts/ModalProvider';
 
 import styles from './SearchResult.module.scss';
 
