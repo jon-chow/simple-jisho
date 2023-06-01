@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
-import { getSetting } from '@contexts/SettingsProvider';
+import { getSetting } from '@src/contexts/SettingsProvider';
 
-import { BackgroundData } from '@configs/config';
+import { BackgroundData } from '@src/configs/config';
 
 import styles from './Background.module.scss';
 

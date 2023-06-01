@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { useModal } from '@contexts/ModalProvider';
+import { useModal } from '@src/contexts/ModalProvider';
 
 import ModalLayout from '../ModalLayout';
 

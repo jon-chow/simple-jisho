@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import Pagination from '@components/Pagination';
+import Pagination from '@src/components/Pagination';
 
 import Logo from '@public/static/logo.svg';
 

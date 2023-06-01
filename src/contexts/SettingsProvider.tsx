@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, PropsWithChildren } from "react";
 
-import { setLocalStorage } from "../utils/setLocalStorage";
+import { setLocalStorage } from "@src/utils/setLocalStorage";
 
 
 // The default settings.

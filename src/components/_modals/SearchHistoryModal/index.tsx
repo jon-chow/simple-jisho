@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { BsFillTrashFill, BsSearch } from 'react-icons/bs';
 
-import { setLocalStorage } from '@utils/setLocalStorage'; 
+import { setLocalStorage } from '@src/utils/setLocalStorage'; 
 
-import { useSearch, Status } from '@contexts/SearchProvider';
-import { useResults } from '@contexts/ResultsProvider';
-import { useModal, resetModalContext } from '@contexts/ModalProvider';
+import { useSearch, Status } from '@src/contexts/SearchProvider';
+import { useResults } from '@src/contexts/ResultsProvider';
+import { useModal, resetModalContext } from '@src/contexts/ModalProvider';
 
 import ModalLayout from '../ModalLayout';
 

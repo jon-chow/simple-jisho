@@ -3,9 +3,9 @@ import { FaEye, FaSearch, FaAngleDown, FaCheck } from 'react-icons/fa';
 
 import { 
   useSettings, getSetting, getDefaultSetting,
-  ThemeOptions, FontSizeOptions,
-} from '@contexts/SettingsProvider';
-import { useNotifications, MessageType, createMessage } from '@contexts/NotificationsProvider';
+  // ThemeOptions, FontSizeOptions,
+} from '@src/contexts/SettingsProvider';
+import { useNotifications, MessageType, createMessage } from '@src/contexts/NotificationsProvider';
 
 import ModalLayout from '../ModalLayout';
 

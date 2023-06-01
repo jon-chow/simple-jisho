@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { FaAngleDoubleLeft, FaAngleLeft, FaAngleRight, FaAngleDoubleRight } from 'react-icons/fa';
 
-import SearchResult from '@components/SearchResult';
+import SearchResult from '@src/components/SearchResult';
 
 import styles from './Pagination.module.scss';
 
