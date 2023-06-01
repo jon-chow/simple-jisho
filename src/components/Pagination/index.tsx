@@ -46,7 +46,6 @@ const Pagination = (props : { results : any[], condition : boolean, default : JS
     // Button element to render.
     const ButtonElement = () => (
       <button
-        key={page}
         className={styles.PaginationPageNumber}
         disabled={currentPage === page + 1}
         onClick={() => setPage(page + 1)}
@@ -59,13 +58,13 @@ const Pagination = (props : { results : any[], condition : boolean, default : JS
     const secondHalf = BUTTONS_TO_SHOW - firstHalf;
 
     if (numPages <= BUTTONS_TO_SHOW)
-      return <ButtonElement />
+      return <ButtonElement key={page} />
     else if (currentPage < firstHalf)
-      return (page < BUTTONS_TO_SHOW) ? <ButtonElement /> : null;
+      return (page < BUTTONS_TO_SHOW) ? <ButtonElement key={page} /> : null;
     else if (currentPage > numPages - secondHalf)
-      return (page + 1 > numPages - BUTTONS_TO_SHOW) ? <ButtonElement /> : null;
+      return (page + 1 > numPages - BUTTONS_TO_SHOW) ? <ButtonElement key={page} /> : null;
     else
-      return (page + 1 > currentPage - firstHalf && page < currentPage + secondHalf) ? <ButtonElement /> : null;
+      return (page + 1 > currentPage - firstHalf && page < currentPage + secondHalf) ? <ButtonElement key={page} /> : null;
   };
   
   // Renders the results to display on the current page.

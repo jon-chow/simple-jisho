@@ -149,8 +149,11 @@ const SearchBar = () => {
     resultsContext.setResults([]);
     searchContext.setStatus(Status.IDLE);
 
-    router.push(pathname ? pathname : "/", undefined, { shallow: true });
     const input = document.getElementById("search") as HTMLInputElement;
+    if (input.value !== "")
+      router.push(pathname ? pathname : "/", undefined, { shallow: true });
+    else
+      router.replace(pathname ? pathname : "/", undefined, { shallow: true });
     input.value = "";
   };
 
