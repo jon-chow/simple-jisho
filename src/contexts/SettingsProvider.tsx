@@ -7,6 +7,8 @@ import { setLocalStorage } from "@src/utils/setLocalStorage";
 const DEFAULT_SETTINGS = {
   theme: "system",
   backgroundImage: false,
+  backgroundUrl: "/static/background.png",
+  backgroundBlur: 3,
   highContrast: false,
   maxResultsToDisplay: 5,
   maxSearchHistory: 10,

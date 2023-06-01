@@ -18,15 +18,21 @@ import styles from './Background.module.scss';
  */
 const Background = () => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [image, setImage] = useState(BackgroundData.image);
+  const [blur, setBlur] = useState(BackgroundData.blurAmount);
 
   // Handle background image toggles.
   const handleBackgroundChange = () => {
     setIsLoaded(getSetting("backgroundImage"));
+    setImage(getSetting("backgroundUrl"));
+    setBlur(getSetting("backgroundBlur"));
   };
 
   // Check if the background image is loaded and updates the state.
   useEffect(() => {
     setIsLoaded(getSetting("backgroundImage"));
+    setImage(getSetting("backgroundUrl"));
+    setBlur(getSetting("backgroundBlur"));
 
     window.addEventListener("storage_settings", handleBackgroundChange);
     return () => window.removeEventListener("storage_settings", handleBackgroundChange);
@@ -39,14 +45,14 @@ const Background = () => {
           <div className={styles.Overlay}
             style={{
               background: BackgroundData.overlayColor,
-              backdropFilter: `blur(${BackgroundData.blurAmount}px)`
+              backdropFilter: `blur(${blur}px)`
             }}
           />
           <Image
             className={styles.BackgroundImage}
             loader={({ src }) => src}
             unoptimized={true}
-            src={BackgroundData.image}
+            src={image}
             alt=""
             fill={true}
             quality={100}

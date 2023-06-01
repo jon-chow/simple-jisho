@@ -7,9 +7,10 @@ export const VersionData: Version[] = [
 	//   ],
 	// },
 	{
-		version: "1.4.5",
+		version: "1.4.6",
 		date: new Date("May 31, 2023"),
 		changes: [
+			"Added more background customization options",
       "Fixed some warnings and errors.",
       "Fixed routing history when navigating between pages.",
       "Minor changes to the UI.",

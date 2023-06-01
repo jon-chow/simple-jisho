@@ -6,6 +6,7 @@ import {
   // ThemeOptions, FontSizeOptions,
 } from '@src/contexts/SettingsProvider';
 import { useNotifications, MessageType, createMessage } from '@src/contexts/NotificationsProvider';
+import { useModal, resetModalContext } from '@src/contexts/ModalProvider';
 
 import ModalLayout from '../ModalLayout';
 
@@ -88,35 +89,35 @@ const DropDown = (props : {title : string, options : Option[], initValue? : Opti
 };
 
 /**
- * Creates an input box component.
+ * Creates a text input box component.
  * 
- * The input box component allows the user to enter text.
+ * The text input box component allows the user to enter text.
  * 
  * @param title The title of the input box.
  * @param placeholder The placeholder text of the input box.
  */
-const InputBox = (props : {
+const TextInputBox = (props : {
   title : string,
   initValue? : any,
   placeholder : string,
-  min?: number,
-  max?: number,
-  entered : (value : number) => void
+  minLength?: number,
+  maxLength?: number,
+  entered : (value : string) => void
 }) => {
-  const [value, setValue] = useState<number>(parseInt(props.placeholder));
+  const [value, setValue] = useState<string>(props.placeholder);
 
   const notificationsContext = useNotifications();
 
-  const min = props.min || 1;
-  const max = props.max || 10;
+  const min = props.minLength || 0;
+  const max = props.maxLength || 200;
 
-  // Validate the input is a positive integer.
-  const validateInput = (val : number) => {
-    if (val < min || val > max || isNaN(val)) {
+  // Validate the input is between the min and max length.
+  const validateInput = (val : string) => {
+    if (val.length < min || val.length > max) {
       const message = createMessage(
         MessageType.ERROR,
         "Invalid Input",
-        `The input must be a positive integer between [${min}-${max}].`,
+        `The input must be between [${min}-${max}] characters long.`,
         3000
       );
       notificationsContext.addMessage(message);
@@ -140,12 +141,81 @@ const InputBox = (props : {
   };
 
   return (
-    <div className={styles.InputBox}>
+    <div className={styles.TextInputBox} title="Press Enter to Apply">
+      <h2>{props.title}</h2>
+      <input
+        type="text"
+        minLength={min}
+        maxLength={max}
+        placeholder={props.placeholder}
+        defaultValue={props.initValue}
+        onChange={(event) => setValue(event.target.value)}
+        onKeyDown={(event) => event.key === 'Enter' ? submitBox() : null}
+      />
+    </div>
+  );
+};
+
+
+/**
+ * Creates an input box component.
+ * 
+ * The input box component allows the user to enter a number.
+ * 
+ * @param title The title of the input box.
+ * @param placeholder The placeholder text of the input box.
+ */
+const InputBox = (props : {
+  title : string,
+  initValue? : any,
+  placeholder : string,
+  min?: number,
+  max?: number,
+  entered : (value : number) => void
+}) => {
+  const [value, setValue] = useState<number>(parseInt(props.placeholder));
+
+  const notificationsContext = useNotifications();
+
+  const minVal = props.min || 0;
+  const maxVal = props.max || 10;
+
+  // Validate the input is a positive integer.
+  const validateInput = (val : number) => {
+    if (val < minVal || val > maxVal || isNaN(val)) {
+      const message = createMessage(
+        MessageType.ERROR,
+        "Invalid Input",
+        `The input must be a positive integer between [${minVal}-${maxVal}].`,
+        3000
+      );
+      notificationsContext.addMessage(message);
+      return false;
+    };
+
+    const message = createMessage(
+      MessageType.SUCCESS,
+      "Change Successful",
+      "The setting has been changed successfully.",
+      3000
+    );
+    notificationsContext.addMessage(message);
+    return true;
+  };
+
+  // Submit the input box when the user presses enter.
+  const submitBox = () => {
+    if (!validateInput(value)) return;
+    props.entered(value);
+  };
+
+  return (
+    <div className={styles.InputBox} title="Press Enter to Apply">
       <h2>{props.title}</h2>
       <input
         type="number"
-        min={min}
-        max={max}
+        min={minVal}
+        max={maxVal}
         placeholder={props.placeholder}
         defaultValue={props.initValue}
         onChange={(event) => setValue(parseInt(event.target.value))}
@@ -196,6 +266,7 @@ const CheckBox = (props : {title : string, initValue : boolean, selection : (val
  */
 const SettingsModal = () => {
   const settingsContext = useSettings();
+  const settingsModalContext = useModal();
 
   // Change a specified setting.
   const changeSetting = (setting : string, value : any) => {
@@ -204,8 +275,10 @@ const SettingsModal = () => {
 
   // Reset all settings to their default values.
   const resetSettings = () => {
-    window.confirm("Are you sure you want to reset to default settings?") &&
+    if (window.confirm("Are you sure you want to reset to default settings?")) {
       settingsContext.resetSettings();
+      resetModalContext(settingsModalContext);
+    };
   };
 
   return (
@@ -222,9 +295,25 @@ const SettingsModal = () => {
           /> */}
 
           <CheckBox
-            title="Background Image"
+            title="Enable Background Image"
             initValue={getSetting("backgroundImage")}
             selection={(value) => { changeSetting("backgroundImage", value); }}
+          />
+
+          <TextInputBox
+            title="Image URL"
+            initValue={getSetting("backgroundUrl")}
+            placeholder={getDefaultSetting("backgroundUrl") as string}
+            entered={(value) => { changeSetting("backgroundUrl", value); }}
+          />
+
+          <InputBox
+            title="Background Blur (in pixels)"
+            initValue={getSetting("backgroundBlur")}
+            placeholder={getDefaultSetting("backgroundBlur") as string}
+            min={0}
+            max={100}
+            entered={(value) => { changeSetting("backgroundBlur", value); }}
           />
 
           {/* <CheckBox
