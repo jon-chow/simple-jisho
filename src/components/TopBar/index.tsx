@@ -5,7 +5,7 @@ import { useResults } from '@src/contexts/ResultsProvider';
 
 import SearchBar from '../SearchBar';
 
-import Logo from '@public/static/logo.svg';
+import Logo from "@src/assets/svg/Logo";
 
 import styles from './TopBar.module.scss';
 import styles2 from '@src/styles/Layout.module.scss';

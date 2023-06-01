@@ -150,10 +150,11 @@ const SearchBar = () => {
     searchContext.setStatus(Status.IDLE);
 
     const input = document.getElementById("search") as HTMLInputElement;
-    if (input.value !== "")
+    if (input.value !== "") {
       router.push(pathname ? pathname : "/", undefined, { shallow: true });
-    else
+    } else {
       router.replace(pathname ? pathname : "/", undefined, { shallow: true });
+    };
     input.value = "";
   };
 
@@ -272,6 +273,7 @@ const SearchBar = () => {
         name="search"
         id="search"
         placeholder="English, 日本語, Romaji..."
+        data-testid="search-bar"
       />
 
       {/* Control Buttons */}
@@ -280,6 +282,7 @@ const SearchBar = () => {
           className={(router.pathname === '/search') ? styles.Active : undefined}
           type="submit"
           title="Search"
+          data-testid="search-button"
         >
           <FaSearch />
         </button>
@@ -287,6 +290,7 @@ const SearchBar = () => {
         <button
           type="reset"
           title="Clear"
+          data-testid="clear-button"
         >
           <FaTrashAlt />
         </button>
@@ -295,6 +299,7 @@ const SearchBar = () => {
           type="button"
           title="Search History"
           onClick={() => { toggleModal(modalContext, ModalType.SEARCH_HISTORY); }}
+          data-testid="history-button"
         >
           <FaHistory />
         </button>
@@ -303,6 +308,7 @@ const SearchBar = () => {
           type="button"
           title="Settings"
           onClick={() => { toggleModal(modalContext, ModalType.SETTINGS); }}
+          data-testid="settings-button"
         >
           <FaCog /> 
         </button>

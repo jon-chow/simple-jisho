@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import Pagination from '@src/components/Pagination';
 
-import Logo from '@public/static/logo.svg';
+import Logo from "@src/assets/svg/Logo";
 
 import styles from './BookmarksPage.module.scss';
 

@@ -20,7 +20,7 @@ import styles from '@src/styles/Layout.module.scss';
  * 
  * The Layout component is the default page layout. 
  */
-const Layout = ({ children }: any) => {
+export const Layout = ({ children }: any) => {
   return (
     <SettingsContextProvider>
       <SearchContextProvider>

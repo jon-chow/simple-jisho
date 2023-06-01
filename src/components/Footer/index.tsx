@@ -5,7 +5,7 @@ import { AppInfoData, BackgroundData, SMButtonsData, TechStackData } from '@src/
 import { useModal, ModalType, toggleModal } from '@src/contexts/ModalProvider';
 
 import styles from './Footer.module.scss';
-import styles2 from '@styles/Layout.module.scss';
+import styles2 from '@src/styles/Layout.module.scss';
 
 
 /* -------------------------------------------------------------------------- */

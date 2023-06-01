@@ -1,4 +1,4 @@
-import Logo from '@public/static/logo.svg';
+import Logo from "@src/assets/svg/Logo";
 
 import styles from './DefaultResults.module.scss';
 
@@ -26,6 +26,8 @@ const DefaultResults = () => {
         Just enter any Japanese, English, or Romaji text into the search box and allow Simple Jisho to handle the rest!
       </blockquote>
       
+      <hr />
+
       <blockquote>
         シンプルジショはJisho.orgの簡単なバージョンです。 <br />
         Jisho APIを使用して、単語、漢字、例文を簡単に見つけることができます。 <br />
