@@ -19,18 +19,8 @@
       "@types"
     ],
     "baseUrl": ".",
-    "paths": {
-      "@/components/*": ["src/components/*"],
-      "@/configs/*": ["src/configs/*"],
-      "@/contexts/*": ["src/contexts/*"],
-      "@/hooks/*": ["src/hooks/*"],
-      "@/pages/*": ["src/pages/*"],
-      "@/styles/*": ["src/styles/*"],
-      "@/utils/*": ["src/utils/*"],
-      "@/public/*": ["public/*"],
-      "@/src/*": ["src/*"],
-    }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "jest.config.js"],
   "exclude": ["node_modules"],
+  "extends": "./tsconfig.paths.json",
 }

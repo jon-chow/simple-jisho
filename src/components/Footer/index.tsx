@@ -1,11 +1,11 @@
 import { FaGithub, FaBook } from 'react-icons/fa';
 
-import { AppInfoData, BackgroundData, SMButtonsData, TechStackData } from '@/configs/config';
+import { AppInfoData, BackgroundData, SMButtonsData, TechStackData } from '@src/configs/config';
 
-import { useModal, ModalType, toggleModal } from '@/contexts/ModalProvider';
+import { useModal, ModalType, toggleModal } from '@src/contexts/ModalProvider';
 
 import styles from './Footer.module.scss';
-import styles2 from '@/styles/Layout.module.scss';
+import styles2 from '@src/styles/Layout.module.scss';
 
 
 /* -------------------------------------------------------------------------- */

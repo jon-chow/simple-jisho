@@ -126,6 +126,25 @@
   }
 }
 
+.TextInputBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+
+  input {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background: #2b2b2b;
+    border: 0.25rem solid #222;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+}
+
 .InputBox {
   display: flex;
   flex-direction: row;
@@ -179,6 +198,7 @@
 
 .DropDown,
 .InputBox,
+.TextInputBox,
 .CheckBox {
   h2 {
     font-size: 1.2rem;

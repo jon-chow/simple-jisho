@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { FaHome, FaTable, FaStar, FaSearch, FaTrashAlt, FaHistory, FaCog } from 'react-icons/fa';
 
-import { setLocalStorage } from '@/utils/setLocalStorage';
+import { setLocalStorage } from '@src/utils/setLocalStorage';
 
-import { useSearch, Status } from '@/contexts/SearchProvider';
-import { useResults } from '@/contexts/ResultsProvider';
-import { useModal, ModalType, toggleModal } from '@/contexts/ModalProvider';
+import { useSearch, Status } from '@src/contexts/SearchProvider';
+import { useResults } from '@src/contexts/ResultsProvider';
+import { useModal, ModalType, toggleModal } from '@src/contexts/ModalProvider';
 
 import styles from './SearchBar.module.scss';
 
@@ -149,8 +149,12 @@ const SearchBar = () => {
     resultsContext.setResults([]);
     searchContext.setStatus(Status.IDLE);
 
-    router.push(pathname ? pathname : "/", undefined, { shallow: true });
     const input = document.getElementById("search") as HTMLInputElement;
+    if (input.value !== "") {
+      router.push(pathname ? pathname : "/", undefined, { shallow: true });
+    } else {
+      router.replace(pathname ? pathname : "/", undefined, { shallow: true });
+    };
     input.value = "";
   };
 
@@ -269,6 +273,7 @@ const SearchBar = () => {
         name="search"
         id="search"
         placeholder="English, 日本語, Romaji..."
+        data-testid="search-bar"
       />
 
       {/* Control Buttons */}
@@ -277,6 +282,7 @@ const SearchBar = () => {
           className={(router.pathname === '/search') ? styles.Active : undefined}
           type="submit"
           title="Search"
+          data-testid="search-button"
         >
           <FaSearch />
         </button>
@@ -284,6 +290,7 @@ const SearchBar = () => {
         <button
           type="reset"
           title="Clear"
+          data-testid="clear-button"
         >
           <FaTrashAlt />
         </button>
@@ -292,6 +299,7 @@ const SearchBar = () => {
           type="button"
           title="Search History"
           onClick={() => { toggleModal(modalContext, ModalType.SEARCH_HISTORY); }}
+          data-testid="history-button"
         >
           <FaHistory />
         </button>
@@ -300,6 +308,7 @@ const SearchBar = () => {
           type="button"
           title="Settings"
           onClick={() => { toggleModal(modalContext, ModalType.SETTINGS); }}
+          data-testid="settings-button"
         >
           <FaCog /> 
         </button>

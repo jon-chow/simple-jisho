@@ -1,8 +1,8 @@
 import {  useEffect } from 'react';
 
-import { Status, useSearch } from '@/contexts/SearchProvider';
+import { Status, useSearch } from '@src/contexts/SearchProvider';
 
-import DefaultResults from '@/components/DefaultResults/DefaultResults';
+import DefaultResults from '@src/components/DefaultResults';
 
 
 /* -------------------------------------------------------------------------- */

@@ -6,8 +6,8 @@ import {
   BsCheckCircleFill as SuccessIcon
 } from 'react-icons/bs';
 
-import useInterval from '@/hooks/useInterval';
-import { useNotifications, MessageType, DEFAULT_DURATION } from '@/contexts/NotificationsProvider';
+import useInterval from '@src/hooks/useInterval';
+import { useNotifications, MessageType, DEFAULT_DURATION } from '@src/contexts/NotificationsProvider';
 
 import styles from './Notifications.module.scss';
 

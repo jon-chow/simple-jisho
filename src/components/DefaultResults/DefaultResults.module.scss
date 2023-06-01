@@ -35,8 +35,18 @@
   }
 
   blockquote {
-    font-size: large;
-    font-weight: 500;
-    margin: 0.5rem 15vw;
+    text-align: center;
+    font-size: x-large;
+    font-weight: normal;
+    box-sizing: border-box;
+    margin: 2vh 10vw;
+    line-height: 1.5;
+    // background: rgba(#fff, 0.1);
+    // border-radius: 1rem;
+    padding: 1rem;
+  }
+
+  hr {
+    width: 100%;
   }
 }

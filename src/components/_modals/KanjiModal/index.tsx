@@ -1,8 +1,8 @@
 import Image from 'next/image';
 
-import { useModal } from '@/contexts/ModalProvider';
+import { useModal } from '@src/contexts/ModalProvider';
 
-import ModalLayout from '../ModalLayout/ModalLayout';
+import ModalLayout from '../ModalLayout';
 
 import styles from './KanjiModal.module.scss';
 

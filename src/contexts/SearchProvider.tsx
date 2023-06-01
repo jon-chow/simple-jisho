@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, PropsWithChildren } from "react";
 
-import { setLocalStorage } from "../utils/setLocalStorage";
+import { setLocalStorage } from "@src/utils/setLocalStorage";
 
 
 // Enumerates the different states of a search.
