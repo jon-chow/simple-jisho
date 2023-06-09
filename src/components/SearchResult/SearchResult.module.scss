@@ -31,6 +31,13 @@
     }
   }
 
+  .SavedAt {
+    display: flex;
+    font-size: large;
+    font-weight: normal;
+    filter: brightness(0.8);
+  }
+
   .Word {
     display: flex;
     align-items: center;

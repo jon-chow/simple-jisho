@@ -1,6 +1,6 @@
 {
   "name": "simple-jisho",
-  "version": "0.1.0",
+  "version": "1.4.7",
   "private": true,
   "scripts": {
     "dev": "start http://localhost:3000 & next dev",

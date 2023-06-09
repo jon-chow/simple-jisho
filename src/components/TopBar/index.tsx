@@ -2,6 +2,7 @@ import { AppInfoData } from '@src/configs/config';
 
 import { useSearch, Status } from '@src/contexts/SearchProvider';
 import { useResults } from '@src/contexts/ResultsProvider';
+import { VersionData } from '@src/configs/versionHistory';
 
 import SearchBar from '../SearchBar';
 
@@ -44,7 +45,7 @@ const TopBar = () => {
         <a className={styles.Logo} href={AppInfoData.repository} no-referrer='noreferrer' target='blank'>
           <Logo />
         </a>
-        {AppInfoData.name}
+        {AppInfoData.name} {`(v${ VersionData[0].version })`}
       </div>
 
       {/* App Description */}

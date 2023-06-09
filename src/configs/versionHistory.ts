@@ -1,4 +1,4 @@
-export const VersionData: Version[] = [
+const VersionHistory: Version[] = [
 	// {
 	//   version: "",
 	//   date: new Date(""),
@@ -7,13 +7,20 @@ export const VersionData: Version[] = [
 	//   ],
 	// },
 	{
+	  version: "1.4.7",
+	  date: new Date("June 9, 2023"),
+	  changes: [
+	    "Added sorting options for bookmarks page.",
+	  ],
+	},
+	{
 		version: "1.4.6",
 		date: new Date("May 31, 2023"),
 		changes: [
 			"Added more background customization options",
-      "Fixed some warnings and errors.",
-      "Fixed routing history when navigating between pages.",
-      "Minor changes to the UI.",
+			"Fixed some warnings and errors.",
+			"Fixed routing history when navigating between pages.",
+			"Minor changes to the UI.",
 		],
 	},
 	{
@@ -68,3 +75,5 @@ export const VersionData: Version[] = [
 		changes: ["Initial release.", "Included search and clear functionality."],
 	},
 ];
+
+export const VersionData = VersionHistory.sort((a, b) => b.date.getTime() - a.date.getTime());

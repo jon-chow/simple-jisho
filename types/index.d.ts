@@ -101,6 +101,7 @@ type WordData = {
   }[],
 };
 
+// Type definition for a word's kanji.
 type Kana = {
   romaji: string,
   hiragana: string,

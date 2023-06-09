@@ -52,6 +52,7 @@ const SearchResult = (props: any) => {
       setLocalStorage('savedWords', newSavedWords);
       setIsSaved(false);
     } else {
+      word = { ...word, savedAt: Date.now() };
       savedWords.push(word);
       setLocalStorage('savedWords', savedWords);
       setIsSaved(true);
@@ -120,6 +121,13 @@ const SearchResult = (props: any) => {
                 />
               }
             </button>
+
+            {/* Time Stamp */}
+            { (data.savedAt) &&
+              <span className={styles.SavedAt}>
+                ({new Date(data.savedAt).toLocaleDateString() + ' ' + new Date(data.savedAt).toLocaleTimeString()})
+              </span>
+            }
           </div>
 
           {/* JLPT / Rarity Tags */}
