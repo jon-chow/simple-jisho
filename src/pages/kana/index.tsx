@@ -1,3 +1,6 @@
+import { useEffect, useState } from 'react';
+import { FaAngleDown } from 'react-icons/fa';
+
 import { useModal, ModalType, toggleModal } from '@src/contexts/ModalProvider';
 
 import styles from './KanaChartPage.module.scss';
@@ -250,6 +253,49 @@ const KanaCard = (props : {kana : Kana}) => {
   );
 };
 
+/**
+ * Creates a kana group component.
+ * 
+ * The kana group displays a grid of kana characters.
+ */
+const KanaGroup = (props : {english: string, japanese: string, kanaGroup : Kana[][]}) => {
+  const [isExpanded, setIsExpanded] = useState<boolean>(true);
+
+  return (
+    <div className={styles.KanaGrouping}>
+      <div
+        className={styles.KanaGroupHeader}
+        onClick={() => setIsExpanded(!isExpanded)}
+      >
+        <FaAngleDown
+          className={styles.DropDownButton}
+          style={{
+            transform: isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)'
+          }}
+        />
+        <h1>{props.english}</h1>
+        <h2>{props.japanese}</h2>
+      </div>
+
+      <div
+        className={styles.KanaGrid}
+        style={{
+          display: isExpanded ? 'flex' : 'none'
+        }}
+      >
+        { props.kanaGroup.map((kanaGroup : Kana[], index : number) => (
+          <div key={index} className={styles.KanaRow}>
+            { kanaGroup.map((kana : Kana, index : number) => (
+              <KanaCard key={index} kana={kana} />
+            ))}
+          </div>
+        )) }
+      </div>
+    </div>
+  );
+};
+
+
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
@@ -263,47 +309,23 @@ const KanaCard = (props : {kana : Kana}) => {
 const KanaChartPage = () => {
   return (
     <div className={styles.KanaChartPage}>
-      <h1>Basic Hiragana & Katakana</h1>
-      <h2>ひらがな・カタカナ</h2>
-      <div className={styles.KanaGrid}>
-        {BASIC_KANA.map((kanaGroup : Kana[], index : number) => (
-          <div key={index} className={styles.KanaRow}>
+      <KanaGroup
+        english="Basic Hiragana & Katakana"
+        japanese="ひらがな・カタカナ"
+        kanaGroup={BASIC_KANA}
+      />
 
-            { kanaGroup.map((kana : Kana, index : number) => (
-              <KanaCard key={index} kana={kana} />
-            ))}
+      <KanaGroup
+        english="Daku-on & Handaku-on"
+        japanese="濁音・半濁音"
+        kanaGroup={DAKUON_HANDAKUON_KANA}
+      />
 
-          </div>
-        ))}
-      </div>
-      
-      <h1>Daku-on & Handaku-on</h1>
-      <h2>濁音・半濁音</h2>
-      <div className={styles.KanaGrid}>
-        {DAKUON_HANDAKUON_KANA.map((kanaGroup : Kana[], index : number) => (
-          <div key={index} className={styles.KanaRow}>
-
-            { kanaGroup.map((kana : Kana, index : number) => (
-              <KanaCard key={index} kana={kana} />
-            ))}
-
-          </div>
-        ))}
-      </div>
-
-      <h1>You-on</h1>
-      <h2>拗音</h2>
-      <div className={styles.KanaGrid}>
-        {YOUON_KANA.map((kanaGroup : Kana[], index : number) => (
-          <div key={index} className={styles.KanaRow}>
-
-            { kanaGroup.map((kana : Kana, index : number) => (
-              <KanaCard key={index} kana={kana} />
-            ))}
-
-          </div>
-        ))}
-      </div>
+      <KanaGroup
+        english="You-on"
+        japanese="拗音"
+        kanaGroup={YOUON_KANA}
+      />
     </div>
   );
 };
