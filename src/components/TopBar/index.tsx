@@ -24,6 +24,8 @@ import styles2 from '@src/styles/Layout.module.scss';
 const TopBar = () => {
   const searchContext = useSearch();
   const resultsContext = useResults();
+  
+  const VERSION = VersionData[0].version;
 
   /**
    * Checks the query status and updates the status label.
@@ -45,7 +47,7 @@ const TopBar = () => {
         <a className={styles.Logo} href={AppInfoData.repository} no-referrer='noreferrer' target='blank'>
           <Logo />
         </a>
-        {AppInfoData.name} {`(v${ VersionData[0].version })`}
+        {AppInfoData.name} {`(v${ VERSION.major }.${ VERSION.minor }.${ VERSION.patch })`}
       </div>
 
       {/* App Description */}

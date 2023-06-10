@@ -7,14 +7,18 @@ const VersionHistory: Version[] = [
 	//   ],
 	// },
 	{
-	  version: "1.4.7",
-	  date: new Date("June 9, 2023"),
-	  changes: [
-	    "Added sorting options for bookmarks page.",
-	  ],
+		version: { major: 1, minor: 3, patch: 9 },
+		date: new Date("June 9, 2023"),
+		changes: [
+			"Added sorting options for bookmarks page.",
+			"Updated display and dropdowns for developer logs.",
+			"Included links to Wikipedia definitions.",
+			"Added dropdowns for search entries.",
+			"Revisions to version history to reflect proper changes.",
+		],
 	},
 	{
-		version: "1.4.6",
+		version: { major: 1, minor: 3, patch: 4 },
 		date: new Date("May 31, 2023"),
 		changes: [
 			"Added more background customization options",
@@ -24,7 +28,7 @@ const VersionHistory: Version[] = [
 		],
 	},
 	{
-		version: "1.4.2",
+		version: { major: 1, minor: 3, patch: 0 },
 		date: new Date("Jan. 29, 2023"),
 		changes: [
 			"Added notifications feature.",
@@ -38,7 +42,7 @@ const VersionHistory: Version[] = [
 		],
 	},
 	{
-		version: "1.3.0",
+		version: { major: 1, minor: 2, patch: 0 },
 		date: new Date("Jan. 19, 2023"),
 		changes: [
 			"Added a modal for displaying developer logs.",
@@ -48,7 +52,7 @@ const VersionHistory: Version[] = [
 		],
 	},
 	{
-		version: "1.2.2",
+		version: { major: 1, minor: 1, patch: 2 },
 		date: new Date("Jan. 15, 2023"),
 		changes: [
 			"Added copying functionality for search results.",
@@ -61,7 +65,7 @@ const VersionHistory: Version[] = [
 		],
 	},
 	{
-		version: "1.1.0",
+		version: { major: 1, minor: 0, patch: 3 },
 		date: new Date("Jan. 13, 2023"),
 		changes: [
 			"Inplemented search history functionality.",
@@ -70,7 +74,7 @@ const VersionHistory: Version[] = [
 		],
 	},
 	{
-		version: "1.0.0",
+		version: { major: 1, minor: 0, patch: 0 },
 		date: new Date("Dec. 9, 2022"),
 		changes: ["Initial release.", "Included search and clear functionality."],
 	},

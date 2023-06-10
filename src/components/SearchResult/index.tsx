@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BsClipboard, BsInfoCircle, BsStar, BsStarFill } from 'react-icons/bs';
+import { FaAngleDown } from 'react-icons/fa';
 
 import { setLocalStorage } from '@src/utils/setLocalStorage';
 
@@ -18,7 +19,8 @@ import styles from './SearchResult.module.scss';
  * The SearchResult component contains data on a search.
  */
 const SearchResult = (props: any) => {
-  const [isSaved, setIsSaved] = useState(false);
+  const [isExpanded, setIsExpanded] = useState<boolean>(true);
+  const [isSaved, setIsSaved] = useState<boolean>(false);
 
   const notificationsContext = useNotifications();
   const kanjiContext = useModal();
@@ -71,6 +73,9 @@ const SearchResult = (props: any) => {
     const wordExists = savedWords.some((w: any) => w.slug === data.slug);
 
     setIsSaved(wordExists);
+
+    // Refresh expanded state.
+    setIsExpanded(true);
   }, [data]);
   
   return (
@@ -80,6 +85,14 @@ const SearchResult = (props: any) => {
         <div className={styles.SearchHeader}>
           {/* Main Form */}
           <div className={styles.Word}>
+            <FaAngleDown
+              className={styles.DropDownButton}
+              style={{
+                transform: isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)'
+              }}
+              onClick={() => setIsExpanded(!isExpanded)}
+            />
+            <div className={styles.VerticalLine} />
             <ruby>
               {mainForm.word ? mainForm.word : mainForm.reading}
               <rt>{mainForm.word ? mainForm.reading : ''}</rt>
@@ -161,7 +174,10 @@ const SearchResult = (props: any) => {
           </div>
         </div>
 
-        <div className={styles.SearchBody}>
+        <div
+          className={styles.SearchBody}
+          style={{ maxHeight: isExpanded ? '100vh' : '0px' }}
+        >
           {/* Senses */}
           <div className={styles.Senses}>
             {data.senses.map((sense: any, index: number) => {
@@ -175,7 +191,6 @@ const SearchResult = (props: any) => {
                         return `${pos}, `;
                     })}
                   </span>
-                  
                   <span className={styles.Definition}>
                     <span className={styles.DefinitionNumber}>{`${index + 1}. `}</span>
                     { sense.english_definitions.map((definition: string, i: number) => {
@@ -185,6 +200,19 @@ const SearchResult = (props: any) => {
                         return `${definition}; `;
                     })}
                   </span>
+                  <div className={styles.Links}>
+                    { sense.links.map((link: any, i: number) => (
+                      <a
+                        key={i}
+                        className={styles.WikiLink}
+                        href={link.url}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        { link.text } ≫
+                      </a>
+                    ))}
+                  </div>
                 </div>
               )
             })}

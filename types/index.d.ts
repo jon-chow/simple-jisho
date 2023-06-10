@@ -47,7 +47,11 @@ type TechStack = {
 
 // Type definition for a version.
 type Version = {
-  version: string,
+  version: {
+    major: number,
+    minor: number,
+    patch: number,
+  },
   date: Date,
   changes: string[],
 };
