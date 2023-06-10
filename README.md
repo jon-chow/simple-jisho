@@ -17,7 +17,6 @@ Simple Jisho is a simple, condensed, and easy-to-use Japanese-English dictionary
   - theme toggle (light/dark/system)
   - high contrast toggle
 - Improve bookmarks page
-  - add sorting options
   - add a filtering search bar
 
 ### **To Be Added in the Future:**

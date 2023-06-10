@@ -121,6 +121,7 @@ const Pagination = (props : { results : any[], condition : boolean, default : JS
       <div className={styles.PaginationPageSelect}>
         Page 
         <select
+          name="page-selection"
           value={currentPage}
           onChange={(e) => setPage(parseInt(e.target.value))}
         >

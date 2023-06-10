@@ -40,11 +40,11 @@ const getSearchResults = (query: string) => {
       if (isAbortError(exception))
         throw exception;
     };
-  });
+  }) as PromiseWithCancel<any>;
 
-  (promise as PromiseWithCancel<any>).cancel = () => controller.abort();
+  promise.cancel = () => controller.abort();
 
-  return promise as PromiseWithCancel<any>;
+  return promise;
 };
 
 /**

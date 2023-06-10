@@ -40,57 +40,30 @@ const Default = () => (
  * The bookmarks page is a page that displays all the bookmarks that the user has saved.
  */
 const BookmarksPage = () => {
-  const [savedWords, setSavedWords] = useState<string[]>([]);
+  const [savedWords, setSavedWords] = useState<Object[]>([]);
   const [orderBy, setOrderBy] = useState<OrderBy>(OrderBy.NONE);
-  const [sortBy, setSortBy] = useState<SortBy>(SortBy.NONE);
+  const [sortBy, setSortBy] = useState<SortBy>(SortBy.ALPHA);
 
   // Fetch saved words from the local storage.
   useEffect(() => {
-    let savedWords: string | null = localStorage.getItem('savedWords');
+    let savedWords: Object[] = JSON.parse(localStorage.getItem('savedWords') as string) || [];
 
-    if (savedWords != null) {
-      switch (sortBy) {
-        // Sort by alphabetical order.
-        case SortBy.ALPHA:
-          switch (orderBy) {
-            // Sort by ascending alphabetical order.
-            case OrderBy.ASC:
-              savedWords = JSON.stringify(JSON.parse(savedWords).sort((a: any, b: any) => a.slug.localeCompare(b.slug, 'jp', { sensitivity: 'base' })));
-              break;
-            
-            // Sort by descending alphabetical order.
-            case OrderBy.DESC:
-              savedWords = JSON.stringify(JSON.parse(savedWords).sort((a: any, b: any) => b.slug.localeCompare(a.slug, 'jp', { sensitivity: 'base' })));
-              break;
-            
-            default:
-              break;
-          };
-        
-        // Sort by date.
-        case SortBy.DATE:
-          switch (orderBy) {
-            // Sort by newest date.
-            case OrderBy.ASC:
-              savedWords = JSON.stringify(JSON.parse(savedWords).sort((a: any, b: any) => b.savedAt - a.savedAt));
-              break;
-            
-            // Sort by oldest date.
-            case OrderBy.DESC:
-              savedWords = JSON.stringify(JSON.parse(savedWords).sort((a: any, b: any) => a.savedAt - b.savedAt));
-              break;
-            
-            default:
-              break;
-          };
-        
-        // No sorting.
-        default:
-          break;
-      };
-
-      setSavedWords(JSON.parse(savedWords));
+    // Manage sorting.
+    if (sortBy === SortBy.ALPHA) {
+      savedWords = savedWords.sort((a: any, b: any) => 
+        a.senses[0].english_definitions[0].localeCompare(b.senses[0].english_definitions[0])
+      );
+    } else if (sortBy === SortBy.DATE) {
+      savedWords = savedWords.sort((a: any, b: any) => 
+        new Date(a.savedAt).getTime() - new Date(b.savedAt).getTime()
+      );
     };
+
+    // Manage ordering.
+    if (orderBy !== OrderBy.ASC)
+      savedWords = savedWords.reverse();
+    
+    setSavedWords(savedWords);
   }, [orderBy, sortBy]);
 
   return (
@@ -115,6 +88,17 @@ const BookmarksPage = () => {
               const sortOrder = Object.values(OrderBy)[sortOrderIndex % Object.values(OrderBy).length];
               setOrderBy(sortOrder as OrderBy);
             }}
+            title={`Order By: ${
+              sortBy === SortBy.ALPHA ? (
+                orderBy === OrderBy.ASC ? "Z-A" :
+                orderBy === OrderBy.NONE ? "A-Z" :
+                "Default"
+              ) : (
+                orderBy === OrderBy.ASC ? "Oldest" :
+                orderBy === OrderBy.NONE ? "Newest" :
+                "Default"
+              )
+            }`}
           >
             {orderBy === OrderBy.ASC && <FaSortUp />}
             {orderBy === OrderBy.DESC && <FaSortDown />}

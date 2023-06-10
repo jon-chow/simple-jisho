@@ -304,7 +304,12 @@ const SettingsModal = () => {
             title="Image URL"
             initValue={getSetting("backgroundUrl")}
             placeholder={getDefaultSetting("backgroundUrl") as string}
-            entered={(value) => { changeSetting("backgroundUrl", value); }}
+            entered={(value) => {
+              if (value === "")
+                changeSetting("backgroundUrl", getDefaultSetting("backgroundUrl"));
+              else
+                changeSetting("backgroundUrl", value);
+            }}
           />
 
           <InputBox
