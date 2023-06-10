@@ -35,7 +35,7 @@ type Background = {
 // Type definition for a social media button.
 type SMButton = {
   title: string,
-  icon: JSX.Element, 
+  icon: React.ReactElement, 
   link: string,
 };
 

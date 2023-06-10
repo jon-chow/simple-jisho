@@ -16,7 +16,7 @@ const BUTTONS_TO_SHOW = 5; // Must be odd number.
  * 
  * Shows a specified number of results per page and allows the user to navigate between pages.
  */
-const Pagination = (props : { results : any[], condition : boolean, default : JSX.Element } ) => {
+const Pagination = (props : { results : any[], condition : boolean, default : React.ReactElement } ) => {
   const [maxResultsPerPage, setMaxResultsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
 

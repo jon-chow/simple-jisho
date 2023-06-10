@@ -51,7 +51,7 @@ const MetaData = () => {
 
       <link rel="manifest" href="/manifest.json" />
       <link rel="apple-touch-icon" href="/logo-192x192.png" />
-      <link rel="icon" href="/favicon.ico" />
+      <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     </Head>
   );
 };

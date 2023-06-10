@@ -1,11 +1,18 @@
 import { createContext, useContext, useEffect, PropsWithChildren } from "react";
 
 import { setLocalStorage } from "@src/utils/setLocalStorage";
+import { setDocumentColours } from "@src/utils/setDocumentColours";
 
 
 // The default settings.
 const DEFAULT_SETTINGS = {
   theme: "system",
+  accentColour: {
+    "r": 254,
+    "g": 184,
+    "b": 225,
+    "a": 1
+  },
   backgroundImage: false,
   backgroundUrl: "/static/background.png",
   backgroundBlur: 3,
@@ -94,13 +101,15 @@ const SettingsContextProvider = ({ children } : PropsWithChildren) => {
   // Set the initial settings on load.
   useEffect(() => {
     const settings = localStorage?.getItem("settings");
-    
-    if (settings && hasAllKeys(settings)) { // If the settings have all the keys.
+
+    if (settings && hasAllKeys(settings)) {
+      // If the settings have all the keys.
       const parsedSettings = JSON.parse(settings);
       Object.keys(parsedSettings).forEach((key) => {
         document.documentElement.setAttribute(`data-${key}`, parsedSettings[key]);
       });
-    } else if (settings) { // If the settings have missing keys.
+    } else if (settings) {
+      // If the settings have missing keys.
       const parsedSettings = JSON.parse(settings);
       Object.keys(DEFAULT_SETTINGS).forEach((key) => {
         if (!(key in parsedSettings))
@@ -108,7 +117,8 @@ const SettingsContextProvider = ({ children } : PropsWithChildren) => {
         document.documentElement.setAttribute(`data-${key}`, parsedSettings[key]);
       });
       setLocalStorage("settings", JSON.stringify(parsedSettings));
-    } else { // If the settings are missing.
+    } else {
+      // If the settings are missing.
       setLocalStorage("settings", JSON.stringify(DEFAULT_SETTINGS));
       Object.keys(DEFAULT_SETTINGS).forEach((key) => {
         document.documentElement.setAttribute(`data-${key}`,
@@ -122,6 +132,11 @@ const SettingsContextProvider = ({ children } : PropsWithChildren) => {
       if (!(key in DEFAULT_SETTINGS))
         delete parsedSettings[key];
     });
+
+    // Set document accent colour.
+    const parsedColour = parsedSettings.accentColour;
+    setDocumentColours(parsedColour);
+
     setLocalStorage("settings", JSON.stringify(parsedSettings));
   }, []);
 
