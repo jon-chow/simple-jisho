@@ -2,7 +2,7 @@ import { FaEye, FaSearch } from 'react-icons/fa';
 
 import { useSettings, getSetting, getDefaultSetting, ThemeOptions } from '@src/contexts/SettingsProvider';
 import { useModal, resetModalContext } from '@src/contexts/ModalProvider';
-import { setDocumentColours } from '@src/utils/setDocumentColours';
+import { setDocumentColours, setThemeColours } from '@src/utils/setDocumentColours';
 
 import ModalLayout from '../ModalLayout';
 import {
@@ -51,7 +51,10 @@ const SettingsModal = () => {
             title="Theme"
             initValue={getSetting("theme", ThemeOptions)}
             options={ThemeOptions}
-            selection={(option) => { changeSetting("theme", option.value); }}
+            selection={(option) => {
+              changeSetting("theme", option.value);
+              setThemeColours(option.value);
+            }}
           />
 
           <CheckBox

@@ -15,12 +15,12 @@
     display: flex;
     font-size: 2rem;
     padding: 0.25rem 1rem;
-    background: rgba(#fff, 0.1);
+    background: rgba(var(--theme-foreground-raw), 0.1);
     border-radius: 1rem;
     font-weight: bold;
 
     .Logo {
-      fill: #fff;
+      fill: var(--theme-foreground);
       width: 2.5rem;
       height: 2.5rem;
       margin-right: 0.5rem;
