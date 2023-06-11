@@ -32,21 +32,3 @@ export const TechStackData : TechStack[] = [
   { name: "Next.js",    link: "https://nextjs.org/"             },
   { name: "TypeScript", link: "https://www.typescriptlang.org/" },
 ];
-
-export const ThemesData : Theme[] = [
-  {
-    title: "light",
-    // Main
-    background: "220, 220, 220",
-    foreground: "50, 50, 50",
-
-    // Other shades
-    textGrey: "100, 100, 100",
-    textLightGrey: "150, 150, 150",
-  },
-  {
-    title: "dark",
-    background: "0, 0, 0",
-    foreground: "255, 255, 255",
-  }
-];

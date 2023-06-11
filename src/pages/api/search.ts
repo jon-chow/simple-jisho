@@ -11,7 +11,18 @@ const jisho = new JishoAPI();
 const MAX_SEARCH_RESULTS = 20;
 const MAX_SENTENCES_RESULTS = 5;
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
+/* -------------------------------------------------------------------------- */
+/*                                  FUNCTION                                  */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Handles the search API route. \
+ * Responds with a list of definitions, examples, and kanji for the given keyword.
+ * @path /api/search
+ * @param req - The request object.
+ * @param res - The response object.
+ */
+async function handler(req: NextApiRequest, res: NextApiResponse<any>): Promise<void> {
   const { keyword } = req.query;
 
   const phrasesData = await jisho.searchForPhrase(keyword as string);
@@ -68,3 +79,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate');
   res.status(200).json(filteredPhrasesData);
 };
+
+export default handler;

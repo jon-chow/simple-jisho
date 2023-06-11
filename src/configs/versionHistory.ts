@@ -1,3 +1,6 @@
+/**
+ * Version history for the app.
+ */
 const VersionHistory: Version[] = [
 	// {
 	//   version: "",
@@ -17,7 +20,6 @@ const VersionHistory: Version[] = [
 			"Revisions to version history to reflect proper changes.",
 			"Added accent colour to settings.",
 			"Added dropdowns for kana page.",
-			
 		],
 	},
 	{
@@ -83,4 +85,10 @@ const VersionHistory: Version[] = [
 	},
 ];
 
-export const VersionData = VersionHistory.sort((a, b) => b.date.getTime() - a.date.getTime());
+/**
+ * Version history for the app. \
+ * Sorted by date in descending order.
+ */
+export const VersionData = VersionHistory.sort(
+	(a, b) => b.date.getTime() - a.date.getTime()
+);

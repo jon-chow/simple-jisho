@@ -1,14 +1,22 @@
 import { RGBColor } from "react-color";
 
-import { ThemesData } from "@src/configs/config";
+import { ThemesData } from '@src/styles/themes';
 import { ThemeOptions } from "@src/contexts/SettingsProvider";
 import { getSetting } from "@src/contexts/SettingsProvider";
 
 
+/* -------------------------------------------------------------------------- */
+/*                                  FUNCTIONS                                 */
+/* -------------------------------------------------------------------------- */
+
 /**
  * Parses a colour string into an RGBColor object and vice versa.
+ * @param colour The colour to parse.
+ * @returns The parsed colour.
  */
-export const parseColour = (colour: string | RGBColor): RGBColor | string => {
+function parseColour(colour: string): RGBColor;
+function parseColour(colour: RGBColor): string;
+function parseColour(colour: string | RGBColor): RGBColor | string {
   if (typeof colour === "string") {
     const parsedColour = colour.replace("rgba(", "").replace(")", "").split(",");
     return {
@@ -19,14 +27,27 @@ export const parseColour = (colour: string | RGBColor): RGBColor | string => {
     };
   } else {
     return `rgba(${colour.r}, ${colour.g}, ${colour.b}, ${colour.a})`;
-  }
+  };
+};
+
+
+/**
+ * Parses a colour object into a raw colour string. (e.g. 255, 255, 255)
+ * @param colour The colour to parse.
+ * @returns The raw colour string.
+ */
+function parseToRaw(colour: RGBColor): string {
+  const { r, g, b } = colour;
+  return `${r}, ${g}, ${b}`;
 };
 
 
 /**
  * Sets the theme colours of the document.
+ * @param theme The theme to set the colours to.
+ * @throws If the theme is not found.
  */
-export const setThemeColours = (theme: string | void) => {
+function setThemeColours(theme?: string): void {
   try {
     // Get the theme if not provided.
     if (!theme)
@@ -59,11 +80,13 @@ export const setThemeColours = (theme: string | void) => {
 
 
 /**
- * Calculates the new colour based on the current colour and the amount to change.
- * 
+ * Calculates the new colour based on the current colour and the amount to change. \
  * Constrained between 0 and 255, returns a new RGBColor object.
+ * @param colour The colour to change.
+ * @param amount The amount to change the colour by.
+ * @returns The new colour.
  */
-export const calculateNewColour = (colour: RGBColor, amount: number): RGBColor => {
+function calculateNewColour(colour: RGBColor, amount: number): RGBColor {
   const { r, g, b, a } = colour;
   const colours = [r, g, b].map((colour) => Math.min(Math.max(colour + amount, 0), 255));
   return { r: colours[0], g: colours[1], b: colours[2], a: a };
@@ -72,14 +95,9 @@ export const calculateNewColour = (colour: RGBColor, amount: number): RGBColor =
 
 /**
  * Sets the colours of the document.
+ * @param colour The colour to set the document to.
  */
-export const setDocumentColours = (colour: RGBColor) => {
-  // Helper function to parse the colour to a raw string.
-  const parseToRaw = (colour: RGBColor) => {
-    const { r, g, b } = colour;
-    return `${r}, ${g}, ${b}`;
-  };
-
+function setDocumentColours(colour: RGBColor): void {
   // Set the theme colours.
   setThemeColours();
 
@@ -103,4 +121,13 @@ export const setDocumentColours = (colour: RGBColor) => {
   for (const [key, value] of Object.entries(others)) {
     document.documentElement.style.setProperty(`--primary-colour-${key}`, parseToRaw(value));
   };
+};
+
+
+export {
+  parseColour,
+  parseToRaw,
+  setThemeColours,
+  calculateNewColour,
+  setDocumentColours,
 };

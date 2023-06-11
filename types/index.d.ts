@@ -9,7 +9,7 @@ declare module "*.svg" {
 }
 
 /* -------------------------------------------------------------------------- */
-/*                                API PROMISES                                */
+/*                                 INTERFACES                                 */
 /* -------------------------------------------------------------------------- */
 
 /**
@@ -23,7 +23,9 @@ interface PromiseWithCancel<T> extends Promise<T> {
 /*                                    TYPES                                   */
 /* -------------------------------------------------------------------------- */
 
-// Type definition for a background image.
+/**
+ * Type definition for a background image.
+ */ 
 type Background = {
   image: string,
   artist: string,
@@ -32,20 +34,26 @@ type Background = {
   blurAmount: number,
 };
 
-// Type definition for a social media button.
+/**
+ * Type definition for a social media button.
+ */
 type SMButton = {
   title: string,
   icon: React.ReactElement, 
   link: string,
 };
 
-// Type definition for a tech stack item.
+/**
+ * Type definition for a tech stack item.
+ */
 type TechStack = {
   name: string,
   link: string,
 }
 
-// Type definition for a version.
+/**
+ * Type definition for a version.
+ */
 type Version = {
   version: {
     major: number,
@@ -56,7 +64,9 @@ type Version = {
   changes: string[],
 };
 
-// Type definition for a notification message.
+/**
+ * Type definition for a notification message.
+ */
 type MessageProps = {
   id: string;
   type?: MessageType;
@@ -66,14 +76,18 @@ type MessageProps = {
   duration?: number;
 };
 
-// Type definition for an instance of a past search.
+/**
+ * Type definition for an instance of a past search.
+ */
 type SearchHistory = {
   keyword: string,
   date: Date,
   results: WordData[],
 };
 
-// Type definition for a word's sense.
+/**
+ * Type definition for a word's sense.
+ */
 type Sense = {
   english_definitions: string[],
   parts_of_speech: string[],
@@ -89,7 +103,9 @@ type Sense = {
   info: string[],
 };
 
-// Type definition for a word.
+/**
+ * Type definition for a word.
+ */
 type WordData = {
   slug: string,
   is_common: boolean,
@@ -105,20 +121,26 @@ type WordData = {
   }[],
 };
 
-// Type definition for a word's kanji.
+/**
+ * Type definition for a word's kanji.
+ */
 type Kana = {
   romaji: string,
   hiragana: string,
   katakana: string,
 };
 
-// Type definition for a drop down option.
+/**
+ * Type definition for a drop down option.
+ */
 type Option = {
   title : string;
   value : string;
 };
 
-// Type definition for a theme.
+/**
+ * Type definition for a theme.
+ */
 type Theme = {
   [key: string]: string;
 };
