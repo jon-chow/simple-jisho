@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  background: rgba(var(--theme-background-raw), 0.1);
+  background: rgba(var(--theme-background), 0.1);
   border-radius: 1rem;
   padding: 1rem 3rem;
   width: 95%;
@@ -43,7 +43,7 @@
       gap: 0.5rem;
       margin: 0 0 0 1rem;
       padding-left: 2rem;
-      border-left: 0.25vw solid var(--primary-colour-light);
+      border-left: 0.25vw solid rgb(var(--primary-colour-light));
     }
   }
 }

@@ -46,10 +46,10 @@ export const setThemeColours = (theme: string | void) => {
       const themeData = ThemesData.find((themeData) => themeData.title === themeOptions.value);
 
       if (themeData) {
-        document.documentElement.style.setProperty("--theme-background", themeData.background);
-        document.documentElement.style.setProperty("--theme-background-raw", themeData.backgroundRaw);
-        document.documentElement.style.setProperty("--theme-foreground", themeData.foreground);
-        document.documentElement.style.setProperty("--theme-foreground-raw", themeData.foregroundRaw);
+        for (const [key, value] of Object.entries(themeData).filter(([key]) => key !== "title")) {
+          const convertedKey = key.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, "$1-$2").toLowerCase();
+          document.documentElement.style.setProperty(`--theme-${convertedKey}`, value);
+        };
       };
     };
   } catch (error) {
@@ -59,29 +59,48 @@ export const setThemeColours = (theme: string | void) => {
 
 
 /**
+ * Calculates the new colour based on the current colour and the amount to change.
+ * 
+ * Constrained between 0 and 255, returns a new RGBColor object.
+ */
+export const calculateNewColour = (colour: RGBColor, amount: number): RGBColor => {
+  const { r, g, b, a } = colour;
+  const colours = [r, g, b].map((colour) => Math.min(Math.max(colour + amount, 0), 255));
+  return { r: colours[0], g: colours[1], b: colours[2], a: a };
+};
+
+
+/**
  * Sets the colours of the document.
  */
 export const setDocumentColours = (colour: RGBColor) => {
-  const parsedColour = colour;
+  // Helper function to parse the colour to a raw string.
+  const parseToRaw = (colour: RGBColor) => {
+    const { r, g, b } = colour;
+    return `${r}, ${g}, ${b}`;
+  };
 
   // Set the theme colours.
   setThemeColours();
 
   // Set the primary colour.
-  const raw = `${parsedColour.r}, ${parsedColour.g}, ${parsedColour.b}`;
-  const rgb = `rgba(${raw}, ${parsedColour.a})`;
-  document.documentElement.style.setProperty("--primary-colour", rgb);
-  document.documentElement.style.setProperty("--primary-colour-raw", raw);
+  document.documentElement.style.setProperty("--primary-colour", parseToRaw(colour));
 
-  // Set the primary colour dark.
-  const rawDark = `${parsedColour.r - 30}, ${parsedColour.g - 30}, ${parsedColour.b - 30}`;
-  const rgbDark = `rgba(${rawDark}, ${parsedColour.a})`;
-  document.documentElement.style.setProperty("--primary-colour-dark", rgbDark);
-  document.documentElement.style.setProperty("--primary-colour-dark-raw", rawDark);
+  // Define the other colours.
+  const darker = calculateNewColour(colour, -50);
+	const dark = calculateNewColour(colour, -30);
+  const light = calculateNewColour(colour, 30);
+  const lighter = calculateNewColour(colour, 50);
 
-  // Set the primary colour light.
-  const rawLight = `${parsedColour.r + 30}, ${parsedColour.g + 30}, ${parsedColour.b + 30}`;
-  const rgbLight = `rgba(${rawLight}, ${parsedColour.a})`;
-  document.documentElement.style.setProperty("--primary-colour-light", rgbLight);
-  document.documentElement.style.setProperty("--primary-colour-light-raw", rawLight);
+  const others = {
+    darker: darker,
+    dark: dark,
+    light: light,
+    lighter: lighter,
+  };
+
+  // Set the other colours.
+  for (const [key, value] of Object.entries(others)) {
+    document.documentElement.style.setProperty(`--primary-colour-${key}`, parseToRaw(value));
+  };
 };

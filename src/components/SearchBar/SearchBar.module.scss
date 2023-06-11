@@ -26,14 +26,14 @@
         box-shadow 0.25s ease-in-out;
 
       &:hover {
-        background-color: var(--primary-colour-dark);
+        background-color: rgb(var(--primary-colour-dark));
       }
     }
   }
 
   .Active {
-    background-color: var(--primary-colour-dark);
-    box-shadow: 0 0 0.5rem rgba(var(--primary-colour-raw), 0.8);
+    background-color: rgb(var(--primary-colour-dark));
+    box-shadow: 0 0 0.5rem rgba(var(--primary-colour), 0.8);
   }
 
   .SearchInput {
@@ -71,7 +71,7 @@
         }
 
         &[type="button"] {
-          background-color: var(--primary-colour-dark);
+          background-color: rgb(var(--primary-colour-dark));
         }
       }
     }

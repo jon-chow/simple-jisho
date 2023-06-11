@@ -1,21 +1,6 @@
-:root {
-  // Theme colours.
-  --theme-background-raw: 0, 0, 0;
-  --theme-background: rgb(var(--theme-background-raw));
+// :root {
 
-  --theme-foreground-raw: 255, 255, 255;
-  --theme-foreground: rgb(var(--theme-foreground-raw));
-
-  // Accent colours.
-  --primary-colour-raw: 254, 184, 225;
-  --primary-colour: rgb(var(--primary-colour-raw));
-
-  --primary-colour-dark-raw: 230, 154, 198;
-  --primary-colour-dark: rgb(var(--primary-colour-dark-raw));
-
-  --primary-colour-light-raw: 255, 211, 237;
-  --primary-colour-light: rgb(var(--primary-colour-light-raw));
-}
+// }
 
 html,
 body {
@@ -65,7 +50,7 @@ a {
   }
 
   body {
-    color: var(--theme-foreground);
-    background: var(--theme-background);
+    color: rgb(var(--theme-foreground));
+    background: rgb(var(--theme-background));
   }
 }

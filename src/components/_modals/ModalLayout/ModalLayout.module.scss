@@ -9,7 +9,7 @@
   width: 100%;
   height: 100%;
   z-index: 100;
-  background-color: rgba(var(--theme-background-raw), 0.3);
+  background-color: rgba(var(--theme-background), 0.3);
   backdrop-filter: blur(10px);
 
   .ModalContainer {
@@ -20,7 +20,7 @@
     height: 100%;
     max-width: 80vw;
     max-height: 90vh;
-    background-color: rgba(var(--theme-background-raw), 0.5);
+    background-color: rgba(var(--theme-background), 0.5);
     border-radius: 1rem;
     padding: 1rem;
     gap: 1rem;
@@ -37,7 +37,7 @@
         margin: 0;
         margin-top: -1rem;
         font-weight: 600;
-        color: var(--theme-foreground);
+        color: rgb(var(--theme-foreground));
       }
 
       .ModalCloseButton {
@@ -52,7 +52,7 @@
         svg {
           width: 3rem;
           height: 3rem;
-          fill: var(--theme-foreground);
+          fill: rgb(var(--theme-foreground));
           transition: fill 0.25s ease-in-out;
         }
 

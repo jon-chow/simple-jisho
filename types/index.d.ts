@@ -120,9 +120,5 @@ type Option = {
 
 // Type definition for a theme.
 type Theme = {
-  title: string,
-  foreground: string,
-  foregroundRaw: string,
-  background: string,
-  backgroundRaw: string,
+  [key: string]: string;
 };

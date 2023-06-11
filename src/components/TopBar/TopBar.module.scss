@@ -15,19 +15,19 @@
     display: flex;
     font-size: 2rem;
     padding: 0.25rem 1rem;
-    background: rgba(var(--theme-foreground-raw), 0.1);
+    background: rgba(var(--theme-foreground), 0.1);
     border-radius: 1rem;
     font-weight: bold;
 
     .Logo {
-      fill: var(--theme-foreground);
+      fill: rgb(var(--theme-foreground));
       width: 2.5rem;
       height: 2.5rem;
       margin-right: 0.5rem;
       transition: fill 0.2s linear;
 
       &:hover {
-        fill: var(--primary-colour);
+        fill: rgb(var(--primary-colour));
       }
     }
   }

@@ -305,12 +305,23 @@ const ColourPicker = (props:
         style={{ 
           display: 'flex',
           justifyContent: 'center',
-          background: `var(--primary-colour)`,
+          background: `rgb(var(--primary-colour))`,
           padding: '1rem 0',
           borderRadius: '0.5rem',
         }}
       >
         <SketchPicker
+          disableAlpha={true}
+          presetColors={[
+            "#feb8e1",
+            "#b4ddfd",
+            "#adf59e",
+            "#f8f6b1",
+            "#f4a1a1",
+            "#d6b3fb",
+            "#aaeff3",
+            "#fdcb7e",
+          ]}
           color={value}
           onChange={(color) => changeValue(color.rgb)}
           styles={{

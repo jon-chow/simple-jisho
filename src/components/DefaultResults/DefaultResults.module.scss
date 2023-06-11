@@ -18,13 +18,13 @@
     justify-content: center;
     align-items: center;
     padding: 0 1rem;
-    background: rgba(var(--theme-foreground-raw), 0.1);
+    background: rgba(var(--theme-foreground), 0.1);
     border-radius: 1rem;
 
     .DefaultResultsLogo {
       width: 4rem;
       height: 4rem;
-      fill: var(--primary-colour);
+      fill: rgb(var(--primary-colour));
     }
 
     .DefaultResultsTitle {
@@ -41,7 +41,7 @@
     box-sizing: border-box;
     margin: 2vh 10vw;
     line-height: 1.5;
-    // background: rgba(var(--theme-foreground-raw), 0.1);
+    // background: rgba(var(--theme-foreground), 0.1);
     // border-radius: 1rem;
     padding: 1rem;
   }
