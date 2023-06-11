@@ -5,6 +5,7 @@ import { FaAngleDown, FaCheck, FaUndoAlt } from 'react-icons/fa';
 import { useNotifications, MessageType, createMessage } from '@src/contexts/NotificationsProvider';
 
 import styles from './SettingsModal.module.scss';
+import { parseColour } from '@src/utils/setDocumentColours';
 
 
 /* -------------------------------------------------------------------------- */
@@ -268,14 +269,14 @@ const ColourPicker = (props:
   const [value, setValue] = useState<string>(props.initValue);
 
   // Change the value when the user selects a colour.
-  const changeValue = (val: RGBColor) => {
-    const rgbaVal = `rgba(${val.r}, ${val.g}, ${val.b}, ${(val.a !== undefined) ? val.a : 1})`;
+  const changeValue = (val: RGBColor): void => {
+    const rgbaVal = parseColour(val);
     props.selection(val);
     setValue(rgbaVal);
   };
 
   // Reset the value when the user clicks the reset button.
-  const resetValue = () => {
+  const resetValue = (): void => {
     props.selection(props.defaultValue as unknown as RGBColor);
     setValue(props.defaultValue);
   };
@@ -294,7 +295,6 @@ const ColourPicker = (props:
         <span
           className={styles.Reset}
           onClick={resetValue}
-          style={{ cursor: 'pointer' }}
           title="Reset to Default"
         >
           <FaUndoAlt size={"1.5rem"} />
@@ -327,8 +327,10 @@ const ColourPicker = (props:
           styles={{
             default: {
               picker: {
-                background: 'rgba(0,0,0,0.4)',
+                background: 'rgba(var(--theme-background), 0.4)',
+                boxShadow: '0 0 1rem rgba(var(--theme-shade7), 0.8)',
                 width: '50%',
+                transition: 'all 0.2s ease-in-out',
               },
               sliders: {
                 cursor: 'pointer',

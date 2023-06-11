@@ -10,7 +10,8 @@
   width: 100%;
   gap: 1rem;
   backdrop-filter: blur(10px);
-  box-shadow: 0 0 0.5rem rgba(#222, 0.2);
+  background: rgba(var(--theme-shade6), 0.1);
+  box-shadow: 0 0 0.5rem rgba(var(--theme-shade5), 0.2);
 
   
   .JishoLink {
@@ -54,7 +55,7 @@
 
     .SearchBody {
       overflow-y: scroll;
-      transition: 0.2s ease-in-out;
+      transition: 0.2s ease;
     }
   }
 
@@ -83,10 +84,10 @@
       padding: 0.5rem;
       border: none;
       border-radius: 5px;
-      background: #6b6b6b;
+      background: rgb(var(--theme-shade7));
       color: rgb(var(--theme-foreground));
       cursor: pointer;
-      transition: all 0.2s ease-in-out;
+      transition: 0.2s ease;
 
       svg {
         width: 1.25rem;
@@ -100,7 +101,7 @@
 
     .DropDownButton {
       cursor: pointer;
-      transition: 0.2s ease-in-out;
+      transition: 0.2s ease;
     }
 
     .VerticalLine {
@@ -137,7 +138,7 @@
       flex-direction: row;
       flex-wrap: wrap;
       align-items: center;
-      color:#bbb;
+      color: rgb(var(--theme-shade3));
       font-size: large;
       font-weight: 600;
     }
@@ -149,7 +150,7 @@
       max-width: 80%;
       padding: 0.5rem 1rem;
       border-radius: 10px;
-      background: rgba(#222, 0.2);
+      background: rgba(var(--theme-shade8), 0.2);
       box-shadow: 5px 5px 0.5rem rgba(var(--theme-background), 0.1);
 
       .Definition,
@@ -161,7 +162,7 @@
         font-weight: light;
     
         .DefinitionNumber {
-          color: #bbb;
+          color: rgb(var(--theme-shade3));
           font-weight: 600;
         }
       }
@@ -186,7 +187,7 @@
       justify-content: space-between;
       align-items: center;
       margin: 0.5rem 0;
-      color: #bbb;
+      color: rgb(var(--theme-shade3));
       font-size: large;
       font-weight: 600;
     }
@@ -204,7 +205,7 @@
         border-radius: 10px;
         width: 100%;
         gap: 0.5rem;
-        background: rgba(var(--theme-background), 0.05);
+        background: rgba(var(--theme-shade9), 0.05);
         font-size: large;
 
         .ExampleSentence {
@@ -212,8 +213,9 @@
           flex-direction: column;
 
           span:nth-child(2) {
-            font-weight: lighter;
-            color: #ccc;
+            font-weight: light;
+            color: rgb(var(--theme-shade3));
+            text-shadow: 0 0 0.5rem rgba(var(--theme-background), 0.5);
           }
         }
       }

@@ -15,7 +15,7 @@
     display: flex;
     font-size: 2rem;
     padding: 0.25rem 1rem;
-    background: rgba(var(--theme-foreground), 0.1);
+    background: rgba(var(--theme-shade4), 0.1);
     border-radius: 1rem;
     font-weight: bold;
 
@@ -24,7 +24,6 @@
       width: 2.5rem;
       height: 2.5rem;
       margin-right: 0.5rem;
-      transition: fill 0.2s linear;
 
       &:hover {
         fill: rgb(var(--primary-colour));

@@ -38,7 +38,7 @@
       width: 2.5rem;
       font-size: 1.5rem;
       cursor: pointer;
-      transition: background-color 0.2s ease-in-out;
+      transition: background-color 0.2s ease;
 
       &:hover:not(:disabled) {
         background: rgba(140, 140, 140);

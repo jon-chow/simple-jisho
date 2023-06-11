@@ -23,8 +23,8 @@
   transform: translateX(-200%);
   transition: 
     background-color 0.2s linear,
-    transform 0.4s ease-in-out;
-  animation: open 0.4s ease-in-out forwards;
+    transform 0.4s ease;
+  animation: open 0.4s ease forwards;
   pointer-events: auto;
   cursor: pointer;
 

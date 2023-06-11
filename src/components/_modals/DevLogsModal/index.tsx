@@ -29,7 +29,7 @@ const VersionSection = (props: { data : Version, expanded? : boolean }) => {
           className={styles.Arrow}
           style={{
             transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
-            transition: 'transform 0.2s ease-in-out'
+            transition: 'transform 0.2s ease'
           }}
         />
         Version {VERSION.major}.{VERSION.minor}.{VERSION.patch} ({props.data.date.toLocaleDateString()})
@@ -39,7 +39,7 @@ const VersionSection = (props: { data : Version, expanded? : boolean }) => {
         className={styles.VersionList}
         style={{
           maxHeight: isExpanded ? '100%' : '0px',
-          transition: 'max-height 0.2s ease-in-out'
+          transition: 'max-height 0.2s ease'
         }}
       >
         { props.data.changes.map((change, index) => {

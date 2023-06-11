@@ -2,24 +2,42 @@
  * Data for themes.
  */
 const ThemesData: Theme[] = [
-  {
-    title: "light",
-    
-    // Main
-    background: "220, 220, 220",
-    foreground: "50, 50, 50",
+	{
+		title: "light",
 
-    // Other shades
-  },
-  {
-    title: "dark",
+		// Main
+		background: "240, 240, 240",
+		foreground: "40, 40, 40",
 
-    // Main
-    background: "0, 0, 0",
-    foreground: "255, 255, 255",
+		// Other shades
+		shade1: "0, 0, 0",
+		shade2: "30, 30, 30",
+		shade3: "60, 60, 60",
+		shade4: "90, 90, 90",
+		shade5: "120, 120, 120",
+		shade6: "150, 150, 150",
+		shade7: "180, 180, 180",
+		shade8: "210, 210, 210",
+		shade9: "240, 240, 240",
+	},
+	{
+		title: "dark",
 
-    // Other shades
-  }
+		// Main
+		background: "0, 0, 0",
+		foreground: "240, 240, 240",
+
+		// Other shades
+		shade1: "240, 240, 240",
+		shade2: "210, 210, 210",
+		shade3: "180, 180, 180",
+		shade4: "150, 150, 150",
+		shade5: "120, 120, 120",
+		shade6: "90, 90, 90",
+		shade7: "60, 60, 60",
+		shade8: "30, 30, 30",
+		shade9: "0, 0, 0",
+	},
 ];
 
 export {

@@ -10,7 +10,7 @@ const VersionHistory: Version[] = [
 	//   ],
 	// },
 	{
-		version: { major: 1, minor: 3, patch: 11 },
+		version: { major: 1, minor: 3, patch: 12 },
 		date: new Date("June 11, 2023"),
 		changes: [
 			"Added sorting options for bookmarks page.",
@@ -20,6 +20,7 @@ const VersionHistory: Version[] = [
 			"Revisions to version history to reflect proper changes.",
 			"Added accent colour to settings.",
 			"Added dropdowns for kana page.",
+			"Updated styling with new themes.",
 		],
 	},
 	{

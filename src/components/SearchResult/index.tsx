@@ -124,12 +124,12 @@ const SearchResult = (props: any) => {
                   style={{
                     fill: "rgb(255, 225, 120)",
                     filter: "drop-shadow(0 0 0.25rem rgba(255, 225, 120, 0.5))",
-                    animation: `${styles.Favourite} 0.25s ease-in-out forwards`
+                    animation: `${styles.Favourite} 0.2s ease forwards`
                   }}
                 /> :
                 <BsStar
                   style={{
-                    animation: `${styles.Favourite} 0.25s ease-in-out backwards`
+                    animation: `${styles.Favourite} 0.2s ease backwards`
                   }}
                 />
               }
