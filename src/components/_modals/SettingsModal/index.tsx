@@ -19,22 +19,29 @@ import styles from './SettingsModal.module.scss';
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
+
 /**
- * Creates the settings modal component.
- * 
+ * Creates the settings modal component.  \
  * The settings modal allows the user to change app preferences.
+ * @returns The settings modal component.
  */
-const SettingsModal = () => {
+const SettingsModal = (): JSX.Element => {
   const settingsContext = useSettings();
   const settingsModalContext = useModal();
 
-  // Change a specified setting.
-  const changeSetting = (setting : string, value : any) => {
+  /**
+   * Changes a specified setting.
+   * @param setting The setting to change.
+   * @param value The new value of the setting.
+   */
+  const changeSetting = (setting: string, value: any): void => {
     settingsContext.setSetting(setting, value);
   };
 
-  // Reset all settings to their default values.
-  const resetSettings = () => {
+  /**
+   * Resets all settings to their default values.
+   */
+  const resetSettings = (): void => {
     if (window.confirm("Are you sure you want to reset to default settings?")) {
       settingsContext.resetSettings();
       resetModalContext(settingsModalContext);

@@ -15,13 +15,14 @@ import styles2 from '@src/styles/Layout.module.scss';
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
+
 /**
- * Creates the top bar of the page.
- * 
+ * Creates the top bar of the page. \
  * The top bar contains the application name, its description,
  * as well as a search bar.
+ * @return The top bar of the page.
  */
-const TopBar = () => {
+const TopBar = (): JSX.Element => {
   const searchContext = useSearch();
   const resultsContext = useResults();
   
@@ -29,15 +30,16 @@ const TopBar = () => {
 
   /**
    * Checks the query status and updates the status label.
+   * @return The status text.
    */
-  const checkStatus = () => {
+  const checkStatus = (): string => {
     switch (searchContext.status) {
-      case Status.IDLE: return "Look up a word by entering it into the search bar.";
-      case Status.LOADING: return "Searching...";
-      case Status.SUCCESS: return `Found ${resultsContext.results.length} results for "${resultsContext.keyword}".`;
+      case Status.IDLE:      return "Look up a word by entering it into the search bar.";
+      case Status.LOADING:   return "Searching...";
+      case Status.SUCCESS:   return `Found ${resultsContext.results.length} results for "${resultsContext.keyword}".`;
       case Status.CANCELLED: return "Search cancelled.";
-      default: return "An error occurred while searching.";
-    }
+      default:               return "An error occurred while searching.";
+    };
   };
 
   return (
@@ -62,11 +64,9 @@ const TopBar = () => {
       {/* Search Bar */}
       <SearchBar />
 
-      <div className={styles.StatusLabel}>
-        { checkStatus() }
-      </div>
+      <div className={styles.StatusLabel}>{ checkStatus() }</div>
     </header>
-  )
+  );
 };
 
 export default TopBar;

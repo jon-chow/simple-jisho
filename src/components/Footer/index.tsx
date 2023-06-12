@@ -11,21 +11,20 @@ import styles2 from '@src/styles/Layout.module.scss';
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
+
 /**
- * Creates the footer of the page.
- * 
+ * Creates the footer of the page. \
  * The footer contains copyright information, social media links,
  * as well as a link to the source code (GitHub) and the Jisho website.
+ * @returns The footer component.
  */
-const Footer = () => {
+const Footer = (): JSX.Element => {
   const devLogsContext = useModal();
 
   return (
     <footer className={styles.Footer}>
       {/* Copyright information */}
-      <div>
-        &copy; 2022-{new Date().getFullYear()} jon-chow.
-      </div>
+      <div>&copy; 2022-{new Date().getFullYear()} jon-chow.</div>
 
       {/* Social media links */}
       { (SMButtonsData) &&
@@ -44,10 +43,9 @@ const Footer = () => {
               </a>
             )
           })}
-        </div>
-      }
+        </div> }
 
-      {/* Credits to jisho.org API */}
+      {/* Acknowledgements */}
       <div>
         This app uses a modified version of the&nbsp;
         <a
@@ -102,8 +100,7 @@ const Footer = () => {
           >
             {BackgroundData.artist}
           </a>.
-        </div>
-      }
+        </div> }
 
       {/* Link to GitHub repository */}
       <div className={styles.Repository}>

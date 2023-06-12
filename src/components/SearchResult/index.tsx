@@ -13,12 +13,14 @@ import styles from './SearchResult.module.scss';
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
+
 /**
- * Creates the SearchResult component.
- * 
+ * Creates the SearchResult component. \
  * The SearchResult component contains data on a search.
+ * @param props The props of the SearchResult component.
+ * @return The SearchResult component.
  */
-const SearchResult = (props: any) => {
+const SearchResult = (props: any): JSX.Element => {
   const [isExpanded, setIsExpanded] = useState<boolean>(true);
   const [isSaved, setIsSaved] = useState<boolean>(false);
 
@@ -28,11 +30,28 @@ const SearchResult = (props: any) => {
   const data = props.resultData;
   const mainForm = data.japanese[0];
 
-  // Copy text to clipboard.
-  const copyToClipboard = async (text: string) => {
-    // const currentText = await navigator.clipboard.readText();
-    // if (currentText === text) return;
+  /**
+   * Copies text to the clipboard.
+   * @param text The text to copy to the clipboard.
+   * @async
+   */
+  const copyToClipboard = async (text: string): Promise<void> => {
+    const currentText = await navigator.clipboard.readText();
+
+    // Check if text is already copied.
+    if (currentText === text) {
+      notificationsContext.addMessage(
+        createMessage(
+          MessageType.INFO,
+          "Already Copied!",
+          `Already copied "${text}" to clipboard!`,
+          3000
+        )
+      );
+      return;
+    };
     
+    // Copy text to clipboard.
     navigator.clipboard.writeText(text);
     notificationsContext.addMessage(
       createMessage(
@@ -44,8 +63,11 @@ const SearchResult = (props: any) => {
     );
   };
 
-  // Save or unsave a word to local storage.
-  const saveWord = (word: any) => {
+  /**
+   * Saves or unsaves a word to local storage.
+   * @param word The word to save or unsave.
+   */
+  const saveWord = (word: any): void => {
     const savedWords = JSON.parse(localStorage.getItem('savedWords') || '[]');
     const wordExists = savedWords.some((w: any) => w.slug === word.slug);
 
@@ -61,8 +83,11 @@ const SearchResult = (props: any) => {
     }
   };
 
-  // Toggle the kanji info modal.
-  const toggleKanjiInfoModal = (kanji: any[]) => {
+  /**
+   * Toggles the kanji info modal.
+   * @param kanji An array of kanji to display in the modal.
+   */
+  const toggleKanjiInfoModal = (kanji: any[]): void => {
     kanjiContext.setData(kanji);
     toggleModal(kanjiContext, ModalType.KANJI);
   };
@@ -73,7 +98,6 @@ const SearchResult = (props: any) => {
     const wordExists = savedWords.some((w: any) => w.slug === data.slug);
 
     setIsSaved(wordExists);
-
     // Refresh expanded state.
     setIsExpanded(true);
   }, [data]);
@@ -112,8 +136,7 @@ const SearchResult = (props: any) => {
                 onClick={() => toggleKanjiInfoModal(data.kanji)}
               >
                 <BsInfoCircle />
-              </button>
-            }
+              </button> }
 
             <button
               title={isSaved ? "Unsave Term" : "Save Term"}
@@ -131,24 +154,21 @@ const SearchResult = (props: any) => {
                   style={{
                     animation: `${styles.Favourite} 0.2s ease backwards`
                   }}
-                />
-              }
+                /> }
             </button>
 
             {/* Time Stamp */}
             { (data.savedAt) &&
               <span className={styles.SavedAt}>
                 ({new Date(data.savedAt).toLocaleDateString() + ' ' + new Date(data.savedAt).toLocaleTimeString()})
-              </span>
-            }
+              </span> }
           </div>
 
           {/* JLPT / Rarity Tags */}
           <div className={styles.Tags}>
             { (data.is_common) ? 
               <span className={styles.Common} style={{background: 'rgba(50, 255, 50, 0.4)'}}>Common</span> :
-              <span className={styles.Common} style={{background: 'rgba(50, 50, 255, 0.4)'}}>Uncommon</span>
-            }
+              <span className={styles.Common} style={{background: 'rgba(50, 50, 255, 0.4)'}}>Uncommon</span> }
             { data.jlpt.map((level: string, index: number) => {
               const levelNum = level.replace('jlpt-n', '');
               let colour;
@@ -159,7 +179,7 @@ const SearchResult = (props: any) => {
                 case '3': colour = 'rgba(255, 255, 50, 0.4)'; break;
                 case '4': colour = 'rgba(50, 255, 50, 0.4)';  break;
                 default:  colour = 'rgba(50, 50, 255, 0.4)';
-              }
+              };
 
               return (
                 <span
@@ -169,7 +189,7 @@ const SearchResult = (props: any) => {
                 >
                   JLPT N{levelNum}
                 </span>
-              )
+              );
             })}
           </div>
         </div>
@@ -184,20 +204,14 @@ const SearchResult = (props: any) => {
               return (
                 <div key={index} className={styles.Sense}>
                   <span className={styles.PartOfSpeech}>
-                    {sense.parts_of_speech.map((pos: string, i: number) => {
-                      if (i === sense.parts_of_speech.length - 1)
-                        return pos;
-                      else
-                        return `${pos}, `;
+                    { sense.parts_of_speech.map((pos: string, i: number) => {
+                      return (i === sense.parts_of_speech.length - 1) ? pos : `${pos}, `;
                     })}
                   </span>
                   <span className={styles.Definition}>
                     <span className={styles.DefinitionNumber}>{`${index + 1}. `}</span>
                     { sense.english_definitions.map((definition: string, i: number) => {
-                      if (i === sense.english_definitions.length - 1)
-                        return definition;
-                      else
-                        return `${definition}; `;
+                      (i === sense.english_definitions.length - 1) ? definition : `${definition}; `;
                     })}
                   </span>
                   <div className={styles.Links}>
@@ -223,7 +237,7 @@ const SearchResult = (props: any) => {
             <div className={styles.OtherForms}>
               <h1 className={styles.FormsHeader}>Other Forms</h1>
               <div className={styles.Forms}>
-                { data.japanese.map((japanese: any, index: number) => {
+                { data.japanese.map((japanese: any, index: number): JSX.Element | void => {
                     if (index === 0) return;
 
                     return ((japanese.word) ?
@@ -233,7 +247,7 @@ const SearchResult = (props: any) => {
                       <span key={index} className={styles.FormWord}>
                         {`${japanese.reading}${(index !== data.japanese.length - 1) ? '、' : ''}`}
                       </span>
-                    )
+                    );
                   })}
               </div>
             </div>
@@ -244,7 +258,7 @@ const SearchResult = (props: any) => {
             <div className={styles.Sentences}>
               <h1 className={styles.ExamplesHeader}>Example Sentences</h1>
               <div className={styles.Examples}>
-                { data.sentences.map((sentence: any, index: number) => {
+                { data.sentences.map((sentence: any, index: number): JSX.Element => {
                   return (
                     <div key={index} className={styles.Example}>
                       <span className={styles.ExampleSentence}>
@@ -256,7 +270,7 @@ const SearchResult = (props: any) => {
                         {sentence.english}
                       </span>
                     </div>
-                  )
+                  );
                 })}
               </div>
             </div>

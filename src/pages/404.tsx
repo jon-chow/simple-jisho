@@ -4,8 +4,16 @@ import Logo from "@src/assets/svg/Logo";
 
 import styles from './ErrorPage.module.scss';
 
+/* -------------------------------------------------------------------------- */
+/*                             EXPORTED COMPONENT                             */
+/* -------------------------------------------------------------------------- */
 
-const ErrorPage = () => {
+/**
+ * Creates the error page. \
+ * The error page is shown when the user visits a page that does not exist.
+ * @returns The error page component.
+ */
+const ErrorPage = (): JSX.Element => {
   return (
     <div className={styles.ErrorPage}>
       <div className={styles.Header}>

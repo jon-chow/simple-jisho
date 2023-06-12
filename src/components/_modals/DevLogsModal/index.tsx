@@ -8,16 +8,24 @@ import { VersionData } from '@src/configs/versionHistory';
 import styles from './DevLogsModal.module.scss';
 
 
+/* -------------------------------------------------------------------------- */
+/*                                 COMPONENTS                                 */
+/* -------------------------------------------------------------------------- */
+
 /**
  * Creates the version section component.
- * 
  * The version section displays the changes made in a specific version.
+ * @param props The props for the version section.
+ * @param props.data The version data.
+ * @param props.expanded Whether the version section is expanded.
+ * @returns The version section component.
  */
-const VersionSection = (props: { data : Version, expanded? : boolean }) => {
+const VersionSection = (props: { data: Version, expanded?: boolean }): JSX.Element => {
   const [isExpanded, setIsExpanded] = useState<boolean>(props.expanded ?? true);
 
   const VERSION = props.data.version;
 
+  // Updates the expanded state.
   useEffect(() => {
     setIsExpanded(props.expanded ?? true);
   }, [props.expanded]);
@@ -57,12 +65,13 @@ const VersionSection = (props: { data : Version, expanded? : boolean }) => {
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
+
 /**
- * Creates the dev logs modal component.
- * 
+ * Creates the dev logs modal component. \
  * The dev logs modal displays the latest updates to the app.
+ * @returns The dev logs modal component.
  */
-const DevLogsModal = () => {
+const DevLogsModal = (): JSX.Element => {
   const [isExpanded, setIsExpanded] = useState<boolean>(true);
 
   return (

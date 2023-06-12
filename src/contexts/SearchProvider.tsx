@@ -3,16 +3,20 @@ import { createContext, useContext, useState, useEffect, PropsWithChildren } fro
 import { setLocalStorage } from "@src/utils/setLocalStorage";
 
 
-// Enumerates the different states of a search.
+/**
+ * Enum for search states.
+ */
 export enum Status {
-  IDLE,
-  LOADING,
-  SUCCESS,
-  CANCELLED,
-  ERROR
+  IDLE = "idle",
+  LOADING = "loading",
+  SUCCESS = "success",
+  CANCELLED = "cancelled",
+  ERROR = "error",
 };
 
-// Context for a search.
+/**
+ * The search context.
+ */
 export const SearchContext = createContext({
   query: "",
   setQuery: (query: string) => {},
@@ -20,13 +24,26 @@ export const SearchContext = createContext({
   setStatus: (status: Status) => {},
 });
 
-// Use the search context.
+/* -------------------------------------------------------------------------- */
+/*                                  FUNCTIONS                                 */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Uses the search context.
+ * @returns The search context.
+ */
 export const useSearch = () => useContext(SearchContext);
+
+/* -------------------------------------------------------------------------- */
+/*                             EXPORTED COMPONENT                             */
+/* -------------------------------------------------------------------------- */
 
 /**
  * Provides the context for search.
+ * @param children The children of the component.
+ * @returns The search context provider.
  */
-const SearchContextProvider = ({ children } : PropsWithChildren) => {
+const SearchContextProvider = ({ children } : PropsWithChildren): JSX.Element => {
   const [currentSearch, setQuery] = useState("");
   const [searchStatus, setStatus] = useState<Status>(Status.IDLE);
 

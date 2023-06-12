@@ -11,12 +11,17 @@ const BUTTONS_TO_SHOW = 5; // Must be odd number.
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
+
 /**
- * Creates the a pagination component.
- * 
+ * Creates the a pagination component. \
  * Shows a specified number of results per page and allows the user to navigate between pages.
+ * @param props The properties of the pagination component.
+ * @param props.results The results to display.
+ * @param props.condition The condition for the pagination component to be displayed.
+ * @param props.default The default component to display if the condition is false.
+ * @return The pagination component.
  */
-const Pagination = (props : { results : any[], condition : boolean, default : React.ReactElement } ) => {
+const Pagination = (props: { results: any[], condition: boolean, default: React.ReactElement }): JSX.Element => {
   const [maxResultsPerPage, setMaxResultsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -25,26 +30,37 @@ const Pagination = (props : { results : any[], condition : boolean, default : Re
   const endIndex = startIndex + maxResultsPerPage;
   const resultsToDisplay = props.results.slice(startIndex, endIndex);
 
-    // Changes the current page to the next page.
-  const nextPage = () => {
+  /**
+   * Changes the current page to the next page.
+   */
+  const nextPage = (): void => {
     (currentPage < numPages) ? setPage(currentPage + 1) : setPage(1);
   };
 
-  // Changes the current page to the previous page.
-  const prevPage = () => {
+  /**
+   * Changes the current page to the previous page.
+   */
+  const prevPage = (): void => {
     (currentPage > 1) ? setPage(currentPage - 1) : setPage(numPages);
   };
 
-  // Changes the current page to the specified page.
-  const setPage = (page : number) => {
+  /**
+   * Changes the current page to the specified page.
+   * @param page The page to change to.
+   */
+  const setPage = (page: number): void => {
     setCurrentPage(page);
     window.scrollTo(0, 0);
   };
 
-  // Truncates page buttons to only show a specified number of buttons.
-  const truncatePageButtons = (page : number) => {
+  /**
+   * Truncates page buttons to only show a specified number of buttons.
+   * @param page The page to truncate.
+   * @returns The truncated page button.
+   */
+  const truncatePageButtons = (page: number): JSX.Element | null => {
     // Button element to render.
-    const ButtonElement = () => (
+    const ButtonElement = (): JSX.Element => (
       <button
         className={styles.PaginationPageNumber}
         disabled={currentPage === page + 1}
@@ -64,7 +80,7 @@ const Pagination = (props : { results : any[], condition : boolean, default : Re
     else if (currentPage > numPages - secondHalf)
       return (page + 1 > numPages - BUTTONS_TO_SHOW) ? <ButtonElement key={page} /> : null;
     else
-      return (page + 1 > currentPage - firstHalf && page < currentPage + secondHalf) ? <ButtonElement key={page} /> : null;
+      return ((page + 1 > currentPage - firstHalf) && (page < currentPage + secondHalf)) ? <ButtonElement key={page} /> : null;
   };
   
   // Renders the results to display on the current page.
@@ -72,8 +88,11 @@ const Pagination = (props : { results : any[], condition : boolean, default : Re
     <SearchResult key={index} resultData={result} />
   ));
   
-  // Renders the pagination controls.
-  const Controls = () => (
+  /**
+   * Renders the pagination controls.
+   * @returns The pagination controls.
+   */
+  const Controls = (): JSX.Element => (
     <div className={styles.Controls}>
       <div className={styles.Buttons}>
         <button
@@ -136,8 +155,10 @@ const Pagination = (props : { results : any[], condition : boolean, default : Re
     </div>
   );
 
-  // Handle max results per page changes.
-  const handleMaxResultsPerPageChange = () => {
+  /**
+   * Handles changes to the max results per page.
+   */
+  const handleMaxResultsPerPageChange = (): void => {
     const settings = localStorage.getItem("settings");
 
     if (settings) {
@@ -165,11 +186,9 @@ const Pagination = (props : { results : any[], condition : boolean, default : Re
       { (props.condition) ?
         <>
           <Controls />
-
           <div className={styles.Results}>
-            {renderedResults}
+            { renderedResults }
           </div>
-
           <Controls />
         </> :
         props.default

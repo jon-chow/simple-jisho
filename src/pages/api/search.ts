@@ -25,23 +25,22 @@ const MAX_SENTENCES_RESULTS = 5;
  * @async
  */
 async function handler(req: NextApiRequest, res: NextApiResponse<any>): Promise<void> {
-  const { keyword } = req.query;
-
-  const phrasesData = await jisho.searchForPhrase(keyword as string);
+  const { keyword, page } = req.query as { keyword: string; page: string; };
+  const phrasesData = await jisho.searchForPhrase(keyword, page);
 
   // Legacy: used the official Jisho API
   // const response = await fetch(`https://jisho.org/api/v1/search/words?keyword=${keyword}`);
   // const data = await response.json();
   
   // Filters out the data we don't need in phrasesData.
-  const filteredPhrasesData = phrasesData.data.slice(0, MAX_SEARCH_RESULTS).map((item: any) => {
+  const filteredPhrasesData = phrasesData.data.slice(0, MAX_SEARCH_RESULTS).map((item: any): WordData => {
     return {
       slug: item.slug,
       is_common: item.is_common,
       jlpt: item.jlpt,
       japanese: item.japanese,
       senses: item.senses,
-      sentences: [] as any,
+      sentences: [],
     };
   });
 
@@ -50,13 +49,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse<any>): Promise<
     const wordData = await jisho.searchForExamples(phrase.slug)
     const trimmedData = wordData.results.slice(0, MAX_SENTENCES_RESULTS);
 
-    const filteredData = trimmedData.map((item: any) => {
-      return {
-        english: item.english,
-        kana: item.kana,
-        kanji: item.kanji,
-      };
-    });
+    const filteredData = trimmedData.map((item: any): Sentence => {
+			return {
+				english: item.english,
+				kana: item.kana,
+				kanji: item.kanji,
+			};
+		});
     
     phrase.sentences = filteredData;
   });

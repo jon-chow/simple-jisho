@@ -35,9 +35,9 @@ type Background = {
 };
 
 /**
- * Type definition for a social media button.
+ * Type definition for a link button.
  */
-type SMButton = {
+type LinkButton = {
 	title: string;
 	icon: React.ReactElement;
 	link: string;
@@ -62,6 +62,15 @@ type Version = {
 	};
 	date: Date;
 	changes: string[];
+};
+
+/**
+ * Type definition for a modal.
+ */
+type ModalProps = {
+  title: string;
+  width?: string;
+  height?: string;
 };
 
 /**
@@ -104,21 +113,26 @@ type Sense = {
 };
 
 /**
+ * Type definition for a sentence.
+ */
+type Sentence = {
+	english: string;
+	kana: string;
+	kanji: string;
+	pieces?: string;
+};
+
+/**
  * Type definition for a word.
  */
 type WordData = {
 	slug: string;
 	is_common: boolean;
-	kanji: string[];
+	kanji?: string[];
 	jlpt: string[];
 	japanese: string[];
 	senses: Sense[];
-	sentences: {
-		english: string;
-		kana: string;
-		kanji: string;
-		pieces: string;
-	}[];
+	sentences: Sentence[];
 };
 
 /**

@@ -1,39 +1,45 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { FaHome, FaTable, FaStar, FaSearch, FaTrashAlt, FaHistory, FaCog } from 'react-icons/fa';
+import { FaSearch, FaTrashAlt, FaHistory, FaCog } from 'react-icons/fa';
 
 import { setLocalStorage } from '@src/utils/setLocalStorage';
 
 import { useSearch, Status } from '@src/contexts/SearchProvider';
 import { useResults } from '@src/contexts/ResultsProvider';
-import { useModal, ModalType, toggleModal } from '@src/contexts/ModalProvider';
+import { useModal, toggleModal, ModalType } from '@src/contexts/ModalProvider';
+import { NavButtonsData } from '@src/configs/config';
 
 import styles from './SearchBar.module.scss';
 
 
+/* -------------------------------------------------------------------------- */
+/*                                  FUNCTIONS                                 */
+/* -------------------------------------------------------------------------- */
+
 /**
  * Checks if an error is an AbortError.
  * @param error The error to check.
+ * @returns True if the error is an AbortError, false otherwise.
  */
-const isAbortError = (error: any): error is DOMException => {
+function isAbortError(error: any): error is DOMException {
   return (error && error.name === "AbortError");
 };
+
 
 /**
  * Calls to the search API and returns the results.
  * @param query The query to search for.
- * @exception AbortError thrown when the search is cancelled.
+ * @param page The page number to search in.
+ * @throws AbortError thrown when the search is cancelled.
  */
-const getSearchResults = (query: string) => {
+function getSearchResults(query: string, page?: number): PromiseWithCancel<any> {
   const controller = new AbortController();
   const signal = controller.signal;
+  const searchURI = `/api/search?keyword=${query.toLowerCase()}` + ((page) ? `&page=${page}` : "");
 
   const promise = new Promise(async (resolve) => {
     try {
-      const response = await fetch(`/api/search?keyword=${query.toLowerCase()}`, {
-        method: 'GET',
-        signal
-      });
+      const response = await fetch(searchURI, { method: 'GET', signal });
       const data = await response.json();
       resolve(data);
     } catch (exception: unknown) {
@@ -47,12 +53,13 @@ const getSearchResults = (query: string) => {
   return promise;
 };
 
+
 /**
  * Retrieves the value of the query parameter with the given key.
  * @param variable Key variable to look for in the URL.
  * @returns The value of the key variable in the URL.
  */
-const getQueryVariable = (variable: string) => {
+function getQueryVariable(variable: string): string | undefined {
   const vars = window.location.search.substring(1).split('&');
 
   for (let i = 0; i < vars.length; i++) {
@@ -62,33 +69,17 @@ const getQueryVariable = (variable: string) => {
   };
 };
 
-const NavButtons = [
-  {
-    title: 'Home',
-    icon: <FaHome />,
-    link: '/'
-  },
-  {
-    title: 'Kana Chart',
-    icon: <FaTable />,
-    link: '/kana'
-  },
-  {
-    title: 'Bookmarks',
-    icon: <FaStar />,
-    link: '/bookmarks'
-  }
-]
 
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
+
 /**
- * Creates the search bar component.
- * 
- * The search bar is included in the header.
+ * Creates the search bar component. \
+ * The search bar is included in the top bar.
+ * @returns The search bar component.
  */
-const SearchBar = () => {
+const SearchBar = (): JSX.Element => {
   const [maxSearchHistory, setMaxSearchHistory] = useState<number>(10);
 
   const searchContext = useSearch();
@@ -99,10 +90,13 @@ const SearchBar = () => {
 
   const router = useRouter();
 
-  // Updates the search history.
-  const updateSearchHistory = (query: SearchHistory) => {
-    // Ignore empty queries.
-    if (query.results.length === 0) return;
+  /**
+   * Updates the search history in local storage.
+   * @param query The query to update the search history with.
+   */
+  const updateSearchHistory = (query: SearchHistory): void => {
+    if (query.results.length === 0)
+      return;
 
     // Update the search history.
     const searchHistory = localStorage.getItem("searchHistory");
@@ -119,8 +113,10 @@ const SearchBar = () => {
     };
   };
 
-  // Cancels the current search.
-  const cancelQuery = () => {
+  /**
+   * Cancels the current search.
+   */
+  const cancelQuery = (): void => {
     querying?.cancel();
     setQuerying(undefined);
     searchContext.setQuery("");
@@ -132,8 +128,11 @@ const SearchBar = () => {
     }, 1000);
   };
 
-  // Handles the search bar submission button.
-  const handleSubmit = (event: any) => {
+  /**
+   * Handles the search bar submission button.
+   * @param event The event that triggered the submission.
+   */
+  const handleSubmit = (event: any): void => {
     event.preventDefault();
     const query = event.target.search.value;
     search(query);
@@ -143,23 +142,25 @@ const SearchBar = () => {
    * Navigates to a specified page via pathname.
    * @param pathname The pathname to navigate to. If undefined, navigates to the home page.
    */
-  const navigatePages = (pathname? : string) => {
+  const navigatePages = (pathname? : string): void => {
     cancelQuery();
     resultsContext.setKeyword("");
     resultsContext.setResults([]);
     searchContext.setStatus(Status.IDLE);
 
     const input = document.getElementById("search") as HTMLInputElement;
-    if (input.value !== "") {
-      router.push(pathname ? pathname : "/", undefined, { shallow: true });
-    } else {
+    (input.value !== "") ?
+      router.push(pathname ? pathname : "/", undefined, { shallow: true }) :
       router.replace(pathname ? pathname : "/", undefined, { shallow: true });
-    };
     input.value = "";
   };
 
-  // Adds the search to the browser history.
-  const pushHistoryState = (query: string, data : any) => {
+  /**
+   * Adds the search to the browser history.
+   * @param query The query to add to the browser history.
+   * @param data The data to add to the browser history.
+   */
+  const pushHistoryState = (query: string, data : any): void => {
     cancelQuery();
     
     const historyItem : SearchHistory = {
@@ -179,8 +180,9 @@ const SearchBar = () => {
   /**
    * Runs a dictionary search for the given query term.
    * @param query The query to search for.
+   * @async
    */
-  const search = async (query: string) => {
+  const search = async (query: string): Promise<void> => {
     if (query) {
       // Check if query was the same as the previous one.
       if (query === searchContext.query) return;
@@ -203,8 +205,8 @@ const SearchBar = () => {
       const q = getSearchResults(query);
       setQuerying(q);
       searchContext.setStatus(Status.LOADING);
+      
       q.then((data) => {
-        // console.log(data);
         pushHistoryState(query, data);
       }).catch((error) => {
         console.error(error);
@@ -216,32 +218,32 @@ const SearchBar = () => {
     };
   };
 
-  // Handle max search history changes.
-  const handleMaxSearchHistory = () => {
+  // Handles the max search history setting.
+  const handleMaxSearchHistory = (): void => {
     const settings = localStorage.getItem("settings");
 
     if (settings) {
       const parsedSettings = JSON.parse(settings);
-      parsedSettings.maxSearchHistory &&
-        setMaxSearchHistory(parsedSettings.maxSearchHistory);
+      parsedSettings.maxSearchHistory && setMaxSearchHistory(parsedSettings.maxSearchHistory);
     };
   };
 
   // Update the max results per page from event listeners.
   useEffect(() => {
     handleMaxSearchHistory();
-
     window.addEventListener("storage_settings", handleMaxSearchHistory);
     return () => window.removeEventListener("storage_settings", handleMaxSearchHistory);
   }, []);
 
-  // Automatically searches for the query parameter in the URL.
+  /**
+   * Automatically searches for the query parameter in the URL.
+   */
   useEffect(() => {
-    const handlePopState = () => {
+    // Handles the pop state event.
+    const handlePopState = (): void => {
       const keyword = getQueryVariable("q")?.replace(/\+/g, " ");
       (keyword) ? search(keyword) :
-      (router.pathname === "/search") ? navigatePages() :
-      null;
+                  (router.pathname === "/search") ? navigatePages() : null;
     };
     
     handlePopState();
@@ -253,7 +255,7 @@ const SearchBar = () => {
     <form className={styles.Search} onSubmit={(e) => handleSubmit(e)}>
       {/* Navigation Buttons */}
       <div className={styles.Navigation}>
-        { NavButtons.map((button, index) => (
+        { NavButtonsData.map((button, index) => (
           <button
             key={index}
             className={(router.pathname === button.link) ? styles.Active : undefined}

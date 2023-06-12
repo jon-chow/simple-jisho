@@ -15,18 +15,24 @@ import '@src/styles/_globals.scss';
 import styles from '@src/styles/Layout.module.scss';
 
 
+/* -------------------------------------------------------------------------- */
+/*                                 COMPONENTS                                 */
+/* -------------------------------------------------------------------------- */
+
 /**
- * Creates the Layout component.
- * 
- * The Layout component is the default page layout. 
+ * Creates the Layout component. \
+ * The Layout component is the default page layout.
+ * @param children The children of the Layout component.
+ * @returns The Layout component.
  */
-export const Layout = ({ children }: any) => {
+export const Layout = ({ children }: React.PropsWithChildren): JSX.Element => {
   return (
     <SettingsContextProvider>
       <SearchContextProvider>
         <ResultsContextProvider>
           <NotificationsContextProvider>
             <ModalContextProvider>
+              
               <div className={styles.Container}>
                 <MetaData />
                 <Background />
@@ -38,6 +44,7 @@ export const Layout = ({ children }: any) => {
 
                 <Footer />
               </div>
+
             </ModalContextProvider>
           </NotificationsContextProvider>
         </ResultsContextProvider>
@@ -50,12 +57,15 @@ export const Layout = ({ children }: any) => {
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
+
 /**
- * Exports the App component.
- * 
+ * Exports the App component. \
  * The App component is exactly what it is...
+ * @param Component The component to render.
+ * @param pageProps The props of the component.
+ * @returns The app component.
  */
-const App = ({ Component, pageProps }: AppProps) => {
+const App = ({ Component, pageProps }: AppProps): JSX.Element => {
   return (
     <Layout>
       <Component {...pageProps} />

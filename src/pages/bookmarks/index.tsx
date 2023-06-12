@@ -8,22 +8,33 @@ import Logo from "@src/assets/svg/Logo";
 import styles from './BookmarksPage.module.scss';
 
 
-// Enum for order by.
+/**
+ * Enum for order by.
+ */
 enum OrderBy {
   ASC = "ascending",
   DESC = "descending",
   NONE = "none",
-}
+};
 
-// Enum for sort by.
+/**
+ * Enum for sort by.
+ */
 enum SortBy {
   ALPHA = "alpha",
   DATE = "date",
 	NONE = "none",
 };
 
-// Default component that is displayed when there are no bookmarks.
-const Default = () => (
+/* -------------------------------------------------------------------------- */
+/*                                 COMPONENTS                                 */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Default component that is displayed when there are no bookmarks.
+ * @returns The default component.
+ */
+const Default = (): JSX.Element => (
   <div className={styles.NoResults}>
     <Logo className={styles.Logo} />
     <h1>No terms were saved!</h1>
@@ -34,12 +45,13 @@ const Default = () => (
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
+
 /**
- * Exports the bookmarks page.
- * 
+ * Exports the bookmarks page. \
  * The bookmarks page is a page that displays all the bookmarks that the user has saved.
+ * @returns The bookmarks page component.
  */
-const BookmarksPage = () => {
+const BookmarksPage = (): JSX.Element => {
   const [savedWords, setSavedWords] = useState<Object[]>([]);
   const [orderBy, setOrderBy] = useState<OrderBy>(OrderBy.NONE);
   const [sortBy, setSortBy] = useState<SortBy>(SortBy.ALPHA);

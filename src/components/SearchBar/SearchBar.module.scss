@@ -74,7 +74,14 @@
       font-size: 1.25rem;
       background-color: rgb(var(--theme-shade7));
       cursor: pointer;
-      transition: background-color 0.2s ease;
+      transition:
+        background-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+      &[type="submit"].Active {
+        background-color: rgb(var(--primary-colour-dark));
+        box-shadow: 0 0 0.5rem rgba(var(--primary-colour), 0.8);
+      }
 
       &:hover {
         &[type="submit"]:not(.Active) {

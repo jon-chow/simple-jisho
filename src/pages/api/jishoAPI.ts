@@ -33,6 +33,7 @@ import { decode } from "html-entities";
 const JISHO_API = "https://jisho.org/api/v1/search/words";
 const SCRAPE_BASE_URI = "https://jisho.org/search/";
 const STROKE_ORDER_DIAGRAM_BASE_URI = "http://classic.jisho.org/static/images/stroke_diagrams/";
+const GIF_URI_BASE = "https://raw.githubusercontent.com/jon-chow/simple-jisho/images/gifs/"
 
 const axios = axiosBuilder.create({ timeout: 10000 });
 
@@ -293,11 +294,8 @@ function getSvgUri(pageHtml: string): string | undefined {
  * @returns The GIF URI of the kanji.
  */
 function getGifUri(kanji: any): string {
-	const unicodeString = kanji.codePointAt(0).toString(16);
-	const fileName = `${unicodeString}.gif`;
-	const animationUri = `https://raw.githubusercontent.com/mistval/kanji_images/master/gifs/${fileName}`;
-
-	return animationUri;
+	const fileName = `${kanji.codePointAt(0).toString(16)}.gif`;
+	return `${GIF_URI_BASE}${fileName}`;
 };
 
 /**
@@ -639,7 +637,7 @@ class JishoAPI implements API {
 	/**
 	 * Query the official Jisho API for a word or phrase.
 	 * @param phrase The search term to search for.
-	 * @param page The page of results to return.
+	 * @param page The page number to search in.
 	 * @returns The response data from the official Jisho.org API.
 	 * @async
 	 */
