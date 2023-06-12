@@ -211,7 +211,7 @@ const SearchResult = (props: any): JSX.Element => {
                   <span className={styles.Definition}>
                     <span className={styles.DefinitionNumber}>{`${index + 1}. `}</span>
                     { sense.english_definitions.map((definition: string, i: number) => {
-                      (i === sense.english_definitions.length - 1) ? definition : `${definition}; `;
+                      return (i === sense.english_definitions.length - 1) ? definition : `${definition}; `;
                     })}
                   </span>
                   <div className={styles.Links}>
