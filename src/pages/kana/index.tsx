@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FaAngleDown } from 'react-icons/fa';
 
 import { useModal, toggleModal, ModalType } from '@src/contexts/ModalProvider';
-import { BASIC_KANA, DAKUON_HANDAKUON_KANA, YOUON_KANA } from './kanaLists';
+import { BASIC_KANA, DAKUON_HANDAKUON_KANA, YOUON_KANA } from '../../utils/kanaLists';
 
 import styles from './KanaChartPage.module.scss';
 
