@@ -19,8 +19,10 @@ const MAX_SENTENCES_RESULTS = 5;
  * Handles the search API route. \
  * Responds with a list of definitions, examples, and kanji for the given keyword.
  * @path /api/search
- * @param req - The request object.
- * @param res - The response object.
+ * @param req The request object.
+ * @param res The response object.
+ * @returns A list of definitions, examples, and kanji for the given keyword.
+ * @async
  */
 async function handler(req: NextApiRequest, res: NextApiResponse<any>): Promise<void> {
   const { keyword } = req.query;

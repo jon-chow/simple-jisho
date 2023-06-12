@@ -1,5 +1,8 @@
 /**
- * Data for themes.
+ * Data containing raw RGB information for themes. \
+ * Each theme has a title, a background color, a foreground color, and 9 shades. \
+ * I might add more themes in the future.
+ * @themes light, dark
  */
 const ThemesData: Theme[] = [
 	{
