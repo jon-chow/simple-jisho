@@ -49,7 +49,7 @@ const Footer = () => {
 
       {/* Credits to jisho.org API */}
       <div>
-        This app makes calls to the&nbsp;
+        This app uses a modified version of the&nbsp;
         <a
           href="https://github.com/mistval/unofficial-jisho-api"
           no-referrer='noreferrer'

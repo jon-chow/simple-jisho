@@ -3,7 +3,7 @@
 // /api/search?query=keyword
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import JishoAPI from 'unofficial-jisho-api';
+import JishoAPI from "./jishoAPI";
 
 
 const jisho = new JishoAPI();
