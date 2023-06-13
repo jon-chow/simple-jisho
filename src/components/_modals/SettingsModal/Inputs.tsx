@@ -16,6 +16,7 @@ import { parseColour } from '@src/utils/setDocumentColours';
  * Creates a dropdown component. \
  * The dropdown component allows the user to select an option from a list.
  * @param title The title of the dropdown.
+ * @param description The description of the dropdown.
  * @param options The list of options to choose from.
  * @param initValue The initial value of the dropdown.
  * @param selection The function to call when the dropdown is changed.
@@ -23,9 +24,10 @@ import { parseColour } from '@src/utils/setDocumentColours';
  */
 const DropDown = (props: {
   title: string,
+  description: string,
   options: Option[],
   initValue?: Option,
-  selection: (option : Option) => void
+  selection: (option: Option) => void
 }): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(props.initValue || props.options[0]);
@@ -64,7 +66,10 @@ const DropDown = (props: {
 
   return (
     <div className={styles.DropDown} ref={dropDownRef}>
-      <h2>{props.title}</h2>
+      <div className={styles.Description}>
+        <h2>{props.title}</h2>
+        <h3>{props.description}</h3>
+      </div>
 
       <div className={styles.Container}>
         <div
@@ -103,17 +108,22 @@ const DropDown = (props: {
  * Creates a text input box component. \
  * The text input box component allows the user to enter text.
  * @param title The title of the input box.
+ * @param description The description of the input box.
+ * @param initValue The initial value of the input box.
  * @param placeholder The placeholder text of the input box.
+ * @param minLength The minimum length of the input box.
+ * @param maxLength The maximum length of the input box.
  * @param entered The function to call when the input box is submitted.
  * @returns The text input box component.
  */
 const TextInputBox = (props : {
-  title : string,
-  initValue? : any,
-  placeholder : string,
+  title: string,
+  description: string,
+  initValue?: any,
+  placeholder: string,
   minLength?: number,
   maxLength?: number,
-  entered : (value : string) => void
+  entered: (value: string) => void
 }): JSX.Element => {
   const [value, setValue] = useState<string>(props.placeholder);
 
@@ -159,7 +169,11 @@ const TextInputBox = (props : {
 
   return (
     <div className={styles.TextInputBox} title="Press Enter to Apply">
-      <h2>{props.title}</h2>
+      <div className={styles.Description}>
+        <h2>{props.title}</h2>
+        <h3>{props.description}</h3>
+      </div>
+
       <input
         name="input"
         type="text"
@@ -179,17 +193,22 @@ const TextInputBox = (props : {
  * Creates an input box component. \
  * The input box component allows the user to enter a number.
  * @param title The title of the input box.
+ * @param description The description of the input box.
+ * @param initValue The initial value of the input box.
  * @param placeholder The placeholder text of the input box.
+ * @param min The minimum value of the input box.
+ * @param max The maximum value of the input box.
  * @param entered The function to call when the input box is submitted.
  * @returns The input box component.
  */
 const InputBox = (props : {
-  title : string,
-  initValue? : any,
-  placeholder : string,
+  title: string,
+  description: string,
+  initValue?: any,
+  placeholder: string,
   min?: number,
   max?: number,
-  entered : (value : number) => void
+  entered: (value: number) => void
 }): JSX.Element => {
   const [value, setValue] = useState<number>(parseInt(props.placeholder));
 
@@ -234,10 +253,15 @@ const InputBox = (props : {
   };
 
   return (
-    <div className={styles.InputBox} title="Press Enter to Apply">
-      <h2>{props.title}</h2>
+    <div className={styles.InputBox}>
+      <div className={styles.Description}>
+        <h2>{props.title}</h2>
+        <h3>{props.description}</h3>
+      </div>
+
       <input
         name="input"
+        title="Press Enter to Apply"
         type="number"
         min={minVal}
         max={maxVal}
@@ -254,14 +278,16 @@ const InputBox = (props : {
  * Creates a checkbox component. \
  * The checkbox component allows the user to toggle a setting.
  * @param title The title of the checkbox.
+ * @param description The description of the checkbox.
  * @param initValue The initial value of the checkbox.
  * @param selection The function to call when the checkbox is toggled.
  * @returns The checkbox component.
  */
 const CheckBox = (props: {
   title: string,
+  description: string,
   initValue: boolean,
-  selection: (value : boolean) => void
+  selection: (value: boolean) => void
 }): JSX.Element => {
   const [value, setValue] = useState(props.initValue);
 
@@ -275,7 +301,11 @@ const CheckBox = (props: {
 
   return (
     <div className={styles.CheckBox}>
-      <h2>{props.title}</h2>
+      <div className={styles.Description}>
+        <h2>{props.title}</h2>
+        <h3>{props.description}</h3>
+      </div>
+
       <div
         className={styles.Container}
         onClick={toggleValue}
@@ -290,12 +320,14 @@ const CheckBox = (props: {
  * Creates a colour picker component. \
  * The colour picker component allows the user to select a colour.
  * @param title The title of the colour picker.
+ * @param description The description of the colour picker.
  * @param initValue The initial value of the colour picker.
  * @param selection The function to call when the colour picker is changed.
  * @returns The colour picker component.
  */
 const ColourPicker = (props: {
   title: string,
+  description: string,
   defaultValue: string,
   initValue: string,
   selection: (value: RGBColor) => void
@@ -322,23 +354,27 @@ const ColourPicker = (props: {
 
   return (
     <div className={styles.ColourPicker}>
-      <h2
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '0.5rem',
-        }}
-      >
-        <span>{props.title}</span>
-        <span
-          className={styles.Reset}
-          onClick={resetValue}
-          title="Reset to Default"
+      <div className={styles.Description}>
+        <h2
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '0.5rem',
+          }}
         >
-          <FaUndoAlt size={"1.5rem"} />
-        </span>
-      </h2>
+          <span>{props.title}</span>
+          <span
+            className={styles.Reset}
+            onClick={resetValue}
+            title="Reset to Default"
+          >
+            <FaUndoAlt size={"1.5rem"} />
+          </span>
+        </h2>
+        <h3>{props.description}</h3>
+      </div>
+
       <div
         className={styles.Container}
         style={{ 

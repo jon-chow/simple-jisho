@@ -5,7 +5,7 @@
   overflow-y: auto;
   background: rgba(var(--theme-shade6), 0.1);
   border-radius: 1rem;
-  padding: 1rem 3rem;
+  padding: 1rem 2rem;
   width: 95%;
   height: 100%;
   gap: 1rem;
@@ -65,13 +65,7 @@
 }
 
 .DropDown {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.5rem;
   width: 100%;
-  padding: 0.5rem 1rem;
   font-weight: 600;
 
   .Container {
@@ -136,13 +130,6 @@
 }
 
 .TextInputBox {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-
   input {
     padding: 0.5rem;
     border-radius: 0.5rem;
@@ -162,13 +149,6 @@
 }
 
 .InputBox {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-
   input {
     max-width: 40%;
     padding: 0.5rem;
@@ -189,13 +169,6 @@
 }
 
 .CheckBox {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-
   .Container {
     display: flex;
     justify-content: center;
@@ -220,6 +193,9 @@
 }
 
 .ColourPicker {
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  
   span {
     transition: none;
   }
@@ -233,10 +209,37 @@
 .InputBox,
 .TextInputBox,
 .CheckBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+}
+
+.DropDown,
+.InputBox,
+.ColourPicker,
+.TextInputBox,
+.CheckBox {
+  .Description {
+    display: flex;
+    flex-direction: column;
+  }
+
   h2 {
-    font-size: 1.2rem;
+    font-size: large;
     font-weight: 600;
-    color: rgb(var(--theme-foreground));
+    color: rgb(var(--theme-shade1));
     margin: 0;
+  }
+
+  h3 {
+    font-size: medium;
+    font-weight: 400;
+    color: rgb(var(--theme-shade2));
+    margin: 0;
+    padding-bottom: 0.5rem;
   }
 }

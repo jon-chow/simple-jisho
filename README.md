@@ -11,11 +11,11 @@ Access Simple Jisho [here](https://simple-jisho.vercel.app/)!
   - View on- and kun- readings
 - Review hiragana and katakana charts
   - View stroke order diagrams for kana and kanji
-- View past searches (up to 10)
+- View past searches (up to 20)
 - Bookmark words for later
 - Customize the app to your liking
 
-## Previews
+## Previews (from v1.3.11)
 <section align="center" id="front-page">
   <h1><b>Front Page</b></h1>
   <img src="__previews__/main-ss.png" alt="Front Page">

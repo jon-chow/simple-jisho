@@ -637,13 +637,39 @@ class JishoAPI implements API {
 	/**
 	 * Query the official Jisho API for a word or phrase.
 	 * @param phrase The search term to search for.
-	 * @param page The page number to search in.
+	 * @param page The page number to search in. If not provided, all pages will be searched.
 	 * @returns The response data from the official Jisho.org API.
 	 * @async
 	 */
-	searchForPhrase(phrase: string, page?: string) {
+	searchForPhrase(phrase: string, page?: string): Promise<JishoAPIResult> {
 		let uri;
 		uri = page ? uriForPhraseSearch(phrase, page) : uriForPhraseSearch(phrase);
+
+		// Search for all pages if page is not provided.
+		if (!page) {
+			const promises = [];
+			
+			// Search for all pages.
+			for (let i = 1; i <= 5; i += 1) {
+				promises.push(axios.get(uriForPhraseSearch(phrase, i.toString())).then((response) => response.data));
+			};
+
+			// Get all promises and merge results into one.
+			return Promise.all(promises).then((results) => {
+				const mergedResult = {
+					data: [] as JishoResult[],
+					meta: { status: 200 },
+				} as JishoAPIResult;
+
+				for (let i = 0; i < results.length; i += 1) {
+					const result = results[i];
+					mergedResult.data = mergedResult.data.concat(result.data);
+				};
+
+				return mergedResult;
+			});
+		};
+
 		return axios.get(uri).then((response) => response.data);
 	};
 

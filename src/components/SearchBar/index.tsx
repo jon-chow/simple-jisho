@@ -6,6 +6,7 @@ import { setLocalStorage } from '@src/utils/setLocalStorage';
 
 import { useSearch, Status } from '@src/contexts/SearchProvider';
 import { useResults } from '@src/contexts/ResultsProvider';
+import { getSetting } from '@src/contexts/SettingsProvider';
 import { useModal, toggleModal, ModalType } from '@src/contexts/ModalProvider';
 import { NavButtonsData } from '@src/configs/config';
 
@@ -35,7 +36,11 @@ function isAbortError(error: any): error is DOMException {
 function getSearchResults(query: string, page?: number): PromiseWithCancel<any> {
   const controller = new AbortController();
   const signal = controller.signal;
-  const searchURI = `/api/search?keyword=${query.toLowerCase()}` + ((page) ? `&page=${page}` : "");
+  const searchURI =
+    `/api/search?keyword=${query.toLowerCase()}` +
+    ((page) ? `&page=${page}` : "") +
+    `&maxSearch=${getSetting("maxNumResults")}` +
+    `&maxSentence=${getSetting("maxNumSentences")}`;
 
   const promise = new Promise(async (resolve) => {
     try {

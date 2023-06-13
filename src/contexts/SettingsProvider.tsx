@@ -19,6 +19,8 @@ const DEFAULT_SETTINGS = {
   backgroundUrl: "/static/background.png",
   backgroundBlur: 3,
   highContrast: false,
+  maxNumResults: 20,
+  maxNumSentences: 5,
   maxResultsToDisplay: 5,
   maxSearchHistory: 10,
   fontSize: "medium"

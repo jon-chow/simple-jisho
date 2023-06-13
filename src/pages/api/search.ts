@@ -1,15 +1,17 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+/*
+ * Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+ *
+ * Legacy: used the official Jisho API.
+ * const response = await fetch(`https://jisho.org/api/v1/search/words?keyword=${keyword}`);
+ * const data = await response.json();
+ */
 
-// /api/search?query=keyword
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import JishoAPI from "./jishoAPI";
 
 
 const jisho = new JishoAPI();
-
-const MAX_SEARCH_RESULTS = 20;
-const MAX_SENTENCES_RESULTS = 5;
 
 /* -------------------------------------------------------------------------- */
 /*                                  FUNCTION                                  */
@@ -25,15 +27,17 @@ const MAX_SENTENCES_RESULTS = 5;
  * @async
  */
 async function handler(req: NextApiRequest, res: NextApiResponse<any>): Promise<void> {
-  const { keyword, page } = req.query as { keyword: string; page: string; };
+  const { keyword, page, maxSearch, maxSentence } = req.query as {
+		keyword: string;
+		page: string;
+		maxSearch: string;
+		maxSentence: string;
+	};
+
   const phrasesData = await jisho.searchForPhrase(keyword, page);
 
-  // Legacy: used the official Jisho API
-  // const response = await fetch(`https://jisho.org/api/v1/search/words?keyword=${keyword}`);
-  // const data = await response.json();
-  
   // Filters out the data we don't need in phrasesData.
-  const filteredPhrasesData = phrasesData.data.slice(0, MAX_SEARCH_RESULTS).map((item: any): WordData => {
+  const filteredPhrasesData = phrasesData.data.slice(0, parseInt(maxSearch) || 20).map((item: any): WordData => {
     return {
       slug: item.slug,
       is_common: item.is_common,
@@ -47,7 +51,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<any>): Promise<
   // Fetches the examples for each phrase.
   const examplesPromises = filteredPhrasesData.map(async (phrase: any) => {
     const wordData = await jisho.searchForExamples(phrase.slug)
-    const trimmedData = wordData.results.slice(0, MAX_SENTENCES_RESULTS);
+    const trimmedData = wordData.results.slice(0, parseInt(maxSentence) || 5);
 
     const filteredData = trimmedData.map((item: any): Sentence => {
 			return {

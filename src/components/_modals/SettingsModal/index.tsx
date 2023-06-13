@@ -56,6 +56,7 @@ const SettingsModal = (): JSX.Element => {
 
           <DropDown
             title="Theme"
+            description="The theme of the app."
             initValue={getSetting("theme", ThemeOptions)}
             options={ThemeOptions}
             selection={(option) => {
@@ -66,12 +67,14 @@ const SettingsModal = (): JSX.Element => {
 
           <CheckBox
             title="Enable Background Image"
+            description="Toggle the background image on or off."
             initValue={getSetting("backgroundImage")}
             selection={(value) => { changeSetting("backgroundImage", value); }}
           />
 
           <TextInputBox
             title="Image URL"
+            description="The URL of the image to use as the background."
             initValue={getSetting("backgroundUrl")}
             placeholder={getDefaultSetting("backgroundUrl") as string}
             entered={(value) => {
@@ -84,6 +87,7 @@ const SettingsModal = (): JSX.Element => {
 
           <InputBox
             title="Background Blur (in pixels)"
+            description="The amount of blur to apply to the background."
             initValue={getSetting("backgroundBlur")}
             placeholder={getDefaultSetting("backgroundBlur") as string}
             min={0}
@@ -93,6 +97,7 @@ const SettingsModal = (): JSX.Element => {
 
           <ColourPicker
             title="Accent Colour"
+            description="The colour of the accent elements."
             defaultValue={getDefaultSetting("accentColour") as string}
             initValue={getSetting("accentColour")}
             selection={(value) => {
@@ -103,12 +108,14 @@ const SettingsModal = (): JSX.Element => {
 
           {/* <CheckBox
             title="High Contrast"
+            description="Toggle high contrast mode on or off."
             initValue={getSetting("highContrast")}
             selection={(value) => { changeSetting("highContrast", value); }}
           /> */}
 
           {/* <DropDown
             title="Font Size"
+            description="The size of the font."
             initValue={getSetting("fontSize", FontSizeOptions)}
             options={FontSizeOptions}
             selection={(option) => { changeSetting("fontSize", option.value); }}
@@ -118,7 +125,26 @@ const SettingsModal = (): JSX.Element => {
         <div className={styles.Group}>
           <h1><FaSearch /> Search Options</h1>
           <InputBox
-            title="Results To Display (10 max.)"
+            title="Maximum Results (50 max.)"
+            description="The max number of results to return from a search."
+            initValue={getSetting("maxNumResults")}
+            placeholder={getDefaultSetting("maxNumResults") as string}
+            max={50}
+            entered={(value) => { changeSetting("maxNumResults", value); }}
+          />
+
+          <InputBox
+            title="Maximum Sentences (10 max.)"
+            description="The max number of sentences to retrieve for each word."
+            initValue={getSetting("maxNumSentences")}
+            placeholder={getDefaultSetting("maxNumSentences") as string}
+            max={10}
+            entered={(value) => { changeSetting("maxNumSentences", value); }}
+          />
+
+          <InputBox
+            title="Results Per Page (10 max.)"
+            description="The number of results to display per page."
             initValue={getSetting("maxResultsToDisplay")}
             placeholder={getDefaultSetting("maxResultsToDisplay") as string}
             max={10}
@@ -127,6 +153,7 @@ const SettingsModal = (): JSX.Element => {
 
           <InputBox
             title="Saved Searches (20 max.)"
+            description="The number of searches you can save at a time."
             initValue={getSetting("maxSearchHistory")}
             placeholder={getDefaultSetting("maxSearchHistory") as string}
             max={20}

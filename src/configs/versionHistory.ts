@@ -10,8 +10,8 @@ const VersionHistory: Version[] = [
 	//   ],
 	// },
 	{
-		version: { major: 1, minor: 3, patch: 12 },
-		date: new Date("June 11, 2023"),
+		version: { major: 1, minor: 3, patch: 15 },
+		date: new Date("June 12, 2023"),
 		changes: [
 			"Added sorting options for bookmarks page.",
 			"Updated display and dropdowns for developer logs.",
@@ -21,6 +21,10 @@ const VersionHistory: Version[] = [
 			"Added accent colour to settings.",
 			"Added dropdowns for kana page.",
 			"Updated styling with new themes.",
+			"Increased the limit for search results to 50.",
+			"Added settings to adjust the number of search results and example sentences.",
+			"Included setting descriptions.",
+
 		],
 	},
 	{
