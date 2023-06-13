@@ -17,12 +17,13 @@ import styles2 from '../../SearchBar/SearchBar.module.scss';
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
+
 /**
- * Creates the search history modal component.
- * 
+ * Creates the search history modal component. \
  * The search history modal displays a list of past search terms.
+ * @returns The search history modal component.
  */
-const SearchHistoryModal = () => {
+const SearchHistoryModal = (): JSX.Element => {
   const [numSearches, setNumSearches] = useState(0);
 
   const searchContext = useSearch();
@@ -31,8 +32,10 @@ const SearchHistoryModal = () => {
 
   const router = useRouter();
 
-  // Handle number of searches changes.
-  const handleNumSearchesChange = () => {
+  /**
+   * Handles the number of searches changes.
+   */
+  const handleNumSearchesChange = (): void => {
     const searchHistory = localStorage.getItem("searchHistory");
 
     if (searchHistory) {
@@ -41,6 +44,57 @@ const SearchHistoryModal = () => {
     };
   };
 
+  /**
+   * Handles deletion of search history items.
+   * @param e The event.
+   * @param searchItem The search history item.
+   */
+  const handleDeleteHistoryItem = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, searchItem: SearchHistory): void => {
+    const searchHistory = localStorage.getItem("searchHistory");
+    
+    if (searchHistory) {
+      const history = JSON.parse(searchHistory) as SearchHistory[];
+      const index = history.findIndex((item) => item.keyword === searchItem.keyword);
+
+      if (index !== -1) {
+        history.splice(index, 1);
+      };
+
+      setLocalStorage("searchHistory", history);
+    };
+  };
+
+  /**
+   * Handles searching for an item.
+   * @param searchItem The search history item.
+   */
+  const handleSearch = (searchItem: SearchHistory): void => {
+    let query = searchItem.keyword;
+    searchContext.setQuery(query);
+    searchContext.setStatus(Status.SUCCESS);
+    resultsContext.setKeyword(query);
+    resultsContext.setResults(searchItem.results);
+    router.push({ pathname: "/search", query: { q: query } }, undefined, { shallow: true });
+
+    const input = document.querySelector(`.${styles2.SearchInput}`) as HTMLInputElement;
+    input.value = searchItem.keyword;
+
+    resetModalContext(searchHistoryContext as any);
+  };
+
+  /**
+   * Handles clearing all search history.
+   */
+  const handleClearHistory = (): void => {
+    const historyItems = localStorage.getItem("searchHistory");
+    
+    if (historyItems) {
+      const history = JSON.parse(historyItems) as SearchHistory[];
+      if (confirm(`Are you sure you want to clear your search history? (${history.length} item${history.length !== 1 ? "s" : ""})`))
+        setLocalStorage("searchHistory", []);
+    };
+  }
+
   // Update number of searches from event listeners.
   useEffect(() => {
     handleNumSearchesChange();
@@ -48,7 +102,6 @@ const SearchHistoryModal = () => {
     window.addEventListener("storage_searchHistory", handleNumSearchesChange);
     return () => window.removeEventListener("storage_searchHistory", handleNumSearchesChange);
   }, []);
-    
 
   return (
     <ModalLayout title={`Search History (${numSearches} Item${numSearches === 1 ? '' : 's' })`} width="50vw" height="80vh">
@@ -62,38 +115,13 @@ const SearchHistoryModal = () => {
             <div className={styles.HistoryItemControls}>
               <button
                 title="Search History Item"
-                onClick={() => {
-                  let query = searchItem.keyword;
-                  searchContext.setQuery(query);
-                  searchContext.setStatus(Status.SUCCESS);
-                  resultsContext.setKeyword(query);
-                  resultsContext.setResults(searchItem.results);
-                  router.push({ pathname: "/search", query: { q: query } }, undefined, { shallow: true });
-
-                  const input = document.querySelector(`.${styles2.SearchInput}`) as HTMLInputElement;
-                  input.value = searchItem.keyword;
-
-                  resetModalContext(searchHistoryContext);
-                }}
+                onClick={() => handleSearch(searchItem)}
               >
                 <BsSearch />
               </button>
               <button
                 title="Delete History Item"
-                onClick={(e) => {
-                  const searchHistory = localStorage.getItem("searchHistory");
-                  
-                  if (searchHistory) {
-                    const history = JSON.parse(searchHistory) as SearchHistory[];
-                    const index = history.findIndex((item) => item.keyword === searchItem.keyword);
-
-                    if (index !== -1) {
-                      history.splice(index, 1);
-                    };
-
-                    setLocalStorage("searchHistory", history);
-                  };
-                }}
+                onClick={(e) => handleDeleteHistoryItem(e, searchItem)}
               >
                 <BsFillTrashFill />
               </button>
@@ -104,15 +132,7 @@ const SearchHistoryModal = () => {
 
       <button
         className={styles.ModalClearHistoryButton}
-        onClick={() => {
-          const historyItems = localStorage.getItem("searchHistory");
-          
-          if (historyItems) {
-            const history = JSON.parse(historyItems) as SearchHistory[];
-            if (confirm(`Are you sure you want to clear your search history? (${history.length} item${history.length !== 1 ? "s" : ""})`))
-              setLocalStorage("searchHistory", []);
-          };
-        }}
+        onClick={handleClearHistory}
       >
         Clear History
       </button>

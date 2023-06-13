@@ -1,13 +1,6 @@
-:root {
-  --primary-colour-raw: 254, 184, 225;
-  --primary-colour: rgb(var(--primary-colour-raw));
+// :root {
 
-  --primary-colour-dark-raw: 230, 154, 198;
-  --primary-colour-dark: rgb(var(--primary-colour-dark-raw));
-
-  --primary-colour-light-raw: 255, 211, 237;
-  --primary-colour-light: rgb(var(--primary-colour-light-raw));
-}
+// }
 
 html,
 body {
@@ -24,13 +17,13 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #777;
+  background: rgb(var(--theme-shade4));
   border-radius: 8px;
   border: 0.2rem solid transparent;
   background-clip: content-box;
 
   &:hover {
-    background: #999;
+    background: rgb(var(--theme-shade3));
     border-radius: 8px;
     border: 0.2rem solid transparent;
     background-clip: content-box;
@@ -38,7 +31,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(#222, 0.2);
+  background: rgba(var(--theme-shade5), 0.2);
   border-radius: 8px;
 }
 
@@ -51,13 +44,22 @@ a {
   box-sizing: border-box;
 }
 
+h1, h2, h3, h4, h5, h6,
+p, span, a, li, button, input, label, textarea {
+  transition: color 0.2s ease;
+}
+
+svg, img {
+  transition: fill 0.2s ease;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
 
   body {
-    color: white;
-    background: #111;
+    color: rgb(var(--theme-foreground));
+    background: rgb(var(--theme-background));
   }
 }

@@ -7,17 +7,29 @@ import ModalLayout from '../ModalLayout';
 import styles from './KanaModal.module.scss';
 
 
-// Returns the image URL for a given character.
-const getImage = (character : string) => {
-  return `https://raw.githubusercontent.com/mistval/kanji_images/master/gifs/${
-    character.charCodeAt(0).toString(16).toLowerCase() // Convert the character to its unicode representation.
+/* -------------------------------------------------------------------------- */
+/*                                  FUNCTIONS                                 */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Returns the image URL for a given character.
+ * @param character The character to get the image URL for.
+ * @returns The image URL for the given character.
+ */
+function getImage(character: string): string {
+  return `https://raw.githubusercontent.com/jon-chow/simple-jisho/images/gifs/${
+    character.charCodeAt(0).toString(16).toLowerCase()
   }.gif`;
 };
 
-// Returns the audio URL for a given character.
-const getAudio =(character : string) => {
-  return `https://raw.githubusercontent.com/jon-chow/kana_audio/master/${
-    character.charCodeAt(0).toString(16).toLowerCase() // Convert the character to its unicode representation.
+/**
+ * Returns the audio URL for a given character.
+ * @param character The character to get the audio URL for.
+ * @returns The audio URL for the given character.
+ */
+function getAudio(character: string): string {
+  return `https://raw.githubusercontent.com/jon-chow/simple-jisho/images/audio/${
+    character.charCodeAt(0).toString(16).toLowerCase()
   }.mp3`;
 };
 
@@ -25,11 +37,11 @@ const getAudio =(character : string) => {
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
 /**
- * Creates the kana info modal component.
- * 
+ * Creates the kana info modal component. \
  * The kana info modal displays detailed information on a kana.
+ * @returns The kana info modal component.
  */
-const KanaModal = () => {
+const KanaModal = (): JSX.Element => {
   const kanaContext = useModal();
 
   return (

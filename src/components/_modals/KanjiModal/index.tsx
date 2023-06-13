@@ -10,12 +10,13 @@ import styles from './KanjiModal.module.scss';
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
+
 /**
- * Creates the kanji info modal component.
- * 
+ * Creates the kanji info modal component. \
  * The kanji info modal displays detailed information on a set of kanji.
+ * @returns The kanji info modal component.
  */
-const KanjiModal = () => {
+const KanjiModal = (): JSX.Element => {
   const kanjiContext = useModal();
 
   return (

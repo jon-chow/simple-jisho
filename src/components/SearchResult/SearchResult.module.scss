@@ -10,7 +10,34 @@
   width: 100%;
   gap: 1rem;
   backdrop-filter: blur(10px);
-  box-shadow: 0 0 0.5rem rgba(#222, 0.2);
+  background: rgba(var(--theme-shade6), 0.1);
+  box-shadow: 0 0 0.5rem rgba(var(--theme-shade5), 0.2);
+
+  
+  .JishoLink {
+    color: rgba(var(--theme-foreground), 0.6);
+    padding: 0.1rem 0.5rem;
+    max-width: fit-content;
+    align-self: flex-end;
+    font-size: medium;
+    font-weight: lighter;
+
+    &:hover {
+      color: rgb(var(--theme-foreground));
+      text-decoration: underline;
+      text-underline-offset: 0.15rem;
+    }
+  }
+
+  .Links {
+    display: flex;
+    flex-direction: column;
+
+    .WikiLink {
+      @extend .JishoLink;
+      align-self: flex-start;
+    }
+  }
 
   .JishoSearch {
     display: flex;
@@ -28,17 +55,27 @@
 
     .SearchBody {
       overflow-y: scroll;
+      transition: 0.2s ease;
     }
+  }
+
+  .SavedAt {
+    display: flex;
+    font-size: large;
+    font-weight: normal;
+    filter: brightness(0.8);
   }
 
   .Word {
     display: flex;
     align-items: center;
     width: fit-content;
-    padding: 0.1rem 0.25rem;
+    padding: 0.25rem 0.5rem;
     gap: 0.5rem;
     font-size: 2.5rem;
     font-weight: bold;
+    background: rgba(var(--theme-background), 0.1);
+    border-radius: 5px;
 
     button {
       display: flex;
@@ -47,10 +84,10 @@
       padding: 0.5rem;
       border: none;
       border-radius: 5px;
-      background: #6b6b6b;
-      color: #fff;
+      background: rgb(var(--theme-shade7));
+      color: rgb(var(--theme-foreground));
       cursor: pointer;
-      transition: all 0.2s ease-in-out;
+      transition: 0.2s ease;
 
       svg {
         width: 1.25rem;
@@ -62,8 +99,20 @@
       }
     }
 
+    .DropDownButton {
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .VerticalLine {
+      width: 1px;
+      height: 3rem;
+      background: rgba(var(--theme-foreground), 0.6);
+    }
+
     ruby {
-      margin-right: 0.5rem;
+      padding-top: 0.3rem;
+      margin: 0 0.5rem;
 
       rt {
         transform: translateY(-0.2rem);
@@ -89,7 +138,7 @@
       flex-direction: row;
       flex-wrap: wrap;
       align-items: center;
-      color:#bbb;
+      color: rgb(var(--theme-shade3));
       font-size: large;
       font-weight: 600;
     }
@@ -101,8 +150,8 @@
       max-width: 80%;
       padding: 0.5rem 1rem;
       border-radius: 10px;
-      background: rgba(#222, 0.2);
-      box-shadow: 5px 5px 0.5rem rgba(#000, 0.1);
+      background: rgba(var(--theme-shade8), 0.2);
+      box-shadow: 5px 5px 0.5rem rgba(var(--theme-background), 0.1);
 
       .Definition,
       .Example {
@@ -113,7 +162,7 @@
         font-weight: light;
     
         .DefinitionNumber {
-          color: #bbb;
+          color: rgb(var(--theme-shade3));
           font-weight: 600;
         }
       }
@@ -124,8 +173,8 @@
   .OtherForms {
     display: flex;
     flex-direction: column;
-    background: rgba(#000, 0.1);
-    box-shadow: 5px 5px 0.5rem rgba(#000, 0.1);
+    background: rgba(var(--theme-background), 0.1);
+    box-shadow: 5px 5px 0.5rem rgba(var(--theme-background), 0.1);
     border-radius: 10px;
     margin-top: 1rem;
     padding: 0.5rem 1rem;
@@ -138,7 +187,7 @@
       justify-content: space-between;
       align-items: center;
       margin: 0.5rem 0;
-      color: #bbb;
+      color: rgb(var(--theme-shade3));
       font-size: large;
       font-weight: 600;
     }
@@ -156,7 +205,7 @@
         border-radius: 10px;
         width: 100%;
         gap: 0.5rem;
-        background: rgba(#000, 0.05);
+        background: rgba(var(--theme-shade9), 0.05);
         font-size: large;
 
         .ExampleSentence {
@@ -164,8 +213,9 @@
           flex-direction: column;
 
           span:nth-child(2) {
-            font-weight: lighter;
-            color: #ccc;
+            font-weight: light;
+            color: rgb(var(--theme-shade3));
+            text-shadow: 0 0 0.5rem rgba(var(--theme-background), 0.5);
           }
         }
       }
@@ -198,21 +248,6 @@
     .Jlpt {
       padding: 0.25rem 1rem;
       border-radius: 10px;
-    }
-  }
-
-  .JishoLink {
-    color: rgba(#fff, 0.6);
-    padding: 0.1rem 0.5rem;
-    max-width: fit-content;
-    align-self: flex-end;
-    font-size: medium;
-    font-weight: lighter;
-
-    &:hover {
-      color: #fff;
-      text-decoration: underline;
-      text-underline-offset: 0.15rem;
     }
   }
 }

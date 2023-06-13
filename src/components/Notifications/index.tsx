@@ -12,10 +12,17 @@ import { useNotifications, MessageType, DEFAULT_DURATION } from '@src/contexts/N
 import styles from './Notifications.module.scss';
 
 
+/* -------------------------------------------------------------------------- */
+/*                                 COMPONENTS                                 */
+/* -------------------------------------------------------------------------- */
+
 /**
  * Creates a message.
+ * @param props The properties of the message.
+ * @param props.message The message to display.
+ * @returns The message component.
  */
-const Message = (props: { message : MessageProps }) => {
+const Message = (props: { message: MessageProps }): JSX.Element => {
   const { type, title, message } = props.message;
   const duration = props.message.duration;
 
@@ -24,8 +31,11 @@ const Message = (props: { message : MessageProps }) => {
   const messageRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
 
-  // Map the message type to an icon.
-  const mapTypeIcon = () => {
+  /**
+   * Maps the message type to an icon.
+   * @returns The icon for the message type.
+   */
+  const mapTypeIcon = (): JSX.Element | string => {
     switch (type) {
       case MessageType.ERROR:   return <ErrorIcon />;
       case MessageType.WARNING: return <WarningIcon />;
@@ -35,11 +45,17 @@ const Message = (props: { message : MessageProps }) => {
     }
   };
 
-  // Closes the message.
-  const closeMessage = () => clearMessage(props.message.id);
+  /**
+   * Handles closing of the message.
+   */
+  const closeMessage = (): void => {
+    clearMessage(props.message.id);
+  };
 
-  // Update progress bar.
-  const updateProgressBar = useCallback(() => {
+  /**
+   * Updates the progress bar.
+   */
+  const updateProgressBar = useCallback((): void => {
     if (progressRef.current) {
       const progress = (Date.now() - props.message.timestamp) / (duration || DEFAULT_DURATION);
       progressRef.current.style.width = `${
@@ -80,21 +96,19 @@ const Message = (props: { message : MessageProps }) => {
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
+
 /**
- * Creates the notifications component.
- * 
+ * Creates the notifications component. \
  * The notifications component contains notification messages.
+ * @returns The notifications component.
  */
-const Notifications = () => {
+const Notifications = (): JSX.Element => {
   const { messages } = useNotifications();
 
   return (
     <div className={styles.Notifications}>
       { messages.map((message, index) => (
-        <Message
-          key={index}
-          message={message}
-        />
+        <Message key={index} message={message} />
       )) }
     </div>
   );

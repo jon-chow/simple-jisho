@@ -11,18 +11,21 @@ import styles from './Background.module.scss';
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
+
 /**
- * Creates the background for the page.
- * 
+ * Creates the background for the site. \
  * An image background with a blurring overlay.
+ * @returns The background component.
  */
-const Background = () => {
+const Background = (): JSX.Element => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [image, setImage] = useState(BackgroundData.image);
   const [blur, setBlur] = useState(BackgroundData.blurAmount);
 
-  // Handle background image toggles.
-  const handleBackgroundChange = () => {
+  /**
+   * Handles changes to the background image.
+   */
+  const handleBackgroundChange = (): void => {
     setIsLoaded(getSetting("backgroundImage"));
     setImage(getSetting("backgroundUrl"));
     setBlur(getSetting("backgroundBlur"));

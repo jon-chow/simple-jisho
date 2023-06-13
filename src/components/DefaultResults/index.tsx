@@ -6,13 +6,14 @@ import styles from './DefaultResults.module.scss';
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
+
 /**
- * Creates the default results panel.
- * 
+ * Creates the default results panel. \
  * The default results page is shown when the user first visits the page,
  * or when they search using an empty query.
+ * @returns The default results component.
  */
-const DefaultResults = () => {
+const DefaultResults = (): JSX.Element => {
   return (
     <article className={styles.DefaultResults} data-testid="default-results">
       <div className={styles.DefaultResultsHeader}>

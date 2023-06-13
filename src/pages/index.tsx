@@ -1,6 +1,6 @@
 import {  useEffect } from 'react';
 
-import { Status, useSearch } from '@src/contexts/SearchProvider';
+import { useSearch, Status } from '@src/contexts/SearchProvider';
 
 import DefaultResults from '@src/components/DefaultResults';
 
@@ -8,12 +8,13 @@ import DefaultResults from '@src/components/DefaultResults';
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
+
 /**
- * Exports the home page.
- * 
+ * Exports the home page. \
  * The Home component is basically the entire page.
+ * @returns The home page.
  */
-const HomePage = () => {
+const HomePage = (): JSX.Element => {
   const { setStatus } = useSearch();
 
   // Reset search status to idle.

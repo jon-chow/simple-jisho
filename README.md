@@ -1,43 +1,47 @@
-# 📕**Simple Jisho**
+# **Simple Jisho**📕
+## Description
+Simple Jisho is a simple, condensed, and easy-to-use Japanese-English dictionary powered by the Jisho API. 
 
-### **About:**
-Simple Jisho is a simple, condensed, and easy-to-use Japanese-English dictionary powered by the Jisho API.
+Access Simple Jisho [here](https://simple-jisho.vercel.app/)!
 
-### **Features:**
+## Features
 - Search for words in Japanese, English, or Romaji
-- View their meanings, parts of speech, and example sentences
-- Look up a word's kanji
-- View on- and kun- readings
+  - View their meanings, parts of speech, and example sentences
+  - Look up a word's kanji
+  - View on- and kun- readings
 - Review hiragana and katakana charts
-- View stroke order diagrams for kana and kanji
-- View past searches (up to 10)
+  - View stroke order diagrams for kana and kanji
+- View past searches (up to 20)
+- Bookmark words for later
+- Customize the app to your liking
 
-### **Working On:**
-- Complete implementation of settings
-  - theme toggle (light/dark/system)
-  - high contrast toggle
-- Improve bookmarks page
-  - add sorting options
-  - add a filtering search bar
+## Previews (from v1.3.11)
+<section align="center" id="front-page">
+  <h1><b>Front Page</b></h1>
+  <img src="__previews__/main-ss.png" alt="Front Page">
+</section>
 
-### **To Be Added in the Future:**
-- Example audio (using react-speech-kit)
-- Optimize for mobile devices
-- Include a kanji page (similar to kana page)
-  - categorized by Jouyou grade or JLPT level
-  - kanji stroke order diagrams and radicals
-  - kanji meanings and readings
-  - kanji example words
-- Include a grammar page
-  - categorized by JLPT level
-  - grammar rules and examples
-  - grammar example sentences
-- Include a vocabulary page (maybe)
-  - categorized by JLPT level
-  - vocabulary words and meanings
-  - vocabulary example sentences
+<section align="center" id="search">
+  <h1><b>Search</b></h1>
+  <img src="__previews__/search-ss.png" alt="Search">
+</section>
 
-### **Credits:**
-- [Jisho API](https://jisho.org/api)
-- [Unofficial Jisho API](https://github.com/mistval/unofficial-jisho-api)
+<section align="center" id="kanji-info">
+  <h1><b>Kanji Info</b></h1>
+  <img src="__previews__/kanji-ss.png" alt="Kanji Info">
+</section>
+
+<section align="center" id="history">
+  <h1><b>History</b></h1>
+  <img src="__previews__/history-ss.png" alt="History">
+</section>
+
+<section align="center" id="customization">
+  <h1><b>Customization</b></h1>
+  <img src="__previews__/customization-ss.png" alt="Customization">
+</section>
+
+## Credits
+- [Jisho API](https://jisho.org/forum/54fefc1f6e73340b1f160000-is-there-any-kind-of-search-api)
+- [Unofficial Jisho API](https://github.com/mistval/unofficial-jisho-api) (for added functionality)
 - [Background Image](https://wall.alphacoders.com/big.php?i=937175)

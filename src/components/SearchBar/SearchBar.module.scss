@@ -20,28 +20,42 @@
       text-align: center;
       line-height: 0;
       font-size: 1.25rem;
+      background-color: rgb(var(--theme-shade7));
       cursor: pointer;
       transition:
-        background-color 0.25s ease-in-out,
-        box-shadow 0.25s ease-in-out;
+        background-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+      &.Active {
+        background-color: rgb(var(--primary-colour-dark));
+        box-shadow: 0 0 0.5rem rgba(var(--primary-colour), 0.8);
+      }
 
       &:hover {
-        background-color: var(--primary-colour-dark);
+        background-color: rgb(var(--primary-colour-dark));
       }
     }
   }
 
-  .Active {
-    background-color: var(--primary-colour-dark);
-    box-shadow: 0 0 0.5rem rgba(var(--primary-colour-raw), 0.8);
-  }
-
   .SearchInput {
-    padding: 0.5rem;
     min-width: 20vw;
-    border: hidden;
-    border-radius: 5px;
+    outline: none;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background: rgb(var(--theme-shade7));
+    border: 0.2rem solid rgb(var(--theme-shade6));
+    color: rgb(var(--theme-shade1));
     font-size: 1rem;
+    transition: border 0.2s ease;
+
+    &::placeholder {
+      color: rgba(var(--theme-foreground), 0.5);
+    }
+
+    &:focus {
+      border: 0.2rem solid rgb(var(--primary-colour-light));
+      transition: border 0.2s ease;
+    }
   }
 
   .SearchControls {
@@ -58,8 +72,16 @@
       text-align: center;
       line-height: 0;
       font-size: 1.25rem;
+      background-color: rgb(var(--theme-shade7));
       cursor: pointer;
-      transition: background-color 0.25s ease-in-out;
+      transition:
+        background-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+      &[type="submit"].Active {
+        background-color: rgb(var(--primary-colour-dark));
+        box-shadow: 0 0 0.5rem rgba(var(--primary-colour), 0.8);
+      }
 
       &:hover {
         &[type="submit"]:not(.Active) {
@@ -71,7 +93,7 @@
         }
 
         &[type="button"] {
-          background-color: var(--primary-colour-dark);
+          background-color: rgb(var(--primary-colour-dark));
         }
       }
     }

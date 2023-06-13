@@ -11,10 +11,13 @@ import styles from './SearchPage.module.scss';
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
+
 /**
+ * Exports the search page. \
  * Creates a page that displays search results.
+ * @returns The search page.
  */
-const SearchPage = () => {
+const SearchPage = (): JSX.Element => {
   const { status } = useSearch();
   const { results } = useResults();
 

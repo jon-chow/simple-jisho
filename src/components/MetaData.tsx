@@ -10,32 +10,34 @@ import { AppInfoData } from '../configs/config';
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
+
 /**
- * Creates the head of the page.
- * 
+ * Creates the head element of the page. \
  * The head contains metadata about the page, such as the title,
  * description (for SEO), and favicon.
+ * @return The head element of the page.
  */
-const MetaData = () => {
+const MetaData = (): JSX.Element => {
   const resultsContext = useResults();
   const [title, setTitle] = useState(AppInfoData.name);
 
   const router = useRouter();
 
+  // The title given to each page.
+  const ROUTE_TITLES: { path?: string, title: string}[] = [
+    { path: '/', title: `${AppInfoData.name}: Japanese-English Dictionary` },
+    { path: '/search', title: `${resultsContext.keyword} - ${AppInfoData.name}` },
+    { path: '/kana', title: `Kana Chart on ${AppInfoData.name}` },
+    { path: '/bookmarks', title: `Saved Terms on ${AppInfoData.name}` },
+    { title: `404 - Page Not Found! ${AppInfoData.name}` }
+  ];
+
+  // Sets the title of the page.
   useEffect(() => {
-    (resultsContext.keyword && router.pathname === '/search') ?
-    setTitle(`${resultsContext.keyword} - ${AppInfoData.name}`) :
-
-    (router.pathname === '/kana') ?
-    setTitle(`Kana Chart on ${AppInfoData.name}`) :
-
-    (router.pathname === '/bookmarks') ?
-    setTitle(`Saved Terms on ${AppInfoData.name}`) :
-
-    (router.pathname === '/') ?
-    setTitle(`${AppInfoData.name}: Japanese-English Dictionary`) :
-
-    setTitle(`404 - Page Not Found! ${AppInfoData.name}`)
+    const routeTitle = ROUTE_TITLES.find(route => route.path === router.pathname);
+    (routeTitle) ?
+      setTitle(routeTitle.title) :
+      setTitle(ROUTE_TITLES[ROUTE_TITLES.length - 1].title); // 404 page
   }, [resultsContext.keyword, router.pathname]);
 
   return (
@@ -43,15 +45,13 @@ const MetaData = () => {
       <title>{title}</title>
       <meta charSet="UTF-8" />
       <meta name="description" content={AppInfoData.description} />
-      <meta name="keywords"
-        content="English, Japanese, Dictionary, Jisho"
-      />
+      <meta name="keywords" content={AppInfoData.keywords} />
       <meta name="author" content="jon-chow" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
       <link rel="manifest" href="/manifest.json" />
       <link rel="apple-touch-icon" href="/logo-192x192.png" />
-      <link rel="icon" href="/favicon.ico" />
+      <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     </Head>
   );
 };

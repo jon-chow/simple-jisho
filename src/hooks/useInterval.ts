@@ -1,13 +1,15 @@
 import { useEffect, useRef, useCallback } from 'react';
 
+
 type TCallback = (time?: number) => void;
 
 /**
- * A hook that calls a callback every x milliseconds.
- * 
+ * A hook that calls a callback every x milliseconds. \
  * Used in notifications.
+ * @param callback The callback to call.
+ * @param timeout The timeout between calls.
  */
-const useInterval = (callback: TCallback, timeout: number) => {
+const useInterval = (callback: TCallback, timeout: number): void => {
   const savedCallback = useRef(callback);
 
   const handler = useCallback(() => {

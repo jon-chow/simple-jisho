@@ -15,7 +15,7 @@
     justify-content: center;
 
     .Logo {
-      fill: var(--primary-colour);
+      fill: rgb(var(--primary-colour));
       width: 10rem;
       height: 10rem;
       scale: 1.5;
@@ -42,10 +42,10 @@
       font-size: 1.5rem;
       text-decoration: underline;
       text-underline-offset: 0.2rem;
-      transition: text-decoration-color 0.2s ease-in-out;
+      transition: text-decoration-color 0.2s ease;
 
       &:hover {
-        text-decoration-color: var(--primary-colour);
+        text-decoration-color: rgb(var(--primary-colour));
       }
     }
   }

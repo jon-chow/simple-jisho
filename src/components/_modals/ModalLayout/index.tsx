@@ -10,21 +10,20 @@ import styles from './ModalLayout.module.scss';
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
 
-// The props for the modal layout.
-type ModalProps = {
-  title: string;
-  width?: string;
-  height?: string;
-};
-
 /**
- * Creates the template layout for a modal.
+ * Creates the template layout for a modal. \
+ * The modal layout is used to create a modal component. \
+ * Consider it as a template used by all modals.
+ * @param props The props for the modal layout.
+ * @returns The modal layout component.
  */
-const ModalLayout = (props: PropsWithChildren<ModalProps>) => {
+const ModalLayout = (props: PropsWithChildren<ModalProps>): JSX.Element => {
   const modalContext = useModal();
 
-  // Closes the modal.
-  const closeModal = () => {
+  /**
+   * Closes the modal.
+   */
+  const closeModal = (): void => {
     resetModalContext(modalContext);
   };
 

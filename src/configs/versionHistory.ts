@@ -1,4 +1,7 @@
-export const VersionData: Version[] = [
+/**
+ * Version history for the app.
+ */
+const VersionHistory: Version[] = [
 	// {
 	//   version: "",
 	//   date: new Date(""),
@@ -7,17 +10,35 @@ export const VersionData: Version[] = [
 	//   ],
 	// },
 	{
-		version: "1.4.6",
-		date: new Date("May 31, 2023"),
+		version: { major: 1, minor: 3, patch: 15 },
+		date: new Date("June 12, 2023"),
 		changes: [
-			"Added more background customization options",
-      "Fixed some warnings and errors.",
-      "Fixed routing history when navigating between pages.",
-      "Minor changes to the UI.",
+			"Added sorting options for bookmarks page.",
+			"Updated display and dropdowns for developer logs.",
+			"Included links to Wikipedia definitions.",
+			"Added dropdowns for search entries.",
+			"Revisions to version history to reflect proper changes.",
+			"Added accent colour to settings.",
+			"Added dropdowns for kana page.",
+			"Updated styling with new themes.",
+			"Increased the limit for search results to 50.",
+			"Added settings to adjust the number of search results and example sentences.",
+			"Included setting descriptions.",
+
 		],
 	},
 	{
-		version: "1.4.2",
+		version: { major: 1, minor: 3, patch: 4 },
+		date: new Date("May 31, 2023"),
+		changes: [
+			"Added more background customization options",
+			"Fixed some warnings and errors.",
+			"Fixed routing history when navigating between pages.",
+			"Minor changes to the UI.",
+		],
+	},
+	{
+		version: { major: 1, minor: 3, patch: 0 },
 		date: new Date("Jan. 29, 2023"),
 		changes: [
 			"Added notifications feature.",
@@ -31,7 +52,7 @@ export const VersionData: Version[] = [
 		],
 	},
 	{
-		version: "1.3.0",
+		version: { major: 1, minor: 2, patch: 0 },
 		date: new Date("Jan. 19, 2023"),
 		changes: [
 			"Added a modal for displaying developer logs.",
@@ -41,7 +62,7 @@ export const VersionData: Version[] = [
 		],
 	},
 	{
-		version: "1.2.2",
+		version: { major: 1, minor: 1, patch: 2 },
 		date: new Date("Jan. 15, 2023"),
 		changes: [
 			"Added copying functionality for search results.",
@@ -54,7 +75,7 @@ export const VersionData: Version[] = [
 		],
 	},
 	{
-		version: "1.1.0",
+		version: { major: 1, minor: 0, patch: 3 },
 		date: new Date("Jan. 13, 2023"),
 		changes: [
 			"Inplemented search history functionality.",
@@ -63,8 +84,16 @@ export const VersionData: Version[] = [
 		],
 	},
 	{
-		version: "1.0.0",
+		version: { major: 1, minor: 0, patch: 0 },
 		date: new Date("Dec. 9, 2022"),
 		changes: ["Initial release.", "Included search and clear functionality."],
 	},
 ];
+
+/**
+ * Version history for the app. \
+ * Sorted by date in descending order.
+ */
+export const VersionData = VersionHistory.sort(
+	(a, b) => b.date.getTime() - a.date.getTime()
+);

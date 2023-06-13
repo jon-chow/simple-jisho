@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  background: rgba(#000, 0.1);
+  background: rgba(var(--theme-shade6), 0.1);
   border-radius: 1rem;
   padding: 1rem;
   width: 95%;
@@ -15,7 +15,8 @@
     flex-direction: row;
     align-items: center;
     padding: 2rem;
-    background: rgba(#fff, 0.05);
+    background: rgba(var(--theme-foreground), 0.05);
+    color: rgb(var(--theme-shade1));
     border-radius: 1rem;
     gap: 2rem;
 
@@ -32,7 +33,7 @@
 
       .KanjiHeader {
         font-size: 1.5rem;
-        color: #fff;
+        color: rgb(var(--theme-shade1));
 
         .KanjiTitle {
           font-weight: 600;
@@ -47,7 +48,7 @@
 
       hr {
         width: 100%;
-        border: 1px solid #ccc;
+        border: 1px solid rgb(var(--theme-shade6));
       }
 
       .KanjiInfo {
@@ -69,7 +70,7 @@
 
       hr {
         width: 100%;
-        background: #ccc;
+        background: rgb(var(--theme-shade6));
         margin-bottom: 1rem;
       }
 
