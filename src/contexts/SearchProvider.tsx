@@ -22,6 +22,8 @@ export const SearchContext = createContext({
   setQuery: (query: string) => {},
   status: Status.IDLE,
   setStatus: (status: Status) => {},
+  duration: 0,
+  setDuration: (duration: number) => {},
 });
 
 /* -------------------------------------------------------------------------- */
@@ -44,8 +46,9 @@ export const useSearch = () => useContext(SearchContext);
  * @returns The search context provider.
  */
 const SearchContextProvider = ({ children } : PropsWithChildren): JSX.Element => {
-  const [currentSearch, setQuery] = useState("");
-  const [searchStatus, setStatus] = useState<Status>(Status.IDLE);
+  const [duration, setDuration] = useState(0);
+  const [query, setQuery] = useState("");
+  const [status, setStatus] = useState<Status>(Status.IDLE);
 
   // Creates the search history in local storage if it doesn't exist.
   useEffect(() => {
@@ -55,8 +58,9 @@ const SearchContextProvider = ({ children } : PropsWithChildren): JSX.Element =>
 
   return (
     <SearchContext.Provider value={{
-      query: currentSearch, setQuery,
-      status: searchStatus, setStatus
+      query, setQuery,
+      status, setStatus,
+      duration, setDuration,
     }}>
       { children }
     </SearchContext.Provider>

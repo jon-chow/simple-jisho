@@ -26,9 +26,7 @@
 
 import axiosBuilder from "axios";
 import { CheerioAPI, load } from "cheerio";
-import escapeStringRegexp from "escape-string-regexp";
 import { decode } from "html-entities";
-
 
 const JISHO_API = "https://jisho.org/api/v1/search/words";
 const SCRAPE_BASE_URI = "https://jisho.org/search/";
@@ -37,11 +35,19 @@ const GIF_URI_BASE = "https://raw.githubusercontent.com/jon-chow/simple-jisho/im
 
 const axios = axiosBuilder.create({ timeout: 10000 });
 
+
 /* -------------------------------------------------------------------------- */
-/*                        KANJI SEARCH FUNCTIONALITIES                        */
+/*                              HELPER FUNCTIONS                              */
 /* -------------------------------------------------------------------------- */
-const ONYOMI_LOCATOR_SYMBOL = "On";
-const KUNYOMI_LOCATOR_SYMBOL = "Kun";
+
+/**
+ * Escapes a string for use in a regex.
+ * @param string The string to escape.
+ * @returns The escaped string.
+ */
+function escapeStringRegexp(string: string): string {
+	return string.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&").replace(/-/g, "\\x2d");
+};
 
 /**
  * Removes newlines from a string.
@@ -51,6 +57,13 @@ const KUNYOMI_LOCATOR_SYMBOL = "Kun";
 function removeNewlines(str: string): string {
 	return str.replace(/(?:\r|\n)/g, "").trim();
 };
+
+
+/* -------------------------------------------------------------------------- */
+/*                        KANJI SEARCH FUNCTIONALITIES                        */
+/* -------------------------------------------------------------------------- */
+const ONYOMI_LOCATOR_SYMBOL = "On";
+const KUNYOMI_LOCATOR_SYMBOL = "Kun";
 
 /**
  * Provides a URI to search for a kanji character.
@@ -646,29 +659,39 @@ class JishoAPI implements API {
 		uri = page ? uriForPhraseSearch(phrase, page) : uriForPhraseSearch(phrase);
 
 		// Search for all pages if page is not provided.
-		if (!page) {
-			const promises = [];
+		// TODO: Fix this to prevent DDoS.
+		// if (!page) {
+		// 	const promises = [];
 			
-			// Search for all pages.
-			for (let i = 1; i <= 5; i += 1) {
-				promises.push(axios.get(uriForPhraseSearch(phrase, i.toString())).then((response) => response.data));
-			};
+		// 	// Search for all pages.
+		// 	// TODO: Find a better way to do this.
+		// 	for (let i = 1; i <= 2; i += 1) {
+		// 		try {
+		// 			promises.push(
+		// 				axios
+		// 					.get(uriForPhraseSearch(phrase, i.toString()))
+		// 					.then((response) => response.data)
+		// 			);
+		// 		} catch (err: any) {
+		// 			break;
+		// 		};
+		// 	};
 
-			// Get all promises and merge results into one.
-			return Promise.all(promises).then((results) => {
-				const mergedResult = {
-					data: [] as JishoResult[],
-					meta: { status: 200 },
-				} as JishoAPIResult;
+		// 	// Get all promises and merge results into one.
+		// 	return Promise.all(promises).then((results) => {
+		// 		const mergedResult = {
+		// 			data: [] as JishoResult[],
+		// 			meta: { status: 200 },
+		// 		} as JishoAPIResult;
 
-				for (let i = 0; i < results.length; i += 1) {
-					const result = results[i];
-					mergedResult.data = mergedResult.data.concat(result.data);
-				};
+		// 		for (let i = 0; i < results.length; i += 1) {
+		// 			const result = results[i];
+		// 			mergedResult.data = mergedResult.data.concat(result.data);
+		// 		};
 
-				return mergedResult;
-			});
-		};
+		// 		return mergedResult;
+		// 	});
+		// };
 
 		return axios.get(uri).then((response) => response.data);
 	};

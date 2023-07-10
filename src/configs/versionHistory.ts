@@ -3,12 +3,22 @@
  */
 const VersionHistory: Version[] = [
 	// {
-	//   version: "",
+	//   version: { major: 0, minor: 0, patch: 0 },
 	//   date: new Date(""),
 	//   changes: [
 	//     "",
 	//   ],
 	// },
+	{
+		version: { major: 1, minor: 3, patch: 19 },
+		date: new Date("July 9, 2023"),
+		changes: [
+			"Added timer to show elapsed time for searches.",
+			"Added handler for search timeouts.",
+			"Included error messages for failed searches.",
+			"Fixes to API calls (temporarily decreased search limit).",
+		],
+	},
 	{
 		version: { major: 1, minor: 3, patch: 15 },
 		date: new Date("June 12, 2023"),
@@ -24,7 +34,6 @@ const VersionHistory: Version[] = [
 			"Increased the limit for search results to 50.",
 			"Added settings to adjust the number of search results and example sentences.",
 			"Included setting descriptions.",
-
 		],
 	},
 	{

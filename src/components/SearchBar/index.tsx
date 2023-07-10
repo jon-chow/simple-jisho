@@ -212,11 +212,15 @@ const SearchBar = (): JSX.Element => {
       searchContext.setStatus(Status.LOADING);
       
       q.then((data) => {
+        if (data.error !== undefined)
+          throw new Error(data.error);
+        
         pushHistoryState(query, data);
       }).catch((error) => {
         console.error(error);
         searchContext.setStatus(Status.ERROR);
       });
+      
       searchContext.setQuery(query);
     } else {
       navigatePages();
