@@ -82,6 +82,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse<any>): Promise<
   await Promise.all(kanjiPromises);
 
   res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate');
+  res.setHeader('Content-Type', 'application/json');
+  res.setTimeout(10000, () => {
+    res.status(500).json({ error: 'Request timed out.' });
+  });
   res.status(200).json(filteredPhrasesData);
 };
 

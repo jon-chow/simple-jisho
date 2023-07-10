@@ -1,8 +1,10 @@
-import { AppInfoData } from '@src/configs/config';
+import { useRef } from 'react';
 
+import { AppInfoData } from '@src/configs/config';
 import { useSearch, Status } from '@src/contexts/SearchProvider';
 import { useResults } from '@src/contexts/ResultsProvider';
 import { VersionData } from '@src/configs/versionHistory';
+import useInterval from '@src/hooks/useInterval';
 
 import SearchBar from '../SearchBar';
 
@@ -25,6 +27,8 @@ import styles2 from '@src/styles/Layout.module.scss';
 const TopBar = (): JSX.Element => {
   const searchContext = useSearch();
   const resultsContext = useResults();
+
+  const statusRef = useRef<HTMLDivElement>(null);
   
   const VERSION = VersionData[0].version;
 
@@ -35,12 +39,28 @@ const TopBar = (): JSX.Element => {
   const checkStatus = (): string => {
     switch (searchContext.status) {
       case Status.IDLE:      return "Look up a word by entering it into the search bar.";
-      case Status.LOADING:   return "Searching...";
+      case Status.LOADING:   return `Searching for "${searchContext.query}" (${(searchContext.duration / 1000).toFixed(1)}s)...`;
       case Status.SUCCESS:   return `Found ${resultsContext.results.length} results for "${resultsContext.keyword}".`;
       case Status.CANCELLED: return "Search cancelled.";
       default:               return "An error occurred while searching.";
     };
   };
+
+  // Refresh the status label every 100ms.
+  useInterval(() => {
+    if (searchContext.status === Status.LOADING) {
+      searchContext.setDuration(searchContext.duration + 100);
+
+      // Set the status to error if the search takes too long.
+      if (searchContext.duration >= 10000)
+        searchContext.setStatus(Status.ERROR);
+    } else {
+      searchContext.setDuration(0);
+    };
+
+    if (statusRef.current)
+      statusRef.current.innerText = checkStatus();
+  }, 100);
 
   return (
     <header className={styles.TopBar}>
@@ -64,7 +84,12 @@ const TopBar = (): JSX.Element => {
       {/* Search Bar */}
       <SearchBar />
 
-      <div className={styles.StatusLabel}>{ checkStatus() }</div>
+      <div
+        className={styles.StatusLabel}
+        ref={statusRef}
+      >
+        { checkStatus() }
+      </div>
     </header>
   );
 };

@@ -125,11 +125,11 @@ const SettingsModal = (): JSX.Element => {
         <div className={styles.Group}>
           <h1><FaSearch /> Search Options</h1>
           <InputBox
-            title="Maximum Results (50 max.)"
+            title="Maximum Results (20 max.)"
             description="The max number of results to return from a search."
             initValue={getSetting("maxNumResults")}
             placeholder={getDefaultSetting("maxNumResults") as string}
-            max={50}
+            max={20}
             entered={(value) => { changeSetting("maxNumResults", value); }}
           />
 
