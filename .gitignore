@@ -16,6 +16,8 @@
 /build
 
 # misc
+/__tests__
+/__deprecated__
 .DS_Store
 *.pem
 
