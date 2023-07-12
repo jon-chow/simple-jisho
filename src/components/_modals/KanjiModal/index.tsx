@@ -55,8 +55,20 @@ const KanjiModal = (): JSX.Element => {
               <h1>Stroke Order ({`${kanji.strokeCount} Stroke${kanji.strokeCount !== 1 ? 's' : '' }`})</h1>
               <hr />
               <div className={styles.KanjiImages}>
-                <Image src={kanji.strokeOrderGifUri} alt="" width={0} height={0} />
-                <Image src={kanji.strokeOrderDiagramUri} alt="" width={1080} height={1080} />
+                <Image
+                  src={kanji.strokeOrderGifUri}
+                  alt=""
+                  width={256}
+                  height={256}
+                  quality={80}
+                />
+                <Image
+                  src={kanji.strokeOrderDiagramUri}
+                  alt=""
+                  width={1080}
+                  height={1080}
+                  quality={80}
+                />
               </div>
             </div>
           </div>

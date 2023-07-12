@@ -14,9 +14,8 @@ const nextConfig = {
   },
   images: {
     domains: [
-      "classic.jisho.org",
       "raw.githubusercontent.com",
-    ]
+    ],
   },
   sassOptions: {
     includePaths: [path.join(__dirname, "src/styles")],

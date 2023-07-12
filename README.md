@@ -1,19 +1,19 @@
 # **Simple Jisho**📕
 ## Description
-Simple Jisho is a simple, condensed, and easy-to-use Japanese-English dictionary powered by the Jisho API. 
+Simple Jisho is a simple, condensed, and easy-to-use Japanese-English dictionary powered by the Jisho API.
 
-Access Simple Jisho [here](https://simple-jisho.vercel.app/)!
+Built with Next.js, SCSS, and TypeScript. Hosted on Netlify.
 
 ## Features
 - Search for words in Japanese, English, or Romaji
-  - View their meanings, parts of speech, and example sentences
-  - Look up a word's kanji
-  - View on- and kun- readings
+  - View meanings, parts of speech, and example sentences
+  - Look up detailed information on a word's kanji
+  - View on- and kun- readings of kanji
 - Review hiragana and katakana charts
   - View stroke order diagrams for kana and kanji
 - View past searches (up to 20)
 - Bookmark words for later
-- Customize the app to your liking
+- Customize the colours and background of the app to your liking
 
 ## Previews (from v1.3.11)
 <section align="center" id="front-page">
