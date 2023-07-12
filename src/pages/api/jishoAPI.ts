@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2017 mistval
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,7 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- * 
+ *
  * Modified by @jon-chow
  */
 
@@ -30,11 +30,18 @@ import { decode } from "html-entities";
 
 const JISHO_API = "https://jisho.org/api/v1/search/words";
 const SCRAPE_BASE_URI = "https://jisho.org/search/";
-const STROKE_ORDER_DIAGRAM_BASE_URI = "http://classic.jisho.org/static/images/stroke_diagrams/";
-const GIF_URI_BASE = "https://raw.githubusercontent.com/jon-chow/simple-jisho/images/gifs/"
+const STROKE_ORDER_DIAGRAM_BASE_URI =
+	"https://raw.githubusercontent.com/jon-chow/simple-jisho/images/strokes/";
+const GIF_URI_BASE =
+	"https://raw.githubusercontent.com/jon-chow/simple-jisho/images/gifs/";
 
-const axios = axiosBuilder.create({ timeout: 10000 });
-
+const axios = axiosBuilder.create({
+	timeout: 10000,
+	headers: {
+		"User-Agent":
+			"unofficial-jisho-api (https://www.npmjs.com/package/unofficial-jisho-api)",
+	},
+});
 
 /* -------------------------------------------------------------------------- */
 /*                              HELPER FUNCTIONS                              */
@@ -47,7 +54,7 @@ const axios = axiosBuilder.create({ timeout: 10000 });
  */
 function escapeStringRegexp(string: string): string {
 	return string.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&").replace(/-/g, "\\x2d");
-};
+}
 
 /**
  * Removes newlines from a string.
@@ -56,8 +63,7 @@ function escapeStringRegexp(string: string): string {
  */
 function removeNewlines(str: string): string {
 	return str.replace(/(?:\r|\n)/g, "").trim();
-};
-
+}
 
 /* -------------------------------------------------------------------------- */
 /*                        KANJI SEARCH FUNCTIONALITIES                        */
@@ -72,7 +78,7 @@ const KUNYOMI_LOCATOR_SYMBOL = "Kun";
  */
 function uriForKanjiSearch(kanji: string): string {
 	return `${SCRAPE_BASE_URI}${encodeURIComponent(kanji)}%23kanji`;
-};
+}
 
 /**
  * Provides a URI to the stroke order diagram for a kanji character.
@@ -80,8 +86,10 @@ function uriForKanjiSearch(kanji: string): string {
  * @returns The URI to the stroke order diagram for the kanji.
  */
 function getUriForStrokeOrderDiagram(kanji: string): string {
-	return `${STROKE_ORDER_DIAGRAM_BASE_URI}${kanji.charCodeAt(0).toString()}_frames.png`;
-};
+	return `${STROKE_ORDER_DIAGRAM_BASE_URI}${kanji
+		.charCodeAt(0)
+		.toString(16)}.png`;
+}
 
 /**
  * Provides a URI to search for a phrase.
@@ -91,8 +99,8 @@ function getUriForStrokeOrderDiagram(kanji: string): string {
  */
 function uriForPhraseSearch(phrase: string, page?: string): string {
 	let uri = `${JISHO_API}?keyword=${encodeURIComponent(phrase)}`;
-	return (page) ? `${uri}&page=${page}` : uri;
-};
+	return page ? `${uri}&page=${page}` : uri;
+}
 
 /**
  * Checks if a page contains the kanji glyph.
@@ -103,7 +111,7 @@ function uriForPhraseSearch(phrase: string, page?: string): string {
 function containsKanjiGlyph(pageHtml: string, kanji: string): boolean {
 	const kanjiGlyphToken = `<h1 class="character" data-area-name="print" lang="ja">${kanji}</h1>`;
 	return pageHtml.indexOf(kanjiGlyphToken) !== -1;
-};
+}
 
 /**
  * Gets the substring between two indices.
@@ -112,10 +120,14 @@ function containsKanjiGlyph(pageHtml: string, kanji: string): boolean {
  * @param endIndex The index to stop searching at.
  * @returns The string between the start and end indices.
  */
-function getStringBetweenIndicies(data: string, startIndex: number, endIndex: number): string {
+function getStringBetweenIndicies(
+	data: string,
+	startIndex: number,
+	endIndex: number
+): string {
 	const result = data.substring(startIndex, endIndex);
 	return removeNewlines(result).trim();
-};
+}
 
 /**
  * Gets the substring between two strings.
@@ -124,11 +136,18 @@ function getStringBetweenIndicies(data: string, startIndex: number, endIndex: nu
  * @param endString The string to stop searching at.
  * @returns The string between the start and end strings.
  */
-function getStringBetweenStrings(data: string, startString: string, endString: string): string | undefined {
-	const regex = new RegExp(`${escapeStringRegexp(startString)}(.*?)${escapeStringRegexp(endString)}`, "s");
+function getStringBetweenStrings(
+	data: string,
+	startString: string,
+	endString: string
+): string | undefined {
+	const regex = new RegExp(
+		`${escapeStringRegexp(startString)}(.*?)${escapeStringRegexp(endString)}`,
+		"s"
+	);
 	const match = data.match(regex);
 	return match ? match[1] : undefined;
-};
+}
 
 /**
  * Gets the integer between two strings.
@@ -137,10 +156,18 @@ function getStringBetweenStrings(data: string, startString: string, endString: s
  * @param endString The string to stop searching at.
  * @returns The integer between the start and end strings.
  */
-function getIntBetweenStrings(pageHtml: string, startString: string, endString: string): number | undefined {
-	const stringBetweenStrings = getStringBetweenStrings(pageHtml, startString, endString);
-	return (stringBetweenStrings) ? parseInt(stringBetweenStrings, 10) : undefined;
-};
+function getIntBetweenStrings(
+	pageHtml: string,
+	startString: string,
+	endString: string
+): number | undefined {
+	const stringBetweenStrings = getStringBetweenStrings(
+		pageHtml,
+		startString,
+		endString
+	);
+	return stringBetweenStrings ? parseInt(stringBetweenStrings, 10) : undefined;
+}
 
 /**
  * Gets all the matches of a regex in a string.
@@ -155,10 +182,10 @@ function getAllGlobalGroupMatches(str: string, regex: RegExp): string[] {
 	while (regexResult) {
 		results.push(regexResult[1]);
 		regexResult = regex.exec(str);
-	};
+	}
 
 	return results;
-};
+}
 
 /**
  * A parsed list of anchors.
@@ -168,7 +195,7 @@ function getAllGlobalGroupMatches(str: string, regex: RegExp): string[] {
 function parseAnchorsToArray(str: string): string[] {
 	const regex = /<a href=".*?">(.*?)<\/a>/g;
 	return getAllGlobalGroupMatches(str, regex);
-};
+}
 
 /**
  * Gets the yomi on a page.
@@ -177,9 +204,13 @@ function parseAnchorsToArray(str: string): string[] {
  * @returns The yomi of the page.
  */
 function getYomi(pageHtml: string, yomiLocatorSymbol: string): string[] {
-	const yomiSection = getStringBetweenStrings(pageHtml, `<dt>${yomiLocatorSymbol}:</dt>`, "</dl>");
+	const yomiSection = getStringBetweenStrings(
+		pageHtml,
+		`<dt>${yomiLocatorSymbol}:</dt>`,
+		"</dl>"
+	);
 	return parseAnchorsToArray(yomiSection || "");
-};
+}
 
 /**
  * Gets the kunyomi on a page.
@@ -188,7 +219,7 @@ function getYomi(pageHtml: string, yomiLocatorSymbol: string): string[] {
  */
 function getKunyomi(pageHtml: string): string[] {
 	return getYomi(pageHtml, KUNYOMI_LOCATOR_SYMBOL);
-};
+}
 
 /**
  * Gets the onyomi on a page.
@@ -197,7 +228,7 @@ function getKunyomi(pageHtml: string): string[] {
  */
 function getOnyomi(pageHtml: string): string[] {
 	return getYomi(pageHtml, ONYOMI_LOCATOR_SYMBOL);
-};
+}
 
 /**
  * Gets a list of yomi examples.
@@ -205,15 +236,23 @@ function getOnyomi(pageHtml: string): string[] {
  * @param yomiLocatorSymbol The symbol to search for.
  * @returns A list of yomi examples.
  */
-function getYomiExamples(pageHtml: string, yomiLocatorSymbol: string): YomiExample[] {
+function getYomiExamples(
+	pageHtml: string,
+	yomiLocatorSymbol: string
+): YomiExample[] {
 	const locatorString = `<h2>${yomiLocatorSymbol} reading compounds</h2>`;
-	const exampleSection = getStringBetweenStrings(pageHtml, locatorString, "</ul>");
-	
-	if (!exampleSection)
-		return [];
+	const exampleSection = getStringBetweenStrings(
+		pageHtml,
+		locatorString,
+		"</ul>"
+	);
+
+	if (!exampleSection) return [];
 
 	const regex = /<li>(.*?)<\/li>/gs;
-	const regexResults = getAllGlobalGroupMatches(exampleSection, regex).map((s) => s.trim());
+	const regexResults = getAllGlobalGroupMatches(exampleSection, regex).map(
+		(s) => s.trim()
+	);
 
 	const examples = regexResults.map((regexResult) => {
 		const examplesLines = regexResult.split("\n").map((s) => s.trim());
@@ -225,7 +264,7 @@ function getYomiExamples(pageHtml: string, yomiLocatorSymbol: string): YomiExamp
 	});
 
 	return examples;
-};
+}
 
 /**
  * Gets a list of onyomi examples.
@@ -234,7 +273,7 @@ function getYomiExamples(pageHtml: string, yomiLocatorSymbol: string): YomiExamp
  */
 function getOnyomiExamples(pageHtml: string): YomiExample[] {
 	return getYomiExamples(pageHtml, ONYOMI_LOCATOR_SYMBOL);
-};
+}
 
 /**
  * Gets a list of kunyomi examples.
@@ -243,7 +282,7 @@ function getOnyomiExamples(pageHtml: string): YomiExample[] {
  */
 function getKunyomiExamples(pageHtml: string): YomiExample[] {
 	return getYomiExamples(pageHtml, KUNYOMI_LOCATOR_SYMBOL);
-};
+}
 
 /**
  * Gets the radical on a page.
@@ -254,27 +293,53 @@ function getRadical(pageHtml: string): Radical | undefined {
 	const radicalMeaningStartString = '<span class="radical_meaning">';
 	const radicalMeaningEndString = "</span>";
 
-	const radicalMeaning = getStringBetweenStrings(pageHtml, radicalMeaningStartString, radicalMeaningEndString)?.trim();
+	const radicalMeaning = getStringBetweenStrings(
+		pageHtml,
+		radicalMeaningStartString,
+		radicalMeaningEndString
+	)?.trim();
 
 	if (radicalMeaning) {
-		const radicalMeaningStartIndex = pageHtml.indexOf(radicalMeaningStartString);
-		const radicalMeaningEndIndex = pageHtml.indexOf(radicalMeaningEndString, radicalMeaningStartIndex);
+		const radicalMeaningStartIndex = pageHtml.indexOf(
+			radicalMeaningStartString
+		);
+		const radicalMeaningEndIndex = pageHtml.indexOf(
+			radicalMeaningEndString,
+			radicalMeaningStartIndex
+		);
 
-		const radicalSymbolStartIndex = radicalMeaningEndIndex + radicalMeaningEndString.length;
+		const radicalSymbolStartIndex =
+			radicalMeaningEndIndex + radicalMeaningEndString.length;
 		const radicalSymbolEndString = "</span>";
-		const radicalSymbolEndIndex = pageHtml.indexOf(radicalSymbolEndString, radicalSymbolStartIndex);
-		const radicalSymbolsString = getStringBetweenIndicies(pageHtml, radicalSymbolStartIndex, radicalSymbolEndIndex);
+		const radicalSymbolEndIndex = pageHtml.indexOf(
+			radicalSymbolEndString,
+			radicalSymbolStartIndex
+		);
+		const radicalSymbolsString = getStringBetweenIndicies(
+			pageHtml,
+			radicalSymbolStartIndex,
+			radicalSymbolEndIndex
+		);
 
 		if (radicalSymbolsString.length > 1) {
-			const radicalForms = radicalSymbolsString.substring(1).replace("(", "").replace(")", "").trim().split(", ");
-			return { symbol: radicalSymbolsString[0], forms: radicalForms, meaning: radicalMeaning };
-		};
+			const radicalForms = radicalSymbolsString
+				.substring(1)
+				.replace("(", "")
+				.replace(")", "")
+				.trim()
+				.split(", ");
+			return {
+				symbol: radicalSymbolsString[0],
+				forms: radicalForms,
+				meaning: radicalMeaning,
+			};
+		}
 
 		return { symbol: radicalSymbolsString, meaning: radicalMeaning };
-	};
+	}
 
 	return undefined;
-};
+}
 
 /**
  * Gets the parts on a page.
@@ -285,10 +350,14 @@ function getParts(pageHtml: string): string[] {
 	const partsSectionStartString = "<dt>Parts:</dt>";
 	const partsSectionEndString = "</dl>";
 
-	const partsSection = getStringBetweenStrings(pageHtml, partsSectionStartString, partsSectionEndString);
+	const partsSection = getStringBetweenStrings(
+		pageHtml,
+		partsSectionStartString,
+		partsSectionEndString
+	);
 
 	return parseAnchorsToArray(partsSection as string).sort();
-};
+}
 
 /**
  * Gets the SVG URI on a page.
@@ -309,7 +378,7 @@ function getSvgUri(pageHtml: string): string | undefined {
 function getGifUri(kanji: any): string {
 	const fileName = `${kanji.codePointAt(0).toString(16)}.gif`;
 	return `${GIF_URI_BASE}${fileName}`;
-};
+}
 
 /**
  * Gets the newspaper frequency rank on a page.
@@ -317,7 +386,11 @@ function getGifUri(kanji: any): string {
  * @returns The newspaper frequency rank of the kanji.
  */
 function getNewspaperFrequencyRank(pageHtml: string): string | undefined {
-	const frequencySection = getStringBetweenStrings(pageHtml, '<div class="frequency">', "</div>");
+	const frequencySection = getStringBetweenStrings(
+		pageHtml,
+		'<div class="frequency">',
+		"</div>"
+	);
 	return frequencySection
 		? getStringBetweenStrings(frequencySection, "<strong>", "</strong>")
 		: undefined;
@@ -334,16 +407,31 @@ function parseKanjiPageData(pageHtml: string, kanji: string): KanjiParseResult {
 	result.query = kanji;
 	result.found = containsKanjiGlyph(pageHtml, kanji);
 
-	if (!result.found)
-		return result;
+	if (!result.found) return result;
 
-	result.taughtIn = getStringBetweenStrings(pageHtml, "taught in <strong>", "</strong>") as string;
-	result.jlptLevel = getStringBetweenStrings(pageHtml, "JLPT level <strong>", "</strong>") as string;
+	result.taughtIn = getStringBetweenStrings(
+		pageHtml,
+		"taught in <strong>",
+		"</strong>"
+	) as string;
+	result.jlptLevel = getStringBetweenStrings(
+		pageHtml,
+		"JLPT level <strong>",
+		"</strong>"
+	) as string;
 	result.newspaperFrequencyRank = getNewspaperFrequencyRank(pageHtml) as string;
-	result.strokeCount = getIntBetweenStrings(pageHtml, "<strong>", "</strong> strokes") as unknown as string;
+	result.strokeCount = getIntBetweenStrings(
+		pageHtml,
+		"<strong>",
+		"</strong> strokes"
+	) as unknown as string;
 	result.meaning = decode(
 		removeNewlines(
-			getStringBetweenStrings(pageHtml, '<div class="kanji-details__main-meanings">', "</div>") as string
+			getStringBetweenStrings(
+				pageHtml,
+				'<div class="kanji-details__main-meanings">',
+				"</div>"
+			) as string
 		).trim()
 	);
 	result.kunyomi = getKunyomi(pageHtml);
@@ -357,8 +445,7 @@ function parseKanjiPageData(pageHtml: string, kanji: string): KanjiParseResult {
 	result.strokeOrderGifUri = getGifUri(kanji);
 	result.uri = uriForKanjiSearch(kanji);
 	return result;
-};
-
+}
 
 /* -------------------------------------------------------------------------- */
 /*                       EXAMPLE SEARCH FUNCTIONALITIES                       */
@@ -372,7 +459,7 @@ const kanjiRegex = /[\u4e00-\u9faf\u3400-\u4dbf々]/g;
  */
 function uriForExampleSearch(phrase: string): string {
 	return `${SCRAPE_BASE_URI}${encodeURIComponent(phrase)}%23sentences`;
-};
+}
 
 /**
  * Gets the kanji and kana of a div.
@@ -398,28 +485,26 @@ function getKanjiAndKana(div: any): { kanji: string; kana: string } {
 
 				const kanaEnding = [];
 				for (let j = unlifted.length - 1; j > 0; j -= 1) {
-					if (!unlifted[j].match(kanjiRegex))
-						kanaEnding.push(unlifted[j]);
-					else
-						break;
-				};
+					if (!unlifted[j].match(kanjiRegex)) kanaEnding.push(unlifted[j]);
+					else break;
+				}
 
 				kana += kanaEnding.reverse().join("");
 			} else {
 				kanji += unlifted;
 				kana += unlifted;
-			};
+			}
 		} else {
 			const text = content.text().trim();
 			if (text) {
 				kanji += text;
 				kana += text;
-			};
-		};
-	};
+			}
+		}
+	}
 
 	return { kanji, kana };
-};
+}
 
 /**
  * Normalizes a sentence element.
@@ -430,7 +515,8 @@ function normalizeSentenceElement(sentenceElement: any): CheerioAPI {
 	const sentenceHtml = sentenceElement.html();
 	const normalizedSentenceHtml = sentenceHtml.replace(
 		/(?<=<\/li>)\s*([^\s<>]+)\s*(?=<li)/g,
-		(m: any, g1: string) => `<li class="clearfix"><span class="unlinked">${g1}</span></li>`
+		(m: any, g1: string) =>
+			`<li class="clearfix"><span class="unlinked">${g1}</span></li>`
 	);
 	const result = load(normalizedSentenceHtml);
 	return result;
@@ -442,7 +528,8 @@ function normalizeSentenceElement(sentenceElement: any): CheerioAPI {
  * @returns The pieces of the sentence.
  */
 function getPieces(sentenceElement: any): ExampleSentencePiece[] {
-	const pieceElements = normalizeSentenceElement(sentenceElement)("li.clearfix");
+	const pieceElements =
+		normalizeSentenceElement(sentenceElement)("li.clearfix");
 	const pieces = [];
 	for (let pieceIndex = 0; pieceIndex < pieceElements.length; pieceIndex += 1) {
 		const pieceElement = pieceElements.eq(pieceIndex);
@@ -451,21 +538,21 @@ function getPieces(sentenceElement: any): ExampleSentencePiece[] {
 			lifted: pieceElement.children(".furigana").text(),
 			unlifted: pieceElement.children(".unlinked").text(),
 		});
-	};
+	}
 
 	return pieces;
-};
+}
 
 /**
  * Parses an example div.
- * @param div 
+ * @param div
  * @returns The parsed example div.
  */
 function parseExampleDiv(div: any): ExampleResultData {
 	const english = div.find(".english").text();
 	const { kanji, kana } = getKanjiAndKana(div);
 	return { english, kanji, kana, pieces: getPieces(div) };
-};
+}
 
 /**
  * Parses the data from an example page.
@@ -473,7 +560,10 @@ function parseExampleDiv(div: any): ExampleResultData {
  * @param phrase The phrase to search for.
  * @returns The parsed data from the page.
  */
-function parseExamplePageData(pageHtml: string, phrase: string): ExampleResults & { phrase: string } {
+function parseExamplePageData(
+	pageHtml: string,
+	phrase: string
+): ExampleResults & { phrase: string } {
 	const $ = load(pageHtml);
 	const divs = $(".sentence_content");
 
@@ -481,11 +571,16 @@ function parseExamplePageData(pageHtml: string, phrase: string): ExampleResults 
 	for (let i = 0; i < divs.length; i += 1) {
 		const div = divs.eq(i);
 		results.push(parseExampleDiv(div));
+	}
+
+	return {
+		query: phrase,
+		found: results.length > 0,
+		results,
+		uri: uriForExampleSearch(phrase),
+		phrase,
 	};
-
-	return { query: phrase, found: results.length > 0, results, uri: uriForExampleSearch(phrase), phrase };
 }
-
 
 /* -------------------------------------------------------------------------- */
 /*                        PHRASE SCRAPE FUNCTIONALITIES                       */
@@ -506,22 +601,27 @@ function getTags($: CheerioAPI): string[] {
 	}
 
 	return tags;
-};
+}
 
 /**
  * Gets the meanings, other forms, and notes from a page.
  * @param $ CheerioAPI object.
  * @returns The meanings, other forms, and notes.
  */
-function getMeaningsOtherFormsAndNotes($: CheerioAPI):
-	{ otherForms: { kanji: string; kana: string }[]; notes: string[], meanings: PhraseScrapeMeaning[] } {
+function getMeaningsOtherFormsAndNotes($: CheerioAPI): {
+	otherForms: { kanji: string; kana: string }[];
+	notes: string[];
+	meanings: PhraseScrapeMeaning[];
+} {
 	const returnValues = { otherForms: [], notes: [], meanings: [] } as {
 		otherForms: { kanji: string; kana: string }[];
 		notes: string[];
 		meanings: PhraseScrapeMeaning[];
 	};
 
-	const meaningsWrapper = $("#page_container > div > div > article > div > div.concept_light-meanings.medium-9.columns > div");
+	const meaningsWrapper = $(
+		"#page_container > div > div > article > div > div.concept_light-meanings.medium-9.columns > div"
+	);
 	const meaningsChildren = meaningsWrapper.children();
 	const meanings = [];
 
@@ -529,17 +629,33 @@ function getMeaningsOtherFormsAndNotes($: CheerioAPI):
 	for (let mi = 0; mi < meaningsChildren.length; mi += 1) {
 		const child = meaningsChildren.eq(mi);
 		if (child.hasClass("meaning-tags")) {
-			mostRecentWordTypes = child.text().split(",").map((s: string) => s.trim().toLowerCase());
+			mostRecentWordTypes = child
+				.text()
+				.split(",")
+				.map((s: string) => s.trim().toLowerCase());
 		} else if (mostRecentWordTypes[0] === "other forms") {
-			returnValues.otherForms = child.text().split("、").map((s: string) => s.replace("【", "").replace("】", "").split(" "))
-																	.map((a: string[]) => ({ kanji: a[0], kana: a[1] }));
+			returnValues.otherForms = child
+				.text()
+				.split("、")
+				.map((s: string) => s.replace("【", "").replace("】", "").split(" "))
+				.map((a: string[]) => ({ kanji: a[0], kana: a[1] }));
 		} else if (mostRecentWordTypes[0] === "notes") {
 			returnValues.notes = child.text().split("\n");
 		} else {
 			const meaning = child.find(".meaning-meaning").text();
-			const meaningAbstract = child.find(".meaning-abstract").find("a").remove().end().text();
+			const meaningAbstract = child
+				.find(".meaning-abstract")
+				.find("a")
+				.remove()
+				.end()
+				.text();
 
-			const supplemental = child.find(".supplemental_info").text().split(",").map((s: string) => s.trim()).filter((s: string) => s);
+			const supplemental = child
+				.find(".supplemental_info")
+				.text()
+				.split(",")
+				.map((s: string) => s.trim())
+				.filter((s: string) => s);
 
 			const seeAlsoTerms = [];
 			for (let i = supplemental.length - 1; i >= 0; i -= 1) {
@@ -547,8 +663,8 @@ function getMeaningsOtherFormsAndNotes($: CheerioAPI):
 				if (supplementalEntry.startsWith("See also")) {
 					seeAlsoTerms.push(supplementalEntry.replace("See also ", ""));
 					supplemental.splice(i, 1);
-				};
-			};
+				}
+			}
 
 			const sentences = [];
 			const sentenceElements = child.find(".sentences").children(".sentence");
@@ -558,7 +674,14 @@ function getMeaningsOtherFormsAndNotes($: CheerioAPI):
 
 				const english = sentenceElement.find(".english").text();
 				const pieces = getPieces(sentenceElement);
-				const japanese = sentenceElement.find(".english").remove().end().find(".furigana").remove().end().text();
+				const japanese = sentenceElement
+					.find(".english")
+					.remove()
+					.end()
+					.find(".furigana")
+					.remove()
+					.end()
+					.text();
 				sentences.push({ english, japanese, pieces });
 			}
 
@@ -570,13 +693,13 @@ function getMeaningsOtherFormsAndNotes($: CheerioAPI):
 				definitionAbstract: meaningAbstract,
 				tags: mostRecentWordTypes,
 			});
-		};
-	};
+		}
+	}
 
 	returnValues.meanings = meanings;
 
 	return returnValues;
-};
+}
 
 /**
  * Gets the audio files from a page.
@@ -586,13 +709,18 @@ function getMeaningsOtherFormsAndNotes($: CheerioAPI):
 function getAudio($: CheerioAPI): AudioFile[] {
 	const audio: AudioFile[] = [];
 
-	$(".concept_light-status").find("audio > source").each((_: any, element: any) => {
-		const file = { uri: `https:${element.attribs.src}`, mimetype: element.attribs.type } as AudioFile;
-		audio.push(file);
-	});
+	$(".concept_light-status")
+		.find("audio > source")
+		.each((_: any, element: any) => {
+			const file = {
+				uri: `https:${element.attribs.src}`,
+				mimetype: element.attribs.type,
+			} as AudioFile;
+			audio.push(file);
+		});
 
 	return audio;
-};
+}
 
 /**
  * Provides a URI to search for a phrase.
@@ -601,7 +729,7 @@ function getAudio($: CheerioAPI): AudioFile[] {
  */
 function uriForPhraseScrape(searchTerm: string): string {
 	return `https://jisho.org/word/${encodeURIComponent(searchTerm)}`;
-};
+}
 
 /**
  * Parses the data from a phrase page.
@@ -609,7 +737,10 @@ function uriForPhraseScrape(searchTerm: string): string {
  * @param query The query to search for.
  * @returns The parsed data from the page.
  */
-function parsePhrasePageData(pageHtml: string, query: string): ScrapeParseResult {
+function parsePhrasePageData(
+	pageHtml: string,
+	query: string
+): ScrapeParseResult {
 	const $ = load(pageHtml);
 	const { meanings, otherForms, notes } = getMeaningsOtherFormsAndNotes($);
 	const audio = getAudio($);
@@ -626,8 +757,7 @@ function parsePhrasePageData(pageHtml: string, query: string): ScrapeParseResult
 	};
 
 	return result;
-};
-
+}
 
 /* -------------------------------------------------------------------------- */
 /*                              CLASS CONSTRUCTOR                             */
@@ -655,14 +785,14 @@ class JishoAPI implements API {
 	 * @async
 	 */
 	searchForPhrase(phrase: string, page?: string): Promise<JishoAPIResult> {
-		let uri;
-		uri = page ? uriForPhraseSearch(phrase, page) : uriForPhraseSearch(phrase);
+		const uri = page
+			? uriForPhraseSearch(phrase, page)
+			: uriForPhraseSearch(phrase);
 
 		// Search for all pages if page is not provided.
-		// TODO: Fix this to prevent DDoS.
 		// if (!page) {
 		// 	const promises = [];
-			
+
 		// 	// Search for all pages.
 		// 	// TODO: Find a better way to do this.
 		// 	for (let i = 1; i <= 2; i += 1) {
@@ -694,7 +824,7 @@ class JishoAPI implements API {
 		// };
 
 		return axios.get(uri).then((response) => response.data);
-	};
+	}
 
 	/**
 	 * Scrape the word page for a word/phrase. This allows you to
@@ -707,7 +837,9 @@ class JishoAPI implements API {
 	 * @returns Information about the searched query.
 	 * @async
 	 */
-	async scrapeForPhrase(phrase: string): Promise<PhrasePageScrapeResult | ScrapeParseResult> {
+	async scrapeForPhrase(
+		phrase: string
+	): Promise<PhrasePageScrapeResult | ScrapeParseResult> {
 		const uri = uriForPhraseScrape(phrase);
 		try {
 			const response = await axios.get(uri);
@@ -717,8 +849,8 @@ class JishoAPI implements API {
 				return { query: phrase, found: false };
 
 			throw err;
-		};
-	};
+		}
+	}
 
 	/**
 	 * Scrape Jisho.org for information about a kanji character.
@@ -728,8 +860,10 @@ class JishoAPI implements API {
 	 */
 	searchForKanji(kanji: string): Promise<KanjiParseResult> {
 		const uri = uriForKanjiSearch(kanji);
-		return axios.get(uri).then((response) => parseKanjiPageData(response.data, kanji));
-	};
+		return axios
+			.get(uri)
+			.then((response) => parseKanjiPageData(response.data, kanji));
+	}
 
 	/**
 	 * Scrape Jisho.org for examples.
@@ -739,8 +873,10 @@ class JishoAPI implements API {
 	 */
 	searchForExamples(phrase: string): Promise<ExampleParseResult> {
 		const uri = uriForExampleSearch(phrase);
-		return axios.get(uri).then((response) => parseExamplePageData(response.data, phrase));
-	};
-};
+		return axios
+			.get(uri)
+			.then((response) => parseExamplePageData(response.data, phrase));
+	}
+}
 
 export default JishoAPI;
