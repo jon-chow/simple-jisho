@@ -30,10 +30,8 @@ import { decode } from "html-entities";
 
 const JISHO_API = "https://jisho.org/api/v1/search/words";
 const SCRAPE_BASE_URI = "https://jisho.org/search/";
-const STROKE_ORDER_DIAGRAM_BASE_URI =
-	"https://raw.githubusercontent.com/jon-chow/simple-jisho/images/strokes/";
-const GIF_URI_BASE =
-	"https://raw.githubusercontent.com/jon-chow/simple-jisho/images/gifs/";
+const STROKE_ORDER_DIAGRAM_BASE_URI = "https://jon-chow.github.io/simple-jisho/strokes/";
+const GIF_URI_BASE = "https://jon-chow.github.io/simple-jisho/gifs/";
 
 const axios = axiosBuilder.create({
 	timeout: 10000,
