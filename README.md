@@ -4,6 +4,8 @@ Simple Jisho is a simple, condensed, and easy-to-use Japanese-English dictionary
 
 Built with Next.js, SCSS, and TypeScript. Hosted on Netlify.
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/7de479e6-0679-40f9-b32a-1853344c9bc3/deploy-status)](https://app.netlify.com/sites/simple-jisho/deploys)
+
 ## Features
 - Search for words in Japanese, English, or Romaji
   - View meanings, parts of speech, and example sentences

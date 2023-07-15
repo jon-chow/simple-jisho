@@ -5,17 +5,28 @@
  * const response = await fetch(`https://jisho.org/api/v1/search/words?keyword=${keyword}`);
  * const data = await response.json();
  */
-
 import type { NextApiRequest, NextApiResponse } from 'next';
+
+import { applyMiddleware } from '@src/middlewares';
+import { getRateLimitMiddlewares } from '@src/middlewares/rateLimitMiddleware';
 
 import JishoAPI from "./jishoAPI";
 
 
 const jisho = new JishoAPI();
 
+type QueryData = {
+	keyword: string;
+	page: string;
+	maxSearch: string;
+	maxSentence: string;
+};
+
 /* -------------------------------------------------------------------------- */
 /*                                  FUNCTION                                  */
 /* -------------------------------------------------------------------------- */
+
+const middlewares = getRateLimitMiddlewares({ limit: 60 }).map(applyMiddleware);
 
 /**
  * Handles the search API route. \
@@ -27,12 +38,14 @@ const jisho = new JishoAPI();
  * @async
  */
 async function handler(req: NextApiRequest, res: NextApiResponse<any>): Promise<void> {
-  const { keyword, page, maxSearch, maxSentence } = req.query as {
-		keyword: string;
-		page: string;
-		maxSearch: string;
-		maxSentence: string;
-	};
+  // Rate limit calls to this API route.
+  try {
+    await Promise.all(middlewares.map((middleware) => middleware(req, res)));
+  } catch {
+    res.status(429).json({ error: "Too many requests!" });
+  }
+
+  const { keyword, page, maxSearch, maxSentence } = req.query as QueryData;
 
   const phrasesData = await jisho.searchForPhrase(keyword, page);
 
@@ -83,9 +96,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse<any>): Promise<
 
   res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate');
   res.setHeader('Content-Type', 'application/json');
-  res.setTimeout(10000, () => {
-    res.status(500).json({ error: 'Request timed out.' });
-  });
   res.status(200).json(filteredPhrasesData);
 };
 

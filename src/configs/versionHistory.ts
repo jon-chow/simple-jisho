@@ -11,12 +11,12 @@ const VersionHistory: Version[] = [
 	// },
 	{
 		version: { major: 1, minor: 3, patch: 19 },
-		date: new Date("July 9, 2023"),
+		date: new Date("July 15, 2023"),
 		changes: [
 			"Added timer to show elapsed time for searches.",
 			"Added handler for search timeouts.",
 			"Included error messages for failed searches.",
-			"Fixes to API calls (temporarily decreased search limit).",
+			"Added rate limit to API calls.",
 		],
 	},
 	{
