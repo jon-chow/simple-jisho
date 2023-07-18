@@ -1,4 +1,5 @@
 import type { AppProps } from 'next/app';
+import Script from 'next/script';
 
 import SettingsContextProvider from '@src/contexts/SettingsProvider';
 import SearchContextProvider from '@src/contexts/SearchProvider';
@@ -53,7 +54,6 @@ export const Layout = ({ children }: React.PropsWithChildren): JSX.Element => {
   );
 };
 
-
 /* -------------------------------------------------------------------------- */
 /*                             EXPORTED COMPONENT                             */
 /* -------------------------------------------------------------------------- */
@@ -67,9 +67,31 @@ export const Layout = ({ children }: React.PropsWithChildren): JSX.Element => {
  */
 const App = ({ Component, pageProps }: AppProps): JSX.Element => {
   return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    <>
+      {/* Global Site Tag (gtag.js) - Google Analytics */}
+      <Script
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+      />
+      <Script
+        id="gtag-init"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
+              page_path: window.location.pathname,
+            });
+          `,
+        }}
+      />
+      
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </>
   );
 };
 
