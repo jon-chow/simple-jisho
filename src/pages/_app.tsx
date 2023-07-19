@@ -1,5 +1,9 @@
 import type { AppProps } from 'next/app';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import Script from 'next/script';
+
+import { GA_TRACKING_ID, GAPageView } from '@src/libs/gtag';
 
 import SettingsContextProvider from '@src/contexts/SettingsProvider';
 import SearchContextProvider from '@src/contexts/SearchProvider';
@@ -26,7 +30,7 @@ import styles from '@src/styles/Layout.module.scss';
  * @param children The children of the Layout component.
  * @returns The Layout component.
  */
-export const Layout = ({ children }: React.PropsWithChildren): JSX.Element => {
+const Layout = ({ children }: React.PropsWithChildren): JSX.Element => {
   return (
     <SettingsContextProvider>
       <SearchContextProvider>
@@ -66,21 +70,38 @@ export const Layout = ({ children }: React.PropsWithChildren): JSX.Element => {
  * @returns The app component.
  */
 const App = ({ Component, pageProps }: AppProps): JSX.Element => {
+  const router = useRouter();
+
+  // Google Analytics route change
+  useEffect(() => {
+    const handleRouteChange = (url: string) => GAPageView(url);
+
+    router.events.on('routeChangeComplete', handleRouteChange);
+    return () => router.events.off('routeChangeComplete', handleRouteChange);
+  }, [router.events]);
+
+
   return (
     <>
       {/* Global Site Tag (gtag.js) - Google Analytics */}
       <Script
         strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+        src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
       />
-      <Script id="gtag-init" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
-        `}
-      </Script>
+      <Script
+        id="google-analytics"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_TRACKING_ID}', {
+              page_path: window.location.pathname,
+            });
+          `,
+        }}
+      />
       
       <Layout>
         <Component {...pageProps} />
