@@ -1,9 +1,6 @@
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import Script from 'next/script';
-
-import { GA_TRACKING_ID, GAPageView } from '@src/libs/gtag';
+import { GoogleAnalytics } from 'nextjs-google-analytics';
 
 import SettingsContextProvider from '@src/contexts/SettingsProvider';
 import SearchContextProvider from '@src/contexts/SearchProvider';
@@ -72,35 +69,12 @@ const Layout = ({ children }: React.PropsWithChildren): JSX.Element => {
 const App = ({ Component, pageProps }: AppProps): JSX.Element => {
   const router = useRouter();
 
-  // Google Analytics route change
-  useEffect(() => {
-    const handleRouteChange = (url: string) => GAPageView(url);
-
-    router.events.on('routeChangeComplete', handleRouteChange);
-    return () => router.events.off('routeChangeComplete', handleRouteChange);
-  }, [router.events]);
-
-
   return (
     <>
-      {/* Global Site Tag (gtag.js) - Google Analytics */}
-      <Script
-        strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
-      />
-      <Script
-        id="google-analytics"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${GA_TRACKING_ID}', {
-              page_path: window.location.pathname,
-            });
-          `,
-        }}
+      <GoogleAnalytics
+        gtagUrl="/js/ga-stat.js"
+        strategy="lazyOnload"
+        trackPageViews
       />
       
       <Layout>

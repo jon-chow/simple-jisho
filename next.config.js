@@ -3,6 +3,14 @@
 const path = require("path");
 
 const nextConfig = {
+	async rewrites() {
+		return [
+			{
+				source: "/stat/:region",
+				destination: "https://:region.google-analytics.com/g/collect",
+			},
+		];
+	},
 	reactStrictMode: true,
 	swcMinify: true,
 	webpack(config) {
@@ -13,10 +21,7 @@ const nextConfig = {
 		return config;
 	},
 	images: {
-		domains: [
-			"raw.githubusercontent.com",
-			"jon-chow.github.io",
-		],
+		domains: ["raw.githubusercontent.com", "jon-chow.github.io"],
 	},
 	sassOptions: {
 		includePaths: [path.join(__dirname, "src/styles")],
