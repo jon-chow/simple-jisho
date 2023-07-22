@@ -29,6 +29,7 @@ const MetaData = (): JSX.Element => {
     { path: '/search', title: `${resultsContext.keyword} - ${AppInfoData.name}` },
     { path: '/kana', title: `Kana Chart on ${AppInfoData.name}` },
     { path: '/bookmarks', title: `Saved Terms on ${AppInfoData.name}` },
+    { path: '/policy', title: `Cookie Policy on ${AppInfoData.name}` },
     { title: `404 - Page Not Found! ${AppInfoData.name}` }
   ];
 

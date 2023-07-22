@@ -6,6 +6,7 @@ import { useModal, ModalType, toggleModal } from '@src/contexts/ModalProvider';
 
 import styles from './Footer.module.scss';
 import styles2 from '@src/styles/Layout.module.scss';
+import Link from 'next/link';
 
 
 /* -------------------------------------------------------------------------- */
@@ -101,6 +102,18 @@ const Footer = (): JSX.Element => {
             {BackgroundData.artist}
           </a>.
         </div> }
+      
+      {/* Privacy Policy */}
+      <div>
+        Simple Jisho collects anonymous usage data.
+        By using this app, you agree to the&nbsp;
+        <Link
+          href="/policy"
+          className={styles2.UnderlinedLink}
+        >
+          Cookie Policy
+        </Link>.
+      </div>
 
       {/* Link to GitHub repository */}
       <div className={styles.Repository}>
