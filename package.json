@@ -15,7 +15,7 @@
     "express-rate-limit": "^6.7.1",
     "express-slow-down": "^1.6.0",
     "html-entities": "^2.3.5",
-    "next": "13.0.4",
+    "next": "16.1.7",
     "nextjs-google-analytics": "^2.3.3",
     "react": "18.2.0",
     "react-color": "^2.19.3",
